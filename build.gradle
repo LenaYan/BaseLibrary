@@ -34,6 +34,7 @@ android {
 
     defaultConfig {
         versionCode 1
+        versionName '1.0.0'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         buildConfigField "String", "AppVersion", "\"" + rootProject.ext.versionName + "\""
