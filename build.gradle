@@ -154,7 +154,7 @@ dependencies {
     androidTestCompile depMap.AppCompat
     androidTestCompile depMap.Design
     androidTestCompile depMap.RecyclerView
-    androidTestCompile depMap.UIAutomator
+//    androidTestCompile depMap.UIAutomator
     androidTestCompile depMap.Annotations
 
 }
