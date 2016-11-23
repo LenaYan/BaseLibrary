@@ -70,6 +70,10 @@ dependencies {
     compile depMap.RxBindingDesign
     compile depMap.RxBindingRecyclerView
 
+    compile depMap.StethoRealm
+    debugCompile depMap.Stetho
+    debugCompile depMap.StethoOkhttp3
+
     compile depMap.Dagger
     annotationProcessor depMap.DaggerCompile
 
