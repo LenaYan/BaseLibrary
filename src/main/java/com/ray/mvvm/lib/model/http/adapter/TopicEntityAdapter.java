@@ -40,7 +40,7 @@ public class TopicEntityAdapter {
     public TopicJsonEntity toJson(TopicEntity topicEntity) {
         TopicJsonEntity topicJsonEntity = new TopicJsonEntity();
         topicJsonEntity.setId(topicEntity.getId());
-        topicJsonEntity.setCreateAt(topicEntity.getCreateAt());
+        topicJsonEntity.setCreatedAt(topicEntity.getCreatedAt());
         topicJsonEntity.setDesc(topicEntity.getDesc());
         topicJsonEntity.setPublishedAt(topicEntity.getPublishedAt());
         topicJsonEntity.setSource(topicEntity.getSource());
@@ -59,7 +59,7 @@ public class TopicEntityAdapter {
     public TopicEntity fromJson(TopicJsonEntity topicJsonEntity) {
         TopicEntity topicEntity = new TopicEntity();
         topicEntity.setId(topicJsonEntity.getId());
-        topicEntity.setCreateAt(topicJsonEntity.getCreateAt());
+        topicEntity.setCreatedAt(topicJsonEntity.getCreatedAt());
         topicEntity.setDesc(topicJsonEntity.getDesc());
         topicEntity.setPublishedAt(topicJsonEntity.getPublishedAt());
         topicEntity.setSource(topicJsonEntity.getSource());

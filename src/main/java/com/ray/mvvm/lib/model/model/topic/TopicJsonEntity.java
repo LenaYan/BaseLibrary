@@ -48,7 +48,7 @@ public class TopicJsonEntity {
 
     @Json(name = "_id")
     private String id;
-    private String createAt;
+    private String createdAt;
     private String desc;
     private List<String> images;
     private String publishedAt;
@@ -66,12 +66,12 @@ public class TopicJsonEntity {
         this.id = id;
     }
 
-    public String getCreateAt() {
-        return createAt;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getDesc() {

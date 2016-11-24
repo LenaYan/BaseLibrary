@@ -23,6 +23,7 @@
 
 package com.ray.mvvm.lib.widget.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,6 +41,17 @@ public class DateUtil {
         Date date = new Date(time);
         SimpleDateFormat formatter = getSimpleDateFormat("yyyy-MM-dd-EEEE");
         return formatter.format(date);
+    }
+
+    public static String formatDate(String time) {
+        SimpleDateFormat formatter = getSimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        try {
+            Date date = formatter.parse(time);
+            time = formatRecordDate(date.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return time;
     }
 
     public static String formatRecordDate(long time) {
