@@ -46,7 +46,6 @@ import java.util.List;
  */
 public class TopicJsonEntity {
 
-
     @Json(name = "_id")
     private String id;
     private String createAt;
@@ -56,7 +55,7 @@ public class TopicJsonEntity {
     private String source;
     private String type;
     private String url;
-    private String used;
+    private boolean used;
     private String who;
 
     public String getId() {
@@ -123,11 +122,11 @@ public class TopicJsonEntity {
         this.url = url;
     }
 
-    public String getUsed() {
+    public boolean isUsed() {
         return used;
     }
 
-    public void setUsed(String used) {
+    public void setUsed(boolean used) {
         this.used = used;
     }
 

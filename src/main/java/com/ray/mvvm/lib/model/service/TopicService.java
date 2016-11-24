@@ -23,12 +23,22 @@
 
 package com.ray.mvvm.lib.model.service;
 
+import android.support.annotation.StringDef;
+
 import com.ray.mvvm.lib.model.model.ListRespEntity;
 import com.ray.mvvm.lib.model.model.topic.TopicEntity;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
+
+import static com.ray.mvvm.lib.model.service.TopicService.TopicType.ANDROID;
+import static com.ray.mvvm.lib.model.service.TopicService.TopicType.IOS;
+import static com.ray.mvvm.lib.model.service.TopicService.TopicType.WEB;
 
 /**
  * Created by Android Studio.
@@ -49,7 +59,17 @@ import rx.Observable;
  */
 public interface TopicService {
 
-    @GET("data/Android/{pageSize}/{page}")
-    Observable<ListRespEntity<TopicEntity>> topicList(@Path("pageSize") int pageSize, @Path("page") int page);
+    @Documented
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({ANDROID, IOS, WEB})
+    @interface TopicType {
+        String KEY = "TopicType";
+        String ANDROID = "Android";
+        String IOS = "iOS";
+        String WEB = "前端";
+    }
+
+    @GET("data/{type}/{pageSize}/{page}")
+    Observable<ListRespEntity<TopicEntity>> topicList(@TopicType @Path("type") String type, @Path("pageSize") int pageSize, @Path("page") int page);
 
 }

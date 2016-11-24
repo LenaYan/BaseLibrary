@@ -64,7 +64,7 @@ public class TopicEntity implements RealmModel {
     private String source;
     private String type;
     private String url;
-    private String used;
+    private boolean used;
     private String who;
 
     public String getId() {
@@ -131,11 +131,11 @@ public class TopicEntity implements RealmModel {
         this.url = url;
     }
 
-    public String getUsed() {
+    public boolean isUsed() {
         return used;
     }
 
-    public void setUsed(String used) {
+    public void setUsed(boolean used) {
         this.used = used;
     }
 

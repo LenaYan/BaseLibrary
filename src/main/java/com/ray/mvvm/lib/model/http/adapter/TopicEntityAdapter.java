@@ -66,9 +66,12 @@ public class TopicEntityAdapter {
         topicEntity.setType(topicJsonEntity.getType());
         topicEntity.setUrl(topicJsonEntity.getUrl());
         topicEntity.setWho(topicJsonEntity.getWho());
-        RealmList<RealmString> images = new RealmList<>();
-        for (String s : topicJsonEntity.getImages()) {
-            images.add(new RealmString(s));
+        if (topicJsonEntity.getImages() != null && topicJsonEntity.getImages().size() > 0) {
+            RealmList<RealmString> images = new RealmList<>();
+            for (String s : topicJsonEntity.getImages()) {
+                images.add(new RealmString(s));
+            }
+            topicEntity.setImages(images);
         }
         return topicEntity;
     }
