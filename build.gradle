@@ -3,6 +3,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 
+if (file('artifactory.gradle').exists())
+    apply from: 'artifactory.gradle'
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -92,7 +95,6 @@ dependencies {
 
     // Dependencies for local unit tests
     testCompile depMap.JUnit
-
     androidTestCompile(depMap.EspressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
