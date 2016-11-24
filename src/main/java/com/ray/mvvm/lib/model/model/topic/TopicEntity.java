@@ -52,6 +52,7 @@ import io.realm.annotations.RealmClass;
 public class TopicEntity implements RealmModel {
 
     public static final String PRIMARY_KEY = "id";
+    public static final String ID_KEY = "TopicEntity_ID";
 
     @PrimaryKey
     @Json(name = "_id")
