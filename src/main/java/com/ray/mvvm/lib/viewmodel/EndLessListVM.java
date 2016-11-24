@@ -76,7 +76,7 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
     @Override
     protected void changePageState(ListRespEntity<Q> data) {
         super.changePageState(data);
-        this.hasMore = isRespNull(data);
+        this.hasMore = !isRespNull(data);
         setListItemType(hasMore ? ListViewItemType.NO_MORE : ListViewItemType.LOAD_MORE);
     }
 

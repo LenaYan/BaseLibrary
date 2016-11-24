@@ -32,7 +32,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -222,18 +221,14 @@ public class BindingAdapter {
         appBarLayout.setExpanded(expand, withAnim);
     }
 
-    @android.databinding.BindingAdapter(value = {"layoutManager", "onLoadMore", "onItemSwitch", "onScroll", "isShowDivider"}, requireAll = false)
-    public static void bindLoadMoreRecyclerView(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ILoadMore iLoadMore, OnItemSwitch onItemSwitch, OnScrollListener scrollListener, boolean isShowDivider) {
+    @android.databinding.BindingAdapter(value = {"layoutManager", "onLoadMore", "onItemSwitch", "onScroll"}, requireAll = false)
+    public static void bindLoadMoreRecyclerView(RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, ILoadMore iLoadMore, OnItemSwitch onItemSwitch, OnScrollListener scrollListener) {
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
         OnLoadMoreListener onLoadMore = new OnLoadMoreListener(linearLayoutManager, iLoadMore);
         onLoadMore.setOnScrollListener(scrollListener);
         onLoadMore.setOnItemSwitch(onItemSwitch);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(onLoadMore);
-        if (isShowDivider) {
-            RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
-            recyclerView.addItemDecoration(itemDecoration);
-        }
     }
 
     @android.databinding.BindingAdapter(value = {"dividerHeight", "dividerLeftOffet", "dividerRightOffet", "dividerColor", "hideFirstItemOffset", "showLastDivider"}, requireAll = false)
