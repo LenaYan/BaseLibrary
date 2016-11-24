@@ -23,13 +23,9 @@
 
 package com.ray.mvvm.lib.model.model.topic;
 
-import com.ray.mvvm.lib.model.model.common.RealmString;
 import com.squareup.moshi.Json;
 
-import io.realm.RealmList;
-import io.realm.RealmModel;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmClass;
+import java.util.List;
 
 /**
  * Created by Android Studio.
@@ -48,17 +44,14 @@ import io.realm.annotations.RealmClass;
  * \               ||----w |
  * \               ||     ||
  */
-@RealmClass
-public class TopicEntity implements RealmModel {
+public class TopicJsonEntity {
 
-    public static final String PRIMARY_KEY = "id";
 
-    @PrimaryKey
     @Json(name = "_id")
     private String id;
     private String createAt;
     private String desc;
-    private RealmList<RealmString> images;
+    private List<String> images;
     private String publishedAt;
     private String source;
     private String type;
@@ -90,11 +83,11 @@ public class TopicEntity implements RealmModel {
         this.desc = desc;
     }
 
-    public RealmList<RealmString> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(RealmList<RealmString> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 

@@ -207,9 +207,10 @@ public class GenericPresenter extends CommonPresenter {
         return Observable.create((subscriber) -> {
             if (respEntity == null) {
                 subscriber.onError(new ErrorEvent(ErrorType.RESP_BODY_EMPTY, "Response entity is empty."));
-            } else if (respEntity.getCode() == RespEntity.FAILURE || respEntity.getCode() != RespEntity.SUCCESS) {
-                postError(new ErrorEvent(respEntity.getCode(), respEntity.getMessage()));
-                subscriber.onError(new ErrorEvent(respEntity.getCode(), respEntity.getMessage()));
+            } else if (!respEntity.isError()) {
+                ErrorEvent errorEvent = new ErrorEvent(ErrorType.REQUEST_ERROR, "Request error");
+                postError(errorEvent);
+                subscriber.onError(errorEvent);
             } else {
                 subscriber.onNext(respEntity);
             }
@@ -220,9 +221,10 @@ public class GenericPresenter extends CommonPresenter {
         return Observable.create((subscriber) -> {
             if (respEntity == null) {
                 subscriber.onError(new ErrorEvent(ErrorType.RESP_BODY_EMPTY, "Response entity is empty."));
-            } else if (respEntity.getCode() == RespEntity.FAILURE || respEntity.getCode() != RespEntity.SUCCESS) {
-                postError(new ErrorEvent(respEntity.getCode(), respEntity.getMessage()));
-                subscriber.onError(new ErrorEvent(respEntity.getCode(), respEntity.getMessage()));
+            } else if (!respEntity.isError()) {
+                ErrorEvent errorEvent = new ErrorEvent(ErrorType.REQUEST_ERROR, "Request error");
+                postError(errorEvent);
+                subscriber.onError(errorEvent);
             } else {
                 subscriber.onNext(respEntity.getData());
             }
@@ -231,23 +233,15 @@ public class GenericPresenter extends CommonPresenter {
 
     protected Observable<RespEntity> mockGenericRespObservable() {
         return Observable
-                .create(new Observable.OnSubscribe<RespEntity>() {
-                    @Override
-                    public void call(Subscriber<? super RespEntity> subscriber) {
-                        subscriber.onNext(new RespEntity(RespEntity.SUCCESS));
-                    }
-                })
+                .create((Subscriber<? super RespEntity> subscriber) ->
+                        subscriber.onNext(new RespEntity(true)))
                 .delay(3, TimeUnit.SECONDS);
     }
 
     protected <T> Observable<RespEntity<T>> mockGenericRespObservable(T t) {
         return Observable
-                .create(new Observable.OnSubscribe<RespEntity<T>>() {
-                    @Override
-                    public void call(Subscriber<? super RespEntity<T>> subscriber) {
-                        subscriber.onNext(new RespEntity<>(RespEntity.SUCCESS, t));
-                    }
-                })
+                .create((Subscriber<? super RespEntity<T>> subscriber) ->
+                        subscriber.onNext(new RespEntity<>(true, t)))
                 .delay(3, TimeUnit.SECONDS);
     }
 }

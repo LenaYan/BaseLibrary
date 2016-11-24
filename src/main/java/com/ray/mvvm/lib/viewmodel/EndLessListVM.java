@@ -55,7 +55,7 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
 
     @Override
     public final void onLoadMore() {
-        if (getAdapter().getDataCount()==0)
+        if (getAdapter().getDataCount() == 0)
             return;
         if (getListItemType() == ListViewItemType.LOAD_MORE || !hasMore)
             return;
@@ -76,7 +76,7 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
     @Override
     protected void changePageState(ListRespEntity<Q> data) {
         super.changePageState(data);
-        this.hasMore = data.isHasMore();
+        this.hasMore = isRespNull(data);
         setListItemType(hasMore ? ListViewItemType.NO_MORE : ListViewItemType.LOAD_MORE);
     }
 
@@ -86,7 +86,7 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
     protected void bindResp(ListRespEntity<Q> data) {
         final int listItemType = getListItemType();
         if (listItemType == ListViewItemType.LOAD_MORE) {
-            getAdapter().addItems(data.getList());
+            getAdapter().addItems(data.getResults());
         } else {
             super.bindResp(data);
         }

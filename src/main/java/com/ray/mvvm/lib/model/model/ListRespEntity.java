@@ -27,31 +27,22 @@ import java.util.List;
 
 public class ListRespEntity<T> {
 
-    private List<T> list;
-    private int totalCount;
-    private boolean hasMore;
+    private List<T> results;
+    private boolean error;
 
-    public List<T> getList() {
-        return list;
+    public List<T> getResults() {
+        return results;
     }
 
-    public void setList(List<T> list) {
-        this.list = list;
+    public void setResults(List<T> results) {
+        this.results = results;
     }
 
-    public int getTotalCount() {
-        return totalCount;
+    public boolean isError() {
+        return error;
     }
 
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    public boolean isHasMore() {
-        return hasMore;
-    }
-
-    public void setHasMore(boolean hasMore) {
-        this.hasMore = hasMore;
+    public void setError(boolean error) {
+        this.error = error;
     }
 }

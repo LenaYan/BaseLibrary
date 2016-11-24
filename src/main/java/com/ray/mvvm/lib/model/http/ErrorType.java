@@ -27,6 +27,7 @@ public interface ErrorType {
 
     int NETWORK = 1001;
     int RESP_BODY_EMPTY = 1002;
+    int REQUEST_ERROR = 1003;
 
     int OTHER = 9999;
 }

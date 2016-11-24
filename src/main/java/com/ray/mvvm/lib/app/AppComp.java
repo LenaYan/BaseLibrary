@@ -31,9 +31,6 @@ import com.ray.mvvm.lib.db.ITopicDBManager;
 import com.ray.mvvm.lib.di.modules.AppModule;
 import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.cache.IFileControl;
-import com.ray.mvvm.lib.model.service.MemberService;
-import com.ray.mvvm.lib.model.service.NodeService;
-import com.ray.mvvm.lib.model.service.ReplyService;
 import com.ray.mvvm.lib.model.service.TopicService;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
 import com.squareup.leakcanary.RefWatcher;
@@ -73,12 +70,6 @@ public interface AppComp {
     Realm realm();
 
     RxPermissions rxPermission();
-
-    MemberService memberService();
-
-    NodeService nodeService();
-
-    ReplyService replyService();
 
     TopicService topicService();
 

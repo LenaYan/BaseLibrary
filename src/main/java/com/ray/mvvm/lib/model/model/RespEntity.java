@@ -25,41 +25,30 @@ package com.ray.mvvm.lib.model.model;
 
 public class RespEntity<T> {
 
-    public static final int FAILURE = 0;
-    public static final int SUCCESS = 1;
     public static final int AUTH_ERROR = 401;
     public static final int RESP_BODY_EMPTY = 0xFFF;
 
-    private int code;
-    private String message;
+    private boolean error;
     private T data;
 
     public RespEntity() {
     }
 
-    public RespEntity(int code) {
-        this.code = code;
+    public RespEntity(boolean error) {
+        this.error = error;
     }
 
-    public RespEntity(int code, T data) {
-        this.code = code;
+    public RespEntity(boolean error, T data) {
+        this.error = error;
         this.data = data;
     }
 
-    public int getCode() {
-        return code;
+    public boolean isError() {
+        return error;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setError(boolean error) {
+        this.error = error;
     }
 
     public T getData() {
@@ -68,14 +57,5 @@ public class RespEntity<T> {
 
     public void setData(T data) {
         this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return "RespEntity{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
     }
 }

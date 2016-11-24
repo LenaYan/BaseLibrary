@@ -33,8 +33,7 @@ public class RespEntityAdapter {
     @ToJson
     public RespEntity<NullEntity> toJson(RespEntity respEntity) {
         RespEntity<NullEntity> entity = new RespEntity<>();
-        entity.setCode(respEntity.getCode());
-        entity.setMessage(respEntity.getMessage());
+        entity.setError(respEntity.isError());
         entity.setData(new NullEntity());
         return entity;
     }
@@ -42,8 +41,7 @@ public class RespEntityAdapter {
     @FromJson
     public RespEntity fromJson(RespEntity<NullEntity> respEntity) {
         RespEntity entity = new RespEntity();
-        entity.setCode(respEntity.getCode());
-        entity.setMessage(respEntity.getMessage());
+        entity.setError(respEntity.isError());
         return entity;
     }
 

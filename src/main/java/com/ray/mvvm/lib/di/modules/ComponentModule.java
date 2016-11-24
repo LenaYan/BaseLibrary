@@ -30,6 +30,7 @@ import com.ray.mvvm.lib.db.ITopicDBManager;
 import com.ray.mvvm.lib.db.TopicDBManager;
 import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.http.adapter.RespEntityAdapter;
+import com.ray.mvvm.lib.model.http.adapter.TopicEntityAdapter;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
 import com.squareup.moshi.Moshi;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -50,6 +51,7 @@ public class ComponentModule {
     Moshi provideMoshi() {
         return new Moshi.Builder()
                 .add(new RespEntityAdapter())
+                .add(new TopicEntityAdapter())
                 .build();
     }
 

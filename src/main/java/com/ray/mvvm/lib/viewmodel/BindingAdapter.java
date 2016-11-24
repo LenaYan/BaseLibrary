@@ -77,7 +77,7 @@ public class BindingAdapter {
     }
 
     @android.databinding.BindingAdapter(value = {"viewPager", "adapter"})
-    public static void setTabLayoutIcons(TabLayout tabLayout, int viewPagerId, PagerAdapter pagerAdapter) {
+    public static void bindTabLayout(TabLayout tabLayout, int viewPagerId, PagerAdapter pagerAdapter) {
         ViewPager viewPager = (ViewPager) tabLayout.getRootView().findViewById(viewPagerId);
         if (viewPager.getAdapter() == null)
             viewPager.setAdapter(pagerAdapter);

@@ -44,7 +44,7 @@ public abstract class ListRespVM<T extends IPresenter, R extends IView, Q> exten
 
     @Override
     protected final boolean isRespNull(ListRespEntity<Q> data) {
-        return data == null || data.getList() == null || data.getList().size() == 0;
+        return data == null || data.getResults() == null || data.getResults().size() == 0;
     }
 
     public ListAdapter<Q> getAdapter() {
@@ -57,7 +57,7 @@ public abstract class ListRespVM<T extends IPresenter, R extends IView, Q> exten
 
     @Override
     protected void bindResp(ListRespEntity<Q> data) {
-        adapter.setList(data.getList());
+        adapter.setList(data.getResults());
         layoutManager.scrollToPosition(0);
     }
 }
