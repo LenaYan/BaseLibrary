@@ -225,9 +225,13 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         this.itemClick = itemClick;
     }
 
-    public final T getItem(int position) {
+    public final T getItemOnView(int position) {
         final int headerCount = getHeaderCount();
         return list == null ? null : list.get(position - headerCount);
+    }
+
+    public final T getItem(int position) {
+        return list == null ? null : list.get(position);
     }
 
     public T getItemByIndex(long id) {

@@ -47,8 +47,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.ray.mvvm.lib.interfaces.ILoadMore;
+import com.ray.mvvm.lib.interfaces.OnBitmapLoadedListener;
 import com.ray.mvvm.lib.interfaces.OnItemSwitch;
 import com.ray.mvvm.lib.interfaces.OnScrollListener;
 import com.ray.mvvm.lib.interfaces.OnTextChanged;
@@ -60,6 +62,7 @@ import com.ray.mvvm.lib.widget.utils.StringUtil;
 import com.ray.mvvm.lib.widget.view.ExItemDecoration;
 import com.ray.mvvm.lib.widget.view.OnLoadMoreListener;
 
+import static android.view.View.GONE;
 import static com.bumptech.glide.Glide.with;
 
 public class BindingAdapter {
@@ -155,13 +158,38 @@ public class BindingAdapter {
         Glide.clear(imageView);
         if (StringUtil.isEmpty(imgurl)) {
             imageView.setImageDrawable(placeHolder);
+            imageView.setVisibility(GONE);
             return;
         }
+        imgurl += "?imageView2/0/w/" + DeviceUtil.sScreenWidth;
         if (showFade) {
-            with(imageView.getContext()).load(imgurl).centerCrop().placeholder(placeHolder).crossFade().into(imageView);
+            with(imageView.getContext()).load(imgurl).asBitmap().centerCrop().placeholder(placeHolder).into(new BitmapImageViewTarget(imageView) {
+                @Override
+                public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                    super.onLoadFailed(e, errorDrawable);
+                    imageView.setVisibility(GONE);
+                }
+            });
         } else {
             with(imageView.getContext()).load(imgurl).centerCrop().placeholder(placeHolder).dontAnimate().into(imageView);
         }
+    }
+
+    @android.databinding.BindingAdapter(value = {"topicImageUrl", "callback", "placeHolder"}, requireAll = false)
+    public static void loadTopicImageByPath(ImageView imageView, String topicImageUrl, OnBitmapLoadedListener callback, Drawable placeHolder) {
+        Glide.clear(imageView);
+        if (StringUtil.isEmpty(topicImageUrl)) {
+            imageView.setImageDrawable(placeHolder);
+            callback.onFail();
+            return;
+        }
+        with(imageView.getContext()).load(topicImageUrl).asBitmap().centerCrop().placeholder(placeHolder).into(new BitmapImageViewTarget(imageView) {
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                super.onLoadFailed(e, errorDrawable);
+                callback.onFail();
+            }
+        });
     }
 
     @android.databinding.BindingAdapter(value = {"imgurl", "placeHolder", "showFade"}, requireAll = false)
