@@ -25,20 +25,30 @@ package com.ray.mvvm.lib.view.base.page;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 
+import com.ray.mvvm.lib.BR;
 import com.ray.mvvm.lib.R;
 import com.ray.mvvm.lib.app.AppComp;
 import com.ray.mvvm.lib.app.BaseApplication;
 import com.ray.mvvm.lib.di.IBuildComp;
+import com.ray.mvvm.lib.di.modules.ActivityModule;
 import com.ray.mvvm.lib.view.base.comp.ActivityComp;
 import com.ray.mvvm.lib.view.base.comp.DaggerActivityComp;
 import com.ray.mvvm.lib.view.base.view.ILifeCycle;
-import com.ray.mvvm.lib.di.modules.ActivityModule;
 
 public abstract class BaseDIActivity extends BaseActivity implements IBuildComp {
 
     private ActivityComp activityComp;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        buildComp();
+    }
 
     @Override
     protected void onDestroy() {
@@ -67,12 +77,12 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         return activityComp;
     }
 
-    public <P extends ViewDataBinding> P bindLayout(int layoutRes) {
-        return bindLayout(layoutRes, true);
+    public void bindLayout(int layoutRes, Object viewModel) {
+        bindLayout(layoutRes, viewModel, true);
     }
 
-    public <P extends ViewDataBinding> P bindLayout(int layoutRes, boolean homeAsUp) {
-        P binding = DataBindingUtil.setContentView(this, layoutRes);
+    public void bindLayout(int layoutRes, Object viewModel, boolean homeAsUp) {
+        ViewDataBinding binding = DataBindingUtil.setContentView(this, layoutRes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setSubtitle("");
@@ -80,13 +90,13 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
         }
-        buildComp();
-
         ILifeCycle page = getPageLifeCycle();
         if (page != null)
             page.onViewAttach();
-
-        return binding;
+        binding.setVariable(BR.viewModel, viewModel);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            binding.executePendingBindings();
+        }
     }
 
     protected abstract ILifeCycle getPageLifeCycle();
