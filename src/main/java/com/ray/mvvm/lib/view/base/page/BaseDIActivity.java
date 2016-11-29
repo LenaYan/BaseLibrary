@@ -36,7 +36,7 @@ import com.ray.mvvm.lib.app.AppComp;
 import com.ray.mvvm.lib.app.BaseApplication;
 import com.ray.mvvm.lib.di.IBuildComp;
 import com.ray.mvvm.lib.di.modules.ActivityModule;
-import com.ray.mvvm.lib.presenter.BasePresenter;
+import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.base.comp.ActivityComp;
 import com.ray.mvvm.lib.view.base.comp.DaggerActivityComp;
 import com.ray.mvvm.lib.view.base.view.ILifeCycle;
@@ -80,11 +80,11 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         return activityComp;
     }
 
-    public <P extends BasePresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel) {
+    public <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel) {
         bindLayout(layoutRes, viewModel, true);
     }
 
-    public <P extends BasePresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
+    public <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
         ViewDataBinding binding = DataBindingUtil.setContentView(this, layoutRes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
