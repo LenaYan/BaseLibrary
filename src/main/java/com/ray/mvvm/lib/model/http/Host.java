@@ -25,6 +25,6 @@ package com.ray.mvvm.lib.model.http;
 
 public interface Host {
 
-    String BASE_URL = "https://www.v2ex.com/api/";
+    String BASE_URL = "";
 
 }

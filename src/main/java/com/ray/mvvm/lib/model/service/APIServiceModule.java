@@ -23,11 +23,7 @@
 
 package com.ray.mvvm.lib.model.service;
 
-import com.ray.mvvm.lib.di.scope.PerApplication;
-
 import dagger.Module;
-import dagger.Provides;
-import retrofit2.Retrofit;
 
 /**
  * Created by Android Studio.
@@ -48,29 +44,5 @@ import retrofit2.Retrofit;
  */
 @Module
 public class APIServiceModule {
-
-    @Provides
-    @PerApplication
-    TopicService provideTopicService(Retrofit retrofit) {
-        return retrofit.create(TopicService.class);
-    }
-
-    @Provides
-    @PerApplication
-    MemberService provideMemberService(Retrofit retrofit) {
-        return retrofit.create(MemberService.class);
-    }
-
-    @Provides
-    @PerApplication
-    NodeService provideNodeService(Retrofit retrofit) {
-        return retrofit.create(NodeService.class);
-    }
-
-    @Provides
-    @PerApplication
-    ReplyService provideReplyService(Retrofit retrofit) {
-        return retrofit.create(ReplyService.class);
-    }
-
+    // TODO: 29/11/2016 For request services provides
 }
