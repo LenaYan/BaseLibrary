@@ -1,5 +1,4 @@
 <recipe>
-    <#include "../common/recipe_simple_dimens.xml" />
     <#include "../common/recipe_simple_menu.xml.ftl" />
 
     <instantiate from="root/res/layout/activity_fragment_container.xml.ftl"
