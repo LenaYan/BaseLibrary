@@ -76,18 +76,18 @@ public abstract class StateVM extends BaseObservable {
         if (this.state == state)
             return;
         this.state = state;
-        notifyPropertyChanged(BR.errorVisibility);
-        notifyPropertyChanged(BR.emptyVisibility);
-        notifyPropertyChanged(BR.loadingVisibility);
-        notifyPropertyChanged(BR.contentVisibility);
+//        notifyPropertyChanged(BR.errorVisibility);
+//        notifyPropertyChanged(BR.emptyVisibility);
+//        notifyPropertyChanged(BR.loadingVisibility);
+//        notifyPropertyChanged(BR.contentVisibility);
     }
 
     public void setListItemType(@ListViewItemType int listItemType) {
         if (this.listItemType == listItemType)
             return;
         this.listItemType = listItemType;
-        notifyPropertyChanged(BR.loadingVisibility);
-        notifyPropertyChanged(BR.noMoreVisibility);
+//        notifyPropertyChanged(BR.loadingVisibility);
+//        notifyPropertyChanged(BR.noMoreVisibility);
     }
 
     @ListViewItemType
@@ -132,34 +132,34 @@ public abstract class StateVM extends BaseObservable {
         isNetworkError = networkError;
         notifyPropertyChanged(BR.networkError);
     }
-
-    @Bindable
-    public int getEmptyVisibility() {
-        return state == PageState.EMPTY ? View.VISIBLE : View.GONE;
-    }
-
-    @Bindable
-    public int getErrorVisibility() {
-        return state == PageState.ERROR ? View.VISIBLE : View.GONE;
-    }
-
-    @Bindable
-    public int getLoadingVisibility() {
-        return state == PageState.LOADING ? View.VISIBLE : View.GONE;
-    }
-
-    @Bindable
-    public int getLoadMoreVisibility() {
-        return listItemType == ListViewItemType.LOAD_MORE ? View.VISIBLE : View.GONE;
-    }
-
-    @Bindable
-    public int getNoMoreVisibility() {
-        return listItemType == ListViewItemType.NO_MORE ? View.VISIBLE : View.GONE;
-    }
-
-    @Bindable
-    public int getContentVisibility() {
-        return state == PageState.CONTENT ? View.VISIBLE : View.GONE;
-    }
+//
+//    @Bindable
+//    public int getEmptyVisibility() {
+//        return state == PageState.EMPTY ? View.VISIBLE : View.GONE;
+//    }
+//
+//    @Bindable
+//    public int getErrorVisibility() {
+//        return state == PageState.ERROR ? View.VISIBLE : View.GONE;
+//    }
+//
+//    @Bindable
+//    public int getLoadingVisibility() {
+//        return state == PageState.LOADING ? View.VISIBLE : View.GONE;
+//    }
+//
+//    @Bindable
+//    public int getLoadMoreVisibility() {
+//        return listItemType == ListViewItemType.LOAD_MORE ? View.VISIBLE : View.GONE;
+//    }
+//
+//    @Bindable
+//    public int getNoMoreVisibility() {
+//        return listItemType == ListViewItemType.NO_MORE ? View.VISIBLE : View.GONE;
+//    }
+//
+//    @Bindable
+//    public int getContentVisibility() {
+//        return state == PageState.CONTENT ? View.VISIBLE : View.GONE;
+//    }
 }

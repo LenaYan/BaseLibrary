@@ -36,9 +36,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
-        android:visibility="@{viewModel.emptyVisibility, default = visible}">
+        android:padding="8dp">
 
+        <!--android:visibility="@{viewModel.emptyVisibility, default = visible}"-->
         <TextView
             android:id="@+id/empty_textview"
             android:layout_width="wrap_content"
