@@ -31,6 +31,7 @@ import com.ray.mvvm.lib.model.http.ExObserver;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.base.view.IView;
+import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
 import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import java.io.IOException;
@@ -84,7 +85,7 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
         switch (startState) {
             case PageState.LOADING:
             case PageState.CONTENT:
-                setState(isRespNull(data) ? PageState.EMPTY : PageState.CONTENT);
+                setState(isRespNull(data) && getListItemType() != ListViewItemType.LOAD_MORE ? PageState.EMPTY : PageState.CONTENT);
                 break;
         }
     }
