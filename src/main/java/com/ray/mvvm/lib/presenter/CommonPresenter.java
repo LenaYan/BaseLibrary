@@ -42,6 +42,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -361,6 +362,15 @@ public class CommonPresenter implements IPresenter {
         return Observable
                 .create((Subscriber<? super T> subscriber) -> {
                     subscriber.onNext(t);
+                    subscriber.onCompleted();
+                })
+                .delay(3, TimeUnit.SECONDS);
+    }
+
+    protected <T> Observable<T> mockCommonRespObservable(Func0<T> func) {
+        return Observable
+                .create((Subscriber<? super T> subscriber) -> {
+                    subscriber.onNext(func.call());
                     subscriber.onCompleted();
                 })
                 .delay(3, TimeUnit.SECONDS);
