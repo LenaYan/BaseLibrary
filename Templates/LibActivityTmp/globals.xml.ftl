@@ -7,5 +7,6 @@
     <global id="moduleNameUncapFirst" type="string" value="${pageName?uncap_first}VMModule"/>
     <global id="realAppPackage" type="string" value="${applicationPackage?replace('.debug','')}"/>
     <global id="libPackage" type="string" value="com.ray.mvvm.lib"/>
+    <global id="projectName" type="string" value="V2EX"/>
 
 </globals>
