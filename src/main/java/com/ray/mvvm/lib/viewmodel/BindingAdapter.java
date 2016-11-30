@@ -41,6 +41,9 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -342,5 +345,27 @@ public class BindingAdapter {
         view.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
     }
 
+    @android.databinding.BindingAdapter(value = {"data", "url", "jsInterface", "callback"}, requireAll = false)
+    public static void loadContentInWebView(WebView webView, String data, String url, Object jsInterface, WebViewClient webViewClient) {
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setAppCacheEnabled(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setHorizontalScrollBarEnabled(false);
+        if (webViewClient != null)
+            webView.setWebViewClient(webViewClient);
+        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webView.setScrollbarFadingEnabled(false);
+        if (!StringUtil.isEmpty(data))
+            webView.loadData(data, "text/html; charset=UTF-8", null);
+        if (!StringUtil.isEmpty(url))
+            webView.loadUrl(url);
+        if (jsInterface != null)
+            webView.addJavascriptInterface(jsInterface, "IronHide");
+    }
 }
 

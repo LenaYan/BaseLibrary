@@ -38,6 +38,7 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
 
     private int pageNum = Constants.PAGE_NUM_START;
     private boolean hasMore = true;
+    private int loadedPage = -1;
 
     public EndLessListVM(T presenter, R view, LinearLayoutManager layoutManager, ListAdapter<Q> adapter) {
         super(presenter, view, layoutManager, adapter);
@@ -57,7 +58,7 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
     public final void onLoadMore() {
         if (getAdapter().getDataCount() == 0)
             return;
-        if (getListItemType() == ListViewItemType.LOAD_MORE || !hasMore)
+        if (!hasMore || loadedPage < pageNum)
             return;
         setState(PageState.CONTENT);
         setListItemType(ListViewItemType.LOAD_MORE);
@@ -77,7 +78,10 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
     protected void changePageState(ListRespEntity<Q> data) {
         super.changePageState(data);
         this.hasMore = !isRespNull(data);
-        setListItemType(hasMore ? ListViewItemType.NO_MORE : ListViewItemType.LOAD_MORE);
+        loadedPage = pageNum;
+        setListItemType(hasMore ? ListViewItemType.LOAD_MORE : ListViewItemType.NO_MORE);
+        final int totalCount = getAdapter().getItemCount();
+        getAdapter().notifyItemChanged(totalCount - 1);
     }
 
     protected abstract void exePageRequest(int pageNum);

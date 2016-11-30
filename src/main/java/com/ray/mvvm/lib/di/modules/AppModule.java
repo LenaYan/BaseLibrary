@@ -26,6 +26,7 @@ package com.ray.mvvm.lib.di.modules;
 import android.app.Application;
 import android.content.Context;
 
+import com.ray.mvvm.lib.db.DBModule;
 import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.cache.FileModule;
 import com.ray.mvvm.lib.model.http.RetrofitModule;
@@ -46,7 +47,8 @@ import dagger.Provides;
         RetrofitModule.class,
         ComponentModule.class,
         FileModule.class,
-        APIServiceModule.class
+        APIServiceModule.class,
+        DBModule.class
 })
 public class AppModule {
 

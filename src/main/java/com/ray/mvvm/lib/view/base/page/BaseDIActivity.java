@@ -23,6 +23,7 @@
 
 package com.ray.mvvm.lib.view.base.page;
 
+import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Build;
@@ -36,9 +37,13 @@ import com.ray.mvvm.lib.app.AppComp;
 import com.ray.mvvm.lib.app.BaseApplication;
 import com.ray.mvvm.lib.di.IBuildComp;
 import com.ray.mvvm.lib.di.modules.ActivityModule;
+import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.base.comp.ActivityComp;
 import com.ray.mvvm.lib.view.base.comp.DaggerActivityComp;
 import com.ray.mvvm.lib.view.base.view.ILifeCycle;
+import com.ray.mvvm.lib.view.base.view.IView;
+import com.ray.mvvm.lib.viewmodel.BaseStateVM;
+import com.ray.mvvm.lib.viewmodel.BaseVM;
 
 public abstract class BaseDIActivity extends BaseActivity implements IBuildComp {
 
@@ -77,11 +82,23 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         return activityComp;
     }
 
-    public void bindLayout(int layoutRes, Object viewModel) {
-        bindLayout(layoutRes, viewModel, true);
+    protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseStateVM<P, V> viewModel) {
+        bindViewModel(layoutRes, viewModel, true);
     }
 
-    public void bindLayout(int layoutRes, Object viewModel, boolean homeAsUp) {
+    protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseStateVM<P, V> viewModel, boolean homeAsUp) {
+        bindViewModel(layoutRes, viewModel, homeAsUp);
+    }
+
+    protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel) {
+        bindViewModel(layoutRes, viewModel, true);
+    }
+
+    protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
+        bindViewModel(layoutRes, viewModel, homeAsUp);
+    }
+
+    private void bindViewModel(int layoutRes, BaseObservable viewModel, boolean homeAsUp) {
         ViewDataBinding binding = DataBindingUtil.setContentView(this, layoutRes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
