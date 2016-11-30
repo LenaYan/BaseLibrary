@@ -80,7 +80,8 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
         this.hasMore = data.isHasMore();
         loadedPage = pageNum;
         setListItemType(hasMore ? ListViewItemType.LOAD_MORE : ListViewItemType.NO_MORE);
-        getAdapter().notifyDataSetChanged();
+        final int totalCount = getAdapter().getItemCount();
+        getAdapter().notifyItemChanged(totalCount - 1);
     }
 
     protected abstract void exePageRequest(int pageNum);
