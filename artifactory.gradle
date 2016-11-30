@@ -3,8 +3,9 @@ apply plugin: 'maven-publish'
 
 def libraryGroupId = 'com.ray.mvvm.lib'
 def libraryArtifactId = 'library'
-def isRelease = false
-def libraryVersion = '1.0.1'
+def isRelease = true
+def libraryVersion = '1.0.2'
+def classifierName = 'v2ex'
 
 if (file('../artifactory.gradle').exists())
     apply from: '../artifactory.gradle'
@@ -15,7 +16,9 @@ publishing {
             groupId libraryGroupId
             version libraryVersion + (isRelease ? '' : artifactory_snapshot_suffix)
             artifactId libraryArtifactId
-            artifact("$buildDir/outputs/aar/BaseLibrary-release.aar")
+            artifact("$buildDir/outputs/aar/BaseLibrary-release.aar") {
+                classifier "${classifierName}"
+            }
         }
     }
 }

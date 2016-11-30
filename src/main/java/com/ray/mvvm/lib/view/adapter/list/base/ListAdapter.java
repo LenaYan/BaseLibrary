@@ -23,6 +23,7 @@
 
 package com.ray.mvvm.lib.view.adapter.list.base;
 
+import android.databinding.BaseObservable;
 import android.databinding.ViewDataBinding;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.widget.RecyclerView;
@@ -180,7 +181,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     protected abstract ViewDataBinding createBinding(LayoutInflater layoutInflater, ViewGroup parent, int viewType);
 
-    protected Object createViewModel(int viewType, int position) {
+    protected BaseObservable createViewModel(int viewType, int position) {
         return new CellVM<>(getItem(position), position, itemClick);
     }
 
