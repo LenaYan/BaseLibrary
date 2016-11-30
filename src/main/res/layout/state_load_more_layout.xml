@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:minHeight="64dp"
+        android:minHeight="@dimen/list_footer_height"
         android:orientation="vertical">
 
         <!--android:visibility="@{viewModel.loadMoreVisibility, default = visible}"-->
