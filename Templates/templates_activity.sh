@@ -5,5 +5,5 @@ if [ -d "$DIR" ]; then
     printf '%s\n' "Template is exist,deleting it---->($DIR)"
     rm -rf "$DIR"
 fi
-    cp -r "${activityTmpDir}" "$DIR"
+    cp -r "LibActivityTmp" "$DIR"
 

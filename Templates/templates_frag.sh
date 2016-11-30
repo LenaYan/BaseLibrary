@@ -5,5 +5,5 @@ if [ -d "$DIR" ]; then
     printf '%s\n' "Template is exist,deleting it---->($DIR)"
     rm -rf "$DIR"
 fi
-    cp -r "$fragTmpFirName"/ "$DIR"
+    cp -r "LibFragmentTmp"/ "$DIR"
 

@@ -30,10 +30,8 @@ public class ${activityClass} extends BaseDIActivity implements ${pageName}Contr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ${underscoreToCamelCase(layoutName)}Binding binding = bindLayout(R.layout.${layoutName});
-        binding.setViewModel(viewModel);
+        bindLayout(R.layout.${layoutName}, viewModel);
     }
-
 <#if isNewProject>
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,12 +46,10 @@ public class ${activityClass} extends BaseDIActivity implements ${pageName}Contr
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 </#if>
@@ -71,6 +67,5 @@ public class ${activityClass} extends BaseDIActivity implements ${pageName}Contr
             .${moduleNameUncapFirst}(new ${pageName}VMModule(this))
             .build()
             .inject(this);
-
     }
 }
