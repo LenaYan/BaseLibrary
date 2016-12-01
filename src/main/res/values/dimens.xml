@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="list_footer_height">?actionBarSize</dimen>
+    <dimen name="list_footer_height">48dp</dimen>
 </resources>
