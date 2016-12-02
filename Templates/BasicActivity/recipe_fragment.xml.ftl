@@ -1,6 +1,8 @@
 <recipe>
     <#include "../common/recipe_simple_menu.xml.ftl" />
 
+    <dependency mavenUrl="com.android.support.constraint:constraint-layout:+" />
+
     <instantiate from="root/res/layout/activity_fragment_container.xml.ftl"
                    to="${escapeXmlAttribute(resOut)}/layout/${simpleLayoutName}.xml" />
 

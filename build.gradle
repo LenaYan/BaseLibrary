@@ -86,6 +86,7 @@ android {
 
 retrolambda {
     javaVersion rootProject.ext.retrolambdaJavaVersion
+    defaultMethods true
 }
 
 dependencies {

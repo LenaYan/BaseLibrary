@@ -9,6 +9,7 @@
     revision="6">
 
     <category value="Activity" />
+
     <formfactor value="Mobile" />
 
     <parameter name="Page Name"
@@ -57,11 +58,24 @@
         id="isLauncher"
         type="boolean" />
 
-    <parameter name="Use a Fragment"
-        default="false"
-        help="If true, the content will be a fragment"
-        id="useFragment"
+    <parameter name="Home as up"
+        default="true"
+        help="If true, the page will have a back button"
+        id="isHomeAsUp"
         type="boolean" />
+
+    <parameter name="Contain List"
+        default="false"
+        help="If true, the layout will include RecyclerView and SwipRefreshLayout "
+        id="isWithList"
+        type="boolean" />
+
+    <parameter name="With load more"
+        default="false"
+        help="If true, the list will be endless"
+        id="isWithLoadMore"
+        type="boolean"
+        visibility="isWithList" />
 
     <parameter name="Content Layout Name"
         constraints="layout|unique"
@@ -79,15 +93,6 @@
         id="parentActivityClass"
         type="string" />
 
-    <parameter name="Fragment Layout Name"
-        constraints="layout|unique|nonempty"
-        default="fragment_main"
-        help="The name of the layout to create for the activity's content fragment"
-        id="fragmentLayoutName"
-        suggest="${activityToLayout(activityClass, 'fragment')}"
-        type="string"
-        visibility="false" />
-
     <parameter name="Package name"
         constraints="package"
         default="com.mycompany.myapp"
@@ -98,8 +103,6 @@
     <thumbs>
         <!-- default thumbnail is required -->
         <thumb>template_basic_activity.png</thumb>
-        <!-- attributes act as selectors based on chosen parameters -->
-        <thumb useFragment="true">template_basic_activity_fragment.png</thumb>
     </thumbs>
 
     <globals file="globals.xml.ftl" />

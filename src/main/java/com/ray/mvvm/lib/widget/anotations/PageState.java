@@ -33,8 +33,8 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @IntDef({PageState.LOADING, PageState.ERROR, PageState.CONTENT, PageState.EMPTY})
 public @interface PageState {
-    int LOADING = 0;
-    int ERROR = 1;
-    int CONTENT = 2;
-    int EMPTY = 3;
+    int LOADING = -377;
+    int ERROR = -874;
+    int CONTENT = -912;
+    int EMPTY = -469;
 }

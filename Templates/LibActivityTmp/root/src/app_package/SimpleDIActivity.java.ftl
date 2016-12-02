@@ -30,7 +30,11 @@ public class ${activityClass} extends BaseDIActivity implements ${pageName}Contr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<#if isHomeAsUp>
         bindLayout(R.layout.${layoutName}, viewModel);
+<#else>
+        bindLayout(R.layout.${layoutName}, viewModel, false);
+</#if>
     }
 <#if isNewProject>
     @Override
