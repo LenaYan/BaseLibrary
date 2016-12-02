@@ -43,4 +43,5 @@ import com.ray.mvvm.lib.model.model.topic.TopicEntity;
  * \               ||     ||
  */
 public interface ITopicDBManager extends IDBManager<TopicEntity> {
+
 }
