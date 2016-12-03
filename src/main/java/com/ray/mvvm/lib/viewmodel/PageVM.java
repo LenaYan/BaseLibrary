@@ -72,8 +72,8 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
 
     @Override
     public void onNext(Q data) {
-        bindResp(data);
         changePageState(data);
+        bindResp(data);
     }
 
     @Override
