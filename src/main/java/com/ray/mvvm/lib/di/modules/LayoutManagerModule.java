@@ -25,6 +25,7 @@ package com.ray.mvvm.lib.di.modules;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.ray.mvvm.lib.widget.anotations.ContextType;
@@ -49,5 +50,12 @@ public class LayoutManagerModule {
     LinearLayoutManager provideHorizontalLayout(@Named(ContextType.ACTIVITY) @NonNull Context context) {
         return new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
     }
-    
+
+    @Provides
+    @Named(ListType.GRID)
+    GridLayoutManager provideGridLayout(@Named(ContextType.ACTIVITY) @NonNull Context context) {
+        return new GridLayoutManager(context, 3);
+    }
+
 }
+

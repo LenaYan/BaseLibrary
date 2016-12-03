@@ -31,12 +31,12 @@ import java.lang.annotation.RetentionPolicy;
 
 @Documented
 @Retention(RetentionPolicy.SOURCE)
-@StringDef({ListType.VERTICAL, ListType.HORIZONTAL, ListType.IMAGE_GRID, ListType.PHOTO_GRID})
+@StringDef({ListType.VERTICAL, ListType.HORIZONTAL, ListType.GRID, ListType.PHOTO_GRID})
 public @interface ListType {
 
     String VERTICAL = "vertical";
     String HORIZONTAL = "horizontal";
-    String IMAGE_GRID = "image_grid";
+    String GRID = "grid";
     String PHOTO_GRID = "photo_grid";
 
 }
