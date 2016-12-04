@@ -30,7 +30,10 @@ import android.view.View;
 import com.ray.mvvm.lib.BR;
 import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
 import com.ray.mvvm.lib.widget.anotations.PageState;
+import com.ray.mvvm.lib.widget.anotations.Visibility;
 import com.ray.mvvm.lib.widget.utils.StringUtil;
+
+import static android.view.View.GONE;
 
 /**
  * Created by Android Studio.
@@ -57,6 +60,8 @@ public abstract class StateVM extends BaseObservable {
     private int state = PageState.LOADING;
     private int listItemType = ListViewItemType.NO_MORE;
     private boolean isNetworkError = false;
+    private int emptyAddButtonVisibility = GONE;
+    private View.OnClickListener emptyAddClicked;
 
     public StateVM() {
     }
@@ -132,34 +137,19 @@ public abstract class StateVM extends BaseObservable {
         isNetworkError = networkError;
         notifyPropertyChanged(BR.networkError);
     }
-//
-//    @Bindable
-//    public int getEmptyVisibility() {
-//        return state == PageState.EMPTY ? View.VISIBLE : View.GONE;
-//    }
-//
-//    @Bindable
-//    public int getErrorVisibility() {
-//        return state == PageState.ERROR ? View.VISIBLE : View.GONE;
-//    }
-//
-//    @Bindable
-//    public int getLoadingVisibility() {
-//        return state == PageState.LOADING ? View.VISIBLE : View.GONE;
-//    }
-//
-//    @Bindable
-//    public int getLoadMoreVisibility() {
-//        return listItemType == ListViewItemType.LOAD_MORE ? View.VISIBLE : View.GONE;
-//    }
-//
-//    @Bindable
-//    public int getNoMoreVisibility() {
-//        return listItemType == ListViewItemType.NO_MORE ? View.VISIBLE : View.GONE;
-//    }
-//
-//    @Bindable
-//    public int getContentVisibility() {
-//        return state == PageState.CONTENT ? View.VISIBLE : View.GONE;
-//    }
+
+    public int getEmptyAddButtonVisibility() {
+        return emptyAddButtonVisibility;
+    }
+
+    public void setEmptyAddButtonVisibility(@Visibility int emptyAddButtonVisibility, View.OnClickListener emptyAddClicked) {
+        this.emptyAddClicked = emptyAddClicked;
+        this.emptyAddButtonVisibility = emptyAddButtonVisibility;
+    }
+
+    public void onEmptyAddClicked(View view) {
+        if (emptyAddClicked != null) {
+            emptyAddClicked.onClick(view);
+        }
+    }
 }

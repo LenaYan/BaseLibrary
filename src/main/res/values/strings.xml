@@ -31,5 +31,6 @@
     <string name="state_retry_msg">重新加载</string>
     <string name="delete_count_format">删除(%1$s)</string>
     <string name="have_no_more">- 没有更多了 -</string>
+    <string name="add_action">添加</string>
 
 </resources>
