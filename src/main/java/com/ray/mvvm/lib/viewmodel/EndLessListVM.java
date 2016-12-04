@@ -88,8 +88,8 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
 
     @Override
     protected void bindResp(ListRespEntity<Q> data) {
-        final int listItemType = getListItemType();
-        if (listItemType == ListViewItemType.LOAD_MORE) {
+        final int dataCount = getAdapter().getDataCount();
+        if (dataCount > 0) {
             getAdapter().addItems(data.getList());
         } else {
             super.bindResp(data);
