@@ -178,6 +178,19 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
     }
 
     @Override
+    public Observable<Boolean> insertListAsync(List<T> list) {
+        return Observable
+                .create(subscriber ->
+                        realm.executeTransactionAsync(realm -> {
+                                    realm.copyToRealmOrUpdate(list);
+                                }, () -> {
+                                    subscriber.onNext(true);
+                                    subscriber.onCompleted();
+                                },
+                                subscriber::onError));
+    }
+
+    @Override
     public Observable<Boolean> removeItemAsync(long id) {
         return Observable
                 .create(subscriber ->
