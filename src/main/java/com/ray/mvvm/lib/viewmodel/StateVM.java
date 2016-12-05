@@ -81,18 +81,12 @@ public abstract class StateVM extends BaseObservable {
         if (this.state == state)
             return;
         this.state = state;
-//        notifyPropertyChanged(BR.errorVisibility);
-//        notifyPropertyChanged(BR.emptyVisibility);
-//        notifyPropertyChanged(BR.loadingVisibility);
-//        notifyPropertyChanged(BR.contentVisibility);
     }
 
     public void setListItemType(@ListViewItemType int listItemType) {
         if (this.listItemType == listItemType)
             return;
         this.listItemType = listItemType;
-//        notifyPropertyChanged(BR.loadingVisibility);
-//        notifyPropertyChanged(BR.noMoreVisibility);
     }
 
     @ListViewItemType

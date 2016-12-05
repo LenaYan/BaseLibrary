@@ -31,6 +31,7 @@ import com.ray.mvvm.lib.model.http.ExObserver;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.base.view.IView;
+import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
 import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import java.io.IOException;
@@ -66,36 +67,45 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
         view.showToast(errorString);
         setErrorString(errorString);
         throwable.printStackTrace();
-        handleErrorState();
+        handleOnErrorState();
     }
 
     @Override
     public void onNext(Q data) {
-        changePageState(data);
-        bindResp(data);
+        final int state = getState();
+        handleOnNextState(data);
+        bindResp(data, state);
     }
 
     @Override
     public void onCompleted() {
     }
 
-    protected void changePageState(Q data) {
+    protected void handleOnNextState(Q data) {
         final int startState = getState();
         switch (startState) {
+            case PageState.LOAD_MORE:
+                setState(PageState.CONTENT);
+                break;
             case PageState.LOADING:
             case PageState.CONTENT:
+            case PageState.SWIIP_REFRESH:
                 setState(isRespNull(data) ? PageState.EMPTY : PageState.CONTENT);
                 break;
         }
     }
 
-    protected void handleErrorState() {
+    protected void handleOnErrorState() {
         final int startState = getState();
         switch (startState) {
             case PageState.LOADING:
                 setState(PageState.ERROR);
                 break;
+            case PageState.LOAD_MORE:
+                setListItemType(ListViewItemType.LOAD_MORE_ERROR);
+                break;
             case PageState.CONTENT:
+            case PageState.SWIIP_REFRESH:
                 break;
         }
     }
@@ -110,7 +120,7 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
         return entity;
     }
 
-    protected void bindResp(Q data) {
+    protected void bindResp(Q data, int originState) {
         setEntity(data);
     }
 

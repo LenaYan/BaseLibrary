@@ -70,11 +70,11 @@ public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> ex
             return;
         }
         this.isRefreshing = true;
-        startRequest(PageState.CONTENT);
+        startRequest(PageState.SWIIP_REFRESH);
     }
 
     protected void startRefreshWithContent() {
-        setState(PageState.CONTENT);
+        setState(PageState.SWIIP_REFRESH);
         refreshSubject.onNext(true);
     }
 
@@ -88,6 +88,7 @@ public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> ex
             case PageState.CONTENT:
                 refreshSubject.onNext(true);
                 break;
+            case PageState.SWIIP_REFRESH:
             case PageState.LOADING:
                 break;
         }
