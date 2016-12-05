@@ -47,6 +47,8 @@ public interface IDBManager<T extends RealmModel> {
 
     Observable<List<T>> insertListObs(List<T> list);
 
+    Observable<Boolean> insertListAsync(List<T> list);
+
     Observable<T> insertItemObs(T t);
 
     Observable<T> updateItemObs(T t);
