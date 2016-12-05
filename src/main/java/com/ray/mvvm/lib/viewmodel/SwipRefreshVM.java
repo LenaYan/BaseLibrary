@@ -73,12 +73,12 @@ public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> ex
         startRequest(PageState.SWIIP_REFRESH);
     }
 
-    protected void startRefreshWithContent() {
+    public void startRefreshWithContent() {
         setState(PageState.SWIIP_REFRESH);
         refreshSubject.onNext(true);
     }
 
-    protected void startRefreshRequest() {
+    public void startRefreshRequest() {
         final int state = getState();
         switch (state) {
             case PageState.EMPTY:
