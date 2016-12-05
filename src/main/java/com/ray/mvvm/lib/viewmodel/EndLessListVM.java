@@ -60,23 +60,22 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
             return;
         if (!hasMore || loadedPage < pageNum)
             return;
-        setState(PageState.CONTENT);
+        setState(PageState.LOAD_MORE);
         setListItemType(ListViewItemType.LOAD_MORE);
         pageNum = pageNum + 1;
         exePageRequest(pageNum);
     }
 
     @Override
-    protected void handleErrorState() {
-        super.handleErrorState();
+    protected void handleOnErrorState() {
+        super.handleOnErrorState();
         final int totalCount = getAdapter().getItemCount();
-        setListItemType(ListViewItemType.LOAD_MORE_ERROR);
         getAdapter().notifyItemChanged(totalCount - 1);
     }
 
     @Override
-    protected void changePageState(ListRespEntity<Q> data) {
-        super.changePageState(data);
+    protected void handleOnNextState(ListRespEntity<Q> data) {
+        super.handleOnNextState(data);
         this.hasMore = data.isHasMore();
         loadedPage = pageNum;
         setListItemType(hasMore ? ListViewItemType.LOAD_MORE : ListViewItemType.NO_MORE);
@@ -87,12 +86,18 @@ public abstract class EndLessListVM<T extends IPresenter, R extends IView, Q> ex
     protected abstract void exePageRequest(int pageNum);
 
     @Override
-    protected void bindResp(ListRespEntity<Q> data) {
-        final int dataCount = getAdapter().getDataCount();
-        if (dataCount > 0) {
-            getAdapter().addItems(data.getList());
-        } else {
-            super.bindResp(data);
+    protected void bindResp(ListRespEntity<Q> data, int originState) {
+        switch (originState) {
+            case PageState.LOAD_MORE:
+                getAdapter().addItems(data.getList());
+                break;
+            case PageState.SWIIP_REFRESH:
+            case PageState.CONTENT:
+            case PageState.LOADING:
+            case PageState.EMPTY:
+            case PageState.ERROR:
+                super.bindResp(data, originState);
+                break;
         }
     }
 }

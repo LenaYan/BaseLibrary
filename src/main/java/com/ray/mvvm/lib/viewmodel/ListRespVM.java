@@ -56,8 +56,9 @@ public abstract class ListRespVM<T extends IPresenter, R extends IView, Q> exten
     }
 
     @Override
-    protected void bindResp(ListRespEntity<Q> data) {
+    protected void bindResp(ListRespEntity<Q> data, int originState) {
         adapter.setList(data.getList());
         layoutManager.scrollToPosition(0);
     }
+
 }
