@@ -2,13 +2,14 @@ package ${packageName};
 
 import android.os.Bundle;
 
-import ${realAppPackage}.databinding.${underscoreToCamelCase(layoutName)}Binding;
+import com.jiejing.wuliu.R;
+import ${packageName}.contract.${pageName}Contract;
 import ${packageName}.contract.Dagger${pageName}Contract_Comp;
 import ${packageName}.vm.${pageName}VM;
 import ${packageName}.vm.module.${pageName}VMModule;
-import ${packageName}.contract.${pageName}Contract;
 import ${libPackage}.view.base.page.BaseDIActivity;
 import ${libPackage}.view.base.view.ILifeCycle;
+
 import javax.inject.Inject;
 
 <#if hasAppBar>

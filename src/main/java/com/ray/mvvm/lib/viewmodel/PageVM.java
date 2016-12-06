@@ -40,7 +40,7 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
 
     private Q entity;
 
-    PageVM(T presenter, R view) {
+    public PageVM(T presenter, R view) {
         super(presenter, view);
     }
 
