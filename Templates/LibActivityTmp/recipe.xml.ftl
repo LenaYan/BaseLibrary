@@ -2,10 +2,6 @@
 <recipe>
     <#include "../common/recipe_manifest.xml.ftl" />
 
-<#if appCompat && !(hasDependency('com.android.support:appcompat-v7')>
-    <dependency mavenUrl="com.android.support:appcompat-v7:${buildApi}.+"/>
-</#if>
-
 <#if isWithList>
     <instantiate from="root/res/layout/simple_list.xml.ftl"
                 to="${escapeXmlAttribute(resOut)}/layout/${simpleLayoutName}.xml" />
