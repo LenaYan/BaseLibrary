@@ -1,5 +1,4 @@
 package ${packageName}.vm.module;
-
 <#if isWithList>
 import android.support.v7.widget.LinearLayoutManager;
 
@@ -31,8 +30,13 @@ public class ${pageName}VMModule {
 
 	@Provides
 	@PerActivity
+<#if isWithList>
 	${pageName}VM provideVM(${pageName}P presenter, @Named(ListType.VERTICAL) LinearLayoutManager layoutManager){
 		return new ${pageName}VM(presenter,view, layoutManager, adapter);
+<#else>
+	${pageName}VM provideVM(${pageName}P presenter){
+		return new ${pageName}VM(presenter,view);
+</#if>
 	}
 
 }

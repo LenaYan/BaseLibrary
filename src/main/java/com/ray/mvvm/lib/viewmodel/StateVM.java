@@ -81,6 +81,10 @@ public abstract class StateVM extends BaseObservable {
         if (this.state == state)
             return;
         this.state = state;
+        notifyPropertyChanged(BR.errorVisibility);
+        notifyPropertyChanged(BR.emptyVisibility);
+        notifyPropertyChanged(BR.loadingVisibility);
+        notifyPropertyChanged(BR.contentVisibility);
     }
 
     public void setListItemType(@ListViewItemType int listItemType) {
@@ -145,5 +149,25 @@ public abstract class StateVM extends BaseObservable {
         if (emptyAddClicked != null) {
             emptyAddClicked.onClick(view);
         }
+    }
+
+    @Bindable
+    public int getEmptyVisibility() {
+        return state == PageState.EMPTY ? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
+    public int getErrorVisibility() {
+        return state == PageState.ERROR ? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
+    public int getLoadingVisibility() {
+        return state == PageState.LOADING ? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
+    public int getContentVisibility() {
+        return state == PageState.CONTENT ? View.VISIBLE : View.GONE;
     }
 }
