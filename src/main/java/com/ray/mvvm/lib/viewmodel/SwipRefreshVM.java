@@ -58,6 +58,12 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
     }
 
     @Override
+    public void setState(@PageState int state) {
+        super.setState(state);
+        notifyPropertyChanged(BR.enabled);
+    }
+
+    @Override
     public void onCompleted() {
         super.onCompleted();
         refreshSubject.onNext(false);
@@ -73,7 +79,7 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
         startRequest(PageState.SWIIP_REFRESH);
     }
 
-    public void startRefreshWithContent() {
+    protected void startRefreshWithContent() {
         setState(PageState.SWIIP_REFRESH);
         refreshSubject.onNext(true);
     }
@@ -97,5 +103,11 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
     @Bindable
     public boolean isRefreshing() {
         return isRefreshing;
+    }
+
+    @Bindable
+    public boolean isEnabled() {
+        final int state = getState();
+        return state != PageState.LOADING && state != PageState.ERROR;
     }
 }
