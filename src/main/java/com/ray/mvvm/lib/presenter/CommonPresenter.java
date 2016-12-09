@@ -116,7 +116,7 @@ public class CommonPresenter implements IPresenter {
                         .subscribeOn(Schedulers.io())
                         .doOnUnsubscribe(this::unSubscribe)
                         .doOnError(this::postError)
-                        .filter(data -> isAlive)
+                        .filter(t -> isAlive)
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(action1)
