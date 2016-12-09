@@ -82,6 +82,10 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
     public void onCompleted() {
     }
 
+    protected void handleOnStartState(int lastState) {
+
+    }
+
     protected void handleOnNextState(D data) {
         final int startState = getState();
         switch (startState) {
@@ -100,13 +104,13 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
         final int startState = getState();
         switch (startState) {
             case PageState.LOADING:
+            case PageState.SWIIP_REFRESH:
                 setState(PageState.ERROR);
                 break;
             case PageState.LOAD_MORE:
                 setListItemType(ListViewItemType.LOAD_MORE_ERROR);
                 break;
             case PageState.CONTENT:
-            case PageState.SWIIP_REFRESH:
                 break;
         }
     }

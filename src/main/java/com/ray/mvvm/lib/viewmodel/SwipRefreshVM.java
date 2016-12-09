@@ -108,6 +108,6 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
     @Bindable
     public boolean isEnabled() {
         final int state = getState();
-        return state != PageState.LOADING && state != PageState.ERROR;
+        return state != PageState.LOADING;
     }
 }

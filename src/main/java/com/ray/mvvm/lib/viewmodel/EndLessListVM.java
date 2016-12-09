@@ -25,7 +25,6 @@ package com.ray.mvvm.lib.viewmodel;
 
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.ray.mvvm.lib.app.Constants;
 import com.ray.mvvm.lib.interfaces.ILoadMore;
 import com.ray.mvvm.lib.model.model.ListRespEntity;
 import com.ray.mvvm.lib.presenter.IPresenter;
@@ -36,7 +35,9 @@ import com.ray.mvvm.lib.widget.anotations.PageState;
 
 public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> extends ListRespVM<P, V, D> implements ILoadMore {
 
-    private int pageNum = Constants.PAGE_NUM_START;
+    private static final int PAGE_NUM_START = 1;
+
+    private int pageNum = PAGE_NUM_START;
     private boolean hasMore = true;
     private int loadedPage = -1;
 
@@ -47,7 +48,8 @@ public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> ex
     @Override
     public void startRequest(@PageState int startState) {
         setState(startState);
-        exePageRequest(Constants.PAGE_NUM_START);
+        pageNum = PAGE_NUM_START;
+        exePageRequest(PAGE_NUM_START);
     }
 
     @Override
