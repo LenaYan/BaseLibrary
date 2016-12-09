@@ -29,7 +29,6 @@ import com.ray.mvvm.lib.model.http.ErrorType;
 import com.ray.mvvm.lib.model.http.ExObserver;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.model.model.RespEntity;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,10 +41,6 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class GenericPresenter extends CommonPresenter {
-
-    public GenericPresenter(RefWatcher refWatcher) {
-        super(refWatcher);
-    }
 
     protected <T> void subscribeGenericReq(@NonNull Observable<RespEntity<T>> observable, @NonNull Subscriber<T> subscriber) {
         subscription.add(

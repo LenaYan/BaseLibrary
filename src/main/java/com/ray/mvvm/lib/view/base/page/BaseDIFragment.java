@@ -23,18 +23,26 @@
 
 package com.ray.mvvm.lib.view.base.page;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.ray.mvvm.lib.BR;
 import com.ray.mvvm.lib.di.IBuildComp;
 import com.ray.mvvm.lib.view.base.comp.ActivityComp;
 import com.ray.mvvm.lib.view.base.comp.DaggerFragmentComp;
 import com.ray.mvvm.lib.view.base.comp.FragmentComp;
-import com.ray.mvvm.lib.view.base.view.ILifeCycle;
+import com.ray.mvvm.lib.viewmodel.BaseVM;
+import com.squareup.leakcanary.RefWatcher;
 
 public abstract class BaseDIFragment extends BaseFragment implements IBuildComp {
 
     private FragmentComp fragmentComp;
+    private BaseVM viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,26 +50,41 @@ public abstract class BaseDIFragment extends BaseFragment implements IBuildComp 
         buildComp();
     }
 
+    @Nullable
+    @Override
+    public final View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ViewDataBinding dataBinding = DataBindingUtil.inflate(inflater, onCreateView(), container, false);
+        dataBinding.setVariable(BR.viewModel, viewModel);
+        return dataBinding.getRoot();
+    }
+
+    protected abstract int onCreateView();
+
+    public void setViewModel(BaseVM viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ILifeCycle page = getPageLifeCycle();
-        if (page != null)
-            page.onViewAttach();
+        if (viewModel != null)
+            viewModel.presenter().onViewAttach();
     }
 
     @Override
     public void onDetach() {
-        ILifeCycle page = getPageLifeCycle();
-        if (page != null)
-            page.onViewDetach();
+        if (viewModel != null)
+            viewModel.presenter().onViewDetach();
         super.onDetach();
     }
 
     @Override
     public void onDestroy() {
+        final RefWatcher refWatcher = fragmentComp.refWatcher();
+        refWatcher.watch(viewModel.presenter());
+        refWatcher.watch(viewModel);
+        refWatcher.watch(this);
         super.onDestroy();
-        fragmentComp.refWatcher().watch(this);
     }
 
     protected FragmentComp fragmentComp() {
@@ -76,6 +99,5 @@ public abstract class BaseDIFragment extends BaseFragment implements IBuildComp 
         return ((BaseDIActivity) getActivity()).getActivityComp();
     }
 
-    protected abstract ILifeCycle getPageLifeCycle();
 
 }

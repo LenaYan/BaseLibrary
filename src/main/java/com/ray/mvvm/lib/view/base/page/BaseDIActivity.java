@@ -23,7 +23,6 @@
 
 package com.ray.mvvm.lib.view.base.page;
 
-import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Build;
@@ -40,14 +39,14 @@ import com.ray.mvvm.lib.di.modules.ActivityModule;
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.base.comp.ActivityComp;
 import com.ray.mvvm.lib.view.base.comp.DaggerActivityComp;
-import com.ray.mvvm.lib.view.base.view.ILifeCycle;
 import com.ray.mvvm.lib.view.base.view.IView;
-import com.ray.mvvm.lib.viewmodel.BaseStateVM;
 import com.ray.mvvm.lib.viewmodel.BaseVM;
+import com.squareup.leakcanary.RefWatcher;
 
 public abstract class BaseDIActivity extends BaseActivity implements IBuildComp {
 
     private ActivityComp activityComp;
+    private BaseVM viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,11 +57,12 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
     @Override
     protected void onDestroy() {
         if (activityComp != null) {
-            ILifeCycle pager = getPageLifeCycle();
-            if (pager != null)
-                pager.onViewDetach();
-            if (pager != null)
-                activityComp.refWatcher().watch(pager);
+            if (viewModel != null) {
+                viewModel.presenter().onViewDetach();
+                final RefWatcher refWatcher = activityComp.refWatcher();
+                refWatcher.watch(viewModel);
+                refWatcher.watch(viewModel.presenter());
+            }
             activityComp.refWatcher().watch(this);
         }
         super.onDestroy();
@@ -82,14 +82,6 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         return activityComp;
     }
 
-    protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseStateVM<P, V> viewModel) {
-        bindViewModel(layoutRes, viewModel, true);
-    }
-
-    protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseStateVM<P, V> viewModel, boolean homeAsUp) {
-        bindViewModel(layoutRes, viewModel, homeAsUp);
-    }
-
     protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel) {
         bindViewModel(layoutRes, viewModel, true);
     }
@@ -98,7 +90,7 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         bindViewModel(layoutRes, viewModel, homeAsUp);
     }
 
-    private void bindViewModel(int layoutRes, BaseObservable viewModel, boolean homeAsUp) {
+    private <P extends IPresenter, V extends IView> void bindViewModel(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
         ViewDataBinding binding = DataBindingUtil.setContentView(this, layoutRes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -107,15 +99,12 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
         }
-        ILifeCycle page = getPageLifeCycle();
-        if (page != null)
-            page.onViewAttach();
+        this.viewModel = viewModel;
+        viewModel.presenter().onViewAttach();
         binding.setVariable(BR.viewModel, viewModel);
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+        if (ViewDataBinding.getBuildSdkInt() < Build.VERSION_CODES.KITKAT) {
             binding.executePendingBindings();
         }
     }
-
-    protected abstract ILifeCycle getPageLifeCycle();
 
 }

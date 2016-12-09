@@ -33,14 +33,14 @@ import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import rx.subjects.PublishSubject;
 
-public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> extends PageVM<T, R, Q> implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> extends PageVM<P, V, D> implements SwipeRefreshLayout.OnRefreshListener {
 
     private PublishSubject<Boolean> refreshSubject;
     private boolean isRefreshing;
 
     private int[] colors = {com.ray.mvvm.lib.R.color.SwipRefreshColor};
 
-    public SwipRefreshVM(T presenter, R view) {
+    public SwipRefreshVM(P presenter, V view) {
         super(presenter, view);
         refreshSubject = PublishSubject.create();
         presenter.subscribe(refreshSubject
@@ -58,9 +58,16 @@ public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> ex
     }
 
     @Override
+    public void setState(@PageState int state) {
+        super.setState(state);
+        notifyPropertyChanged(BR.enabled);
+    }
+
+    @Override
     public void onCompleted() {
         super.onCompleted();
-        refreshSubject.onNext(false);
+        if (isRefreshing)
+            refreshSubject.onNext(false);
     }
 
     @Override
@@ -70,16 +77,14 @@ public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> ex
             return;
         }
         this.isRefreshing = true;
-        startRequest(PageState.SWIIP_REFRESH);
+        startRefreshRequest();
     }
 
-    public void startRefreshWithContent() {
-        setState(PageState.SWIIP_REFRESH);
-        refreshSubject.onNext(true);
+    protected void startRefreshRequestAuto() {
+        startRefreshRequestAuto(PageState.CONTENT);
     }
 
-    public void startRefreshRequest() {
-        final int state = getState();
+    protected void startRefreshRequestAuto(@PageState int state) {
         switch (state) {
             case PageState.EMPTY:
             case PageState.ERROR:
@@ -88,7 +93,22 @@ public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> ex
             case PageState.CONTENT:
                 refreshSubject.onNext(true);
                 break;
-            case PageState.SWIIP_REFRESH:
+            case PageState.LOADING:
+                break;
+        }
+    }
+
+    public void startRefreshRequest() {
+        final int state = getState();
+        switch (state) {
+            case PageState.EMPTY:
+            case PageState.ERROR:
+                startRequest(PageState.LOADING);
+//                refreshSubject.onNext(false);
+                break;
+            case PageState.CONTENT:
+                startRequest(PageState.CONTENT);
+                break;
             case PageState.LOADING:
                 break;
         }
@@ -97,5 +117,11 @@ public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> ex
     @Bindable
     public boolean isRefreshing() {
         return isRefreshing;
+    }
+
+    @Bindable
+    public boolean isEnabled() {
+        final int state = getState();
+        return isRefreshing || state != PageState.LOADING;
     }
 }

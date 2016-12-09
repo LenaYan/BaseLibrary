@@ -94,7 +94,6 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
                 break;
             default:
             case PageState.CONTENT:
-            case PageState.SWIIP_REFRESH:
             case PageState.LOAD_MORE:
                 switch (viewType) {
                     default:
@@ -126,7 +125,6 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             default:
             case PageState.CONTENT:
             case PageState.LOAD_MORE:
-            case PageState.SWIIP_REFRESH:
                 return getDataCount() + getHeaderCount() + 1;
         }
     }
@@ -142,7 +140,6 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             default:
             case PageState.CONTENT:
             case PageState.LOAD_MORE:
-            case PageState.SWIIP_REFRESH:
                 final int listItemType = stateVM.getListItemType();
                 final int totalCount = getItemCount();
                 if (position == totalCount - 1) {

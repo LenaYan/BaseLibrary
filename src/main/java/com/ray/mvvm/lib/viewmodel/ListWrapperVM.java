@@ -31,23 +31,23 @@ import com.ray.mvvm.lib.view.base.view.IView;
 
 import java.util.List;
 
-public abstract class ListWrapperVM<T extends IPresenter, R extends IView, Q, W> extends PageVM<T, R, Q> {
+public abstract class ListWrapperVM<P extends IPresenter, V extends IView, D, I> extends PageVM<P, V, D> {
 
     private final RecyclerView.LayoutManager layoutManager;
-    private final ListAdapter<W> adapter;
+    private final ListAdapter<I> adapter;
 
-    public ListWrapperVM(T presenter, R view, RecyclerView.LayoutManager layoutManager, ListAdapter<W> adapter) {
+    public ListWrapperVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, ListAdapter<I> adapter) {
         super(presenter, view);
         this.layoutManager = layoutManager;
         this.adapter = adapter;
     }
 
     @Override
-    protected final boolean isRespNull(Q data) {
+    protected final boolean isRespNull(D data) {
         return data == null || getList(data) == null || getList(data).size() == 0;
     }
 
-    public ListAdapter<W> getAdapter() {
+    public ListAdapter<I> getAdapter() {
         return adapter;
     }
 
@@ -56,10 +56,10 @@ public abstract class ListWrapperVM<T extends IPresenter, R extends IView, Q, W>
     }
 
     @Override
-    protected void bindResp(Q data, int originState) {
+    protected void bindResp(D data, int originState) {
         adapter.setList(getList(data));
         layoutManager.scrollToPosition(0);
     }
 
-    protected abstract List<W> getList(Q data);
+    protected abstract List<I> getList(D data);
 }

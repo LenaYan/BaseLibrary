@@ -31,12 +31,12 @@ import com.ray.mvvm.lib.view.base.view.IView;
 
 import java.util.List;
 
-public abstract class ListVM<T extends IPresenter, R extends IView, Q> extends SwipRefreshVM<T, R, List<Q>> {
+public abstract class ListVM<P extends IPresenter, V extends IView, D> extends SwipRefreshVM<P, V, List<D>> {
 
     private final RecyclerView.LayoutManager layoutManager;
-    private ListAdapter<Q> adapter;
+    private ListAdapter<D> adapter;
 
-    public ListVM(T presenter, R view, RecyclerView.LayoutManager layoutManager, ListAdapter<Q> adapter) {
+    public ListVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, ListAdapter<D> adapter) {
         super(presenter, view);
         this.layoutManager = layoutManager;
         this.adapter = adapter;
@@ -44,11 +44,11 @@ public abstract class ListVM<T extends IPresenter, R extends IView, Q> extends S
     }
 
     @Override
-    protected final boolean isRespNull(List<Q> data) {
+    protected final boolean isRespNull(List<D> data) {
         return data == null || data.size() == 0;
     }
 
-    public ListAdapter<Q> getAdapter() {
+    public ListAdapter<D> getAdapter() {
         return adapter;
     }
 
@@ -57,7 +57,7 @@ public abstract class ListVM<T extends IPresenter, R extends IView, Q> extends S
     }
 
     @Override
-    protected void bindResp(List<Q> data, int originState) {
+    protected void bindResp(List<D> data, int originState) {
         adapter.setList(data);
         layoutManager.scrollToPosition(0);
     }

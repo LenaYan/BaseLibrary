@@ -31,12 +31,11 @@ import java.lang.annotation.RetentionPolicy;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@IntDef({PageState.LOADING, PageState.ERROR, PageState.CONTENT, PageState.EMPTY, PageState.SWIIP_REFRESH, PageState.LOAD_MORE})
+@IntDef({PageState.LOADING, PageState.ERROR, PageState.CONTENT, PageState.EMPTY, PageState.LOAD_MORE})
 public @interface PageState {
     int LOADING = -377;
     int ERROR = -874;
     int CONTENT = -912;
     int EMPTY = -469;
-    int SWIIP_REFRESH = -259;
     int LOAD_MORE = -359;
 }
