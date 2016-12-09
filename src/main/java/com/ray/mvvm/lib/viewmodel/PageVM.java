@@ -75,6 +75,7 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
         final int state = getState();
         handleOnNextState(data);
         bindResp(data, state);
+        onCompleted();
     }
 
     @Override
