@@ -66,7 +66,8 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
     @Override
     public void onCompleted() {
         super.onCompleted();
-        refreshSubject.onNext(false);
+        if (isRefreshing)
+            refreshSubject.onNext(false);
     }
 
     @Override
@@ -76,16 +77,14 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
             return;
         }
         this.isRefreshing = true;
-        startRequest(PageState.SWIIP_REFRESH);
+        startRefreshRequest();
     }
 
-    protected void startRefreshWithContent() {
-        setState(PageState.SWIIP_REFRESH);
-        refreshSubject.onNext(true);
+    protected void startRefreshRequestAuto() {
+        startRefreshRequestAuto(PageState.CONTENT);
     }
 
-    public void startRefreshRequest() {
-        final int state = getState();
+    protected void startRefreshRequestAuto(@PageState int state) {
         switch (state) {
             case PageState.EMPTY:
             case PageState.ERROR:
@@ -94,7 +93,22 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
             case PageState.CONTENT:
                 refreshSubject.onNext(true);
                 break;
-            case PageState.SWIIP_REFRESH:
+            case PageState.LOADING:
+                break;
+        }
+    }
+
+    public void startRefreshRequest() {
+        final int state = getState();
+        switch (state) {
+            case PageState.EMPTY:
+            case PageState.ERROR:
+                startRequest(PageState.LOADING);
+//                refreshSubject.onNext(false);
+                break;
+            case PageState.CONTENT:
+                startRequest(PageState.CONTENT);
+                break;
             case PageState.LOADING:
                 break;
         }
@@ -108,6 +122,6 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
     @Bindable
     public boolean isEnabled() {
         final int state = getState();
-        return state != PageState.LOADING;
+        return isRefreshing || state != PageState.LOADING;
     }
 }

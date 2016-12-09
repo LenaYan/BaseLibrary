@@ -94,7 +94,6 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
                 break;
             case PageState.LOADING:
             case PageState.CONTENT:
-            case PageState.SWIIP_REFRESH:
                 setState(isRespNull(data) ? PageState.EMPTY : PageState.CONTENT);
                 break;
         }
@@ -104,7 +103,6 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
         final int startState = getState();
         switch (startState) {
             case PageState.LOADING:
-            case PageState.SWIIP_REFRESH:
                 setState(PageState.ERROR);
                 break;
             case PageState.LOAD_MORE:

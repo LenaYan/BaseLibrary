@@ -93,7 +93,6 @@ public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> ex
             case PageState.LOAD_MORE:
                 getAdapter().addItems(data.getList());
                 break;
-            case PageState.SWIIP_REFRESH:
             case PageState.CONTENT:
             case PageState.LOADING:
             case PageState.EMPTY:
