@@ -30,12 +30,12 @@ import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.adapter.list.base.ListAdapter;
 import com.ray.mvvm.lib.view.base.view.IView;
 
-public abstract class ListRespVM<T extends IPresenter, R extends IView, Q> extends SwipRefreshVM<T, R, ListRespEntity<Q>> {
+public abstract class ListRespVM<P extends IPresenter, V extends IView, D> extends SwipRefreshVM<P, V, ListRespEntity<D>> {
 
     private final RecyclerView.LayoutManager layoutManager;
-    private ListAdapter<Q> adapter;
+    private ListAdapter<D> adapter;
 
-    public ListRespVM(T presenter, R view, RecyclerView.LayoutManager layoutManager, ListAdapter<Q> adapter) {
+    public ListRespVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, ListAdapter<D> adapter) {
         super(presenter, view);
         this.layoutManager = layoutManager;
         this.adapter = adapter;
@@ -43,11 +43,11 @@ public abstract class ListRespVM<T extends IPresenter, R extends IView, Q> exten
     }
 
     @Override
-    protected final boolean isRespNull(ListRespEntity<Q> data) {
+    protected final boolean isRespNull(ListRespEntity<D> data) {
         return data == null || data.getList() == null || data.getList().size() == 0;
     }
 
-    public ListAdapter<Q> getAdapter() {
+    public ListAdapter<D> getAdapter() {
         return adapter;
     }
 
@@ -56,7 +56,7 @@ public abstract class ListRespVM<T extends IPresenter, R extends IView, Q> exten
     }
 
     @Override
-    protected void bindResp(ListRespEntity<Q> data, int originState) {
+    protected void bindResp(ListRespEntity<D> data, int originState) {
         adapter.setList(data.getList());
         layoutManager.scrollToPosition(0);
     }

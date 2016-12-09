@@ -30,7 +30,6 @@ import com.ray.mvvm.lib.model.http.ExObserver;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.widget.eventbus.RxBus;
 import com.ray.mvvm.lib.widget.eventbus.event.BaseEvent;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -67,12 +66,10 @@ import timber.log.Timber;
  */
 public class CommonPresenter implements IPresenter {
 
-    private final RefWatcher refWatcher;
     protected CompositeSubscription subscription = new CompositeSubscription();
     boolean isAlive;
 
-    public CommonPresenter(RefWatcher refWatcher) {
-        this.refWatcher = refWatcher;
+    public CommonPresenter() {
     }
 
     @Override
@@ -84,7 +81,6 @@ public class CommonPresenter implements IPresenter {
     public void onViewDetach() {
         isAlive = false;
         subscription.unsubscribe();
-        refWatcher.watch(this);
     }
 
     @Override

@@ -23,12 +23,6 @@
 
 package com.ray.mvvm.lib.presenter;
 
-import com.squareup.leakcanary.RefWatcher;
-
 public class BasePresenter extends CommonPresenter {
-
-    public BasePresenter(RefWatcher refWatcher) {
-        super(refWatcher);
-    }
 
 }

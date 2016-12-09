@@ -28,21 +28,21 @@ import android.databinding.BaseObservable;
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.base.view.IView;
 
-public class BaseVM<T extends IPresenter, R extends IView> extends BaseObservable {
+public class BaseVM<P extends IPresenter, V extends IView> extends BaseObservable {
 
-    protected final T presenter;
-    protected final R view;
+    protected final P presenter;
+    protected final V view;
 
-    public BaseVM(T presenter, R view) {
+    public BaseVM(P presenter, V view) {
         this.presenter = presenter;
         this.view = view;
     }
 
-    public T presenter() {
+    public P presenter() {
         return presenter;
     }
 
-    public R view() {
+    public V view() {
         return view;
     }
 

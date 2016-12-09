@@ -23,11 +23,12 @@
 
 package com.ray.mvvm.lib.viewmodel;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
 
 import com.ray.mvvm.lib.BR;
+import com.ray.mvvm.lib.presenter.IPresenter;
+import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
 import com.ray.mvvm.lib.widget.anotations.PageState;
 import com.ray.mvvm.lib.widget.anotations.Visibility;
@@ -52,7 +53,7 @@ import static android.view.View.GONE;
  * \               ||----w |
  * \               ||     ||
  */
-public abstract class StateVM extends BaseObservable {
+public abstract class StateVM<P extends IPresenter, V extends IView> extends BaseVM<P, V> {
 
     private int emptyIconRes;
     private int emptyMsgRes = com.ray.mvvm.lib.R.string.state_empty_msg;
@@ -63,11 +64,8 @@ public abstract class StateVM extends BaseObservable {
     private int emptyAddButtonVisibility = GONE;
     private View.OnClickListener emptyAddClicked;
 
-    public StateVM() {
-    }
-
-    public StateVM(@PageState int state) {
-        this.state = state;
+    public StateVM(P presenter, V view) {
+        super(presenter, view);
     }
 
     public abstract void onRetryClicked(View view);

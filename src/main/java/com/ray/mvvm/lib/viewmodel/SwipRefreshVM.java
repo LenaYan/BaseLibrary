@@ -33,14 +33,14 @@ import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import rx.subjects.PublishSubject;
 
-public abstract class SwipRefreshVM<T extends IPresenter, R extends IView, Q> extends PageVM<T, R, Q> implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> extends PageVM<P, V, D> implements SwipeRefreshLayout.OnRefreshListener {
 
     private PublishSubject<Boolean> refreshSubject;
     private boolean isRefreshing;
 
     private int[] colors = {com.ray.mvvm.lib.R.color.SwipRefreshColor};
 
-    public SwipRefreshVM(T presenter, R view) {
+    public SwipRefreshVM(P presenter, V view) {
         super(presenter, view);
         refreshSubject = PublishSubject.create();
         presenter.subscribe(refreshSubject

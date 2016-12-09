@@ -36,11 +36,11 @@ import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import java.io.IOException;
 
-public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends BaseStateVM<T, R> implements ExObserver<Q> {
+public abstract class PageVM<P extends IPresenter, V extends IView, D> extends StateVM<P, V> implements ExObserver<D> {
 
-    private Q entity;
+    private D entity;
 
-    public PageVM(T presenter, R view) {
+    public PageVM(P presenter, V view) {
         super(presenter, view);
     }
 
@@ -71,7 +71,7 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
     }
 
     @Override
-    public void onNext(Q data) {
+    public void onNext(D data) {
         final int state = getState();
         handleOnNextState(data);
         bindResp(data, state);
@@ -82,7 +82,7 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
     public void onCompleted() {
     }
 
-    protected void handleOnNextState(Q data) {
+    protected void handleOnNextState(D data) {
         final int startState = getState();
         switch (startState) {
             case PageState.LOAD_MORE:
@@ -111,17 +111,17 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
         }
     }
 
-    public void setEntity(Q entity) {
+    public void setEntity(D entity) {
         this.entity = entity;
         notifyPropertyChanged(BR.entity);
     }
 
     @Bindable
-    public Q getEntity() {
+    public D getEntity() {
         return entity;
     }
 
-    protected void bindResp(Q data, int originState) {
+    protected void bindResp(D data, int originState) {
         setEntity(data);
     }
 
@@ -134,7 +134,7 @@ public abstract class PageVM<T extends IPresenter, R extends IView, Q> extends B
         exeRequest();
     }
 
-    protected boolean isRespNull(Q data) {
+    protected boolean isRespNull(D data) {
         return data == null;
     }
 
