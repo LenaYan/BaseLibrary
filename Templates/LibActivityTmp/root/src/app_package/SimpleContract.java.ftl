@@ -21,7 +21,6 @@ public interface ${pageName}Contract {
     }
 
     interface Presenter extends IPresenter {
-
     }
 
 }

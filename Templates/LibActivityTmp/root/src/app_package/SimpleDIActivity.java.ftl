@@ -2,13 +2,12 @@ package ${packageName};
 
 import android.os.Bundle;
 
-import com.jiejing.wuliu.R;
+import ${libPackage}.view.base.page.BaseDIActivity;
+import ${realAppPackage}.R;
 import ${packageName}.contract.${pageName}Contract;
 import ${packageName}.contract.Dagger${pageName}Contract_Comp;
 import ${packageName}.vm.${pageName}VM;
 import ${packageName}.vm.module.${pageName}VMModule;
-import ${libPackage}.view.base.page.BaseDIActivity;
-import ${libPackage}.view.base.view.ILifeCycle;
 
 import javax.inject.Inject;
 
@@ -19,9 +18,6 @@ import ${superClassFqcn};
 <#if isNewProject>
 import android.view.Menu;
 import android.view.MenuItem;
-</#if>
-<#if applicationPackage??>
-import ${realAppPackage}.R;
 </#if>
 
 public class ${activityClass} extends BaseDIActivity implements ${pageName}Contract.View{
@@ -58,11 +54,6 @@ public class ${activityClass} extends BaseDIActivity implements ${pageName}Contr
         return super.onOptionsItemSelected(item);
     }
 </#if>
-
-    @Override
-    protected ILifeCycle getPageLifeCycle() {
-        return viewModel.presenter();
-    }
 
     @Override
     public void buildComp() {
