@@ -58,6 +58,12 @@
         id="isLauncher"
         type="boolean" />
 
+    <parameter name="Toolbar in layout"
+        default="true"
+        help="If true, the layout file will contains a toolbar and appbar layout"
+        id="hasToolbar"
+        type="boolean" />
+
     <parameter name="Home as up"
         default="true"
         help="If true, the page will have a back button"

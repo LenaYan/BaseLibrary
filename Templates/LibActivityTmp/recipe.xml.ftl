@@ -2,6 +2,16 @@
 <recipe>
     <#include "../common/recipe_manifest.xml.ftl" />
 
+<#if hasToolbar>
+    <instantiate from="root/res/layout/app_bar.xml.ftl"
+                 to="${escapeXmlAttribute(resOut)}/layout/${appBarLayoutName}.xml" />
+
+    <merge from="../common/root/res/values/app_bar_dimens.xml"
+             to="${escapeXmlAttribute(resOut)}/values/dimens.xml" />
+
+    <#include "../common/recipe_no_actionbar.xml.ftl" />
+</#if>
+
 <#if isWithList>
     <instantiate from="root/res/layout/simple_list.xml.ftl"
                 to="${escapeXmlAttribute(resOut)}/layout/${simpleLayoutName}.xml" />
@@ -12,16 +22,6 @@
 
 <#if (isNewProject!false) && !(excludeMenu!false)>
     <#include "../common/recipe_simple_menu.xml.ftl" />
-</#if>
-
-<#if hasAppBar>
-    <instantiate from="root/res/layout/app_bar.xml.ftl"
-                 to="${escapeXmlAttribute(resOut)}/layout/${appBarLayoutName}.xml" />
-
-    <merge from="../common/root/res/values/app_bar_dimens.xml"
-             to="${escapeXmlAttribute(resOut)}/values/dimens.xml" />
-
-    <#include "../common/recipe_no_actionbar.xml.ftl" />
 </#if>
 
     <instantiate from="root/src/app_package/SimpleDIActivity.java.ftl"

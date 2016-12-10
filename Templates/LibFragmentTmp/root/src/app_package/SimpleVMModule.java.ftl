@@ -1,7 +1,7 @@
 package ${packageName}.vm.module;
 
 import ${libPackage}.di.scope.PerFragment;
-import ${packageName}.contract.${pageName}Contract;
+import ${packageName}.${pageName}Fragment;
 import ${packageName}.presenter.${pageName}P;
 import ${packageName}.vm.${pageName}VM;
 
@@ -11,16 +11,18 @@ import dagger.Provides;
 @Module
 public class ${pageName}VMModule {
 
-	private ${pageName}Contract.View view;
+	private ${pageName}Fragment fragment;
 
-	public ${pageName}VMModule(${pageName}Contract.View view){
-		this.view=view;
+	public ${pageName}VMModule(${pageName}Fragment fragment) {
+		this.fragment = fragment;
 	}
 
 	@Provides
 	@PerFragment
 	${pageName}VM provideVM(${pageName}P presenter){
-		return new ${pageName}VM(presenter,view);
+    	${pageName}VM viewModel = new ${pageName}VM(presenter, fragment);
+    	fragment.setViewModel(viewModel);
+		return viewModel;
 	}
 
 }

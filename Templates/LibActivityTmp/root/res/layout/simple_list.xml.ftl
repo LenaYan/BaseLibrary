@@ -13,12 +13,10 @@
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-    <#if hasAppBar && appBarLayoutName??>
         xmlns:app="http://schemas.android.com/apk/res-auto"
-    </#if>
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-    <#if hasAppBar && appBarLayoutName??>
+    <#if hasToolbar && appBarLayoutName??>
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/${appBarLayoutName}"
     </#if>
@@ -28,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:colorSchemeResources="@{viewModel.colors}"
+            app:enabled="@{viewModel.enabled}"
             app:onRefreshListener="@{viewModel}"
             app:refresh="@{viewModel.refreshing}">
 
