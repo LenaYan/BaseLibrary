@@ -99,6 +99,7 @@ dependencies {
     compile depMap.Design
     compile depMap.AppCompat
     compile depMap.Percent
+    compile depMap.ConstraintLayout
     compile depMap.Glide
     compile depMap.GlideOkhttpIntegration
     compile depMap.OkHttp
