@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <globals>
+    <#assign hasNoActionBar=!hasToolbar>
     <#include "../common/common_globals.xml.ftl" />
     <global id="simpleLayoutName" value="<#if hasToolbar>${contentLayoutName}<#else>${layoutName}</#if>" />
     <global id="appBarLayoutName" value="${layoutName}" />
