@@ -58,7 +58,7 @@ public abstract class StateVM<P extends IPresenter, V extends IView> extends Bas
     private int emptyIconRes;
     private int emptyMsgRes = com.ray.mvvm.lib.R.string.state_empty_msg;
     private String errorString;
-    private int state = PageState.LOADING;
+    private int state = PageState.CONTENT;
     private int listItemType = ListViewItemType.NO_MORE;
     private boolean isNetworkError = false;
     private int emptyAddButtonVisibility = GONE;
