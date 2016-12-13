@@ -77,28 +77,6 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
             return;
         }
         this.isRefreshing = true;
-        startRefreshRequest();
-    }
-
-    protected void startRefreshRequestAuto() {
-        startRefreshRequestAuto(PageState.CONTENT);
-    }
-
-    protected void startRefreshRequestAuto(@PageState int state) {
-        switch (state) {
-            case PageState.EMPTY:
-            case PageState.ERROR:
-                startRequest();
-                break;
-            case PageState.CONTENT:
-                refreshSubject.onNext(true);
-                break;
-            case PageState.LOADING:
-                break;
-        }
-    }
-
-    public void startRefreshRequest() {
         final int state = getState();
         switch (state) {
             case PageState.EMPTY:
@@ -106,8 +84,27 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
                 startRequest(PageState.LOADING);
 //                refreshSubject.onNext(false);
                 break;
+            default:
             case PageState.CONTENT:
                 startRequest(PageState.CONTENT);
+                break;
+            case PageState.LOADING:
+                break;
+        }
+    }
+
+    public void startRefreshRequestAuto() {
+        startRefreshRequestAuto(getState());
+    }
+
+    public void startRefreshRequestAuto(@PageState int state) {
+        switch (state) {
+            case PageState.EMPTY:
+            case PageState.ERROR:
+                startRequest();
+                break;
+            case PageState.CONTENT:
+                refreshSubject.onNext(true);
                 break;
             case PageState.LOADING:
                 break;

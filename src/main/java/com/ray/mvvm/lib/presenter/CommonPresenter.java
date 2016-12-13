@@ -67,7 +67,7 @@ import timber.log.Timber;
 public class CommonPresenter implements IPresenter {
 
     protected CompositeSubscription subscription = new CompositeSubscription();
-    boolean isAlive;
+    protected boolean isAlive;
 
     public CommonPresenter() {
     }
@@ -321,11 +321,11 @@ public class CommonPresenter implements IPresenter {
         );
     }
 
-    void unSubscribe() {
+    protected void unSubscribe() {
         Timber.i("unSubscribe %s  %d", isAlive, Thread.currentThread().getId());
     }
 
-    <N> Observable<N> dataFlatMap(N dataEntity) {
+    protected <N> Observable<N> dataFlatMap(N dataEntity) {
         return Observable.create((subscriber) -> {
                     if (dataEntity == null) {
                         subscriber.onError(new ErrorEvent(ErrorType.RESP_BODY_EMPTY, "Response Data is empty."));
@@ -337,7 +337,7 @@ public class CommonPresenter implements IPresenter {
         );
     }
 
-    void postError(Throwable throwable) {
+    protected void postError(Throwable throwable) {
         throwable.printStackTrace();
         ErrorEvent errorEvent;
         if (throwable instanceof ErrorEvent) {
