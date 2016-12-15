@@ -96,9 +96,9 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         if (toolbar != null) {
             toolbar.setSubtitle("");
             setSupportActionBar(toolbar);
-            if (getSupportActionBar() != null)
-                getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
         }
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
         this.viewModel = viewModel;
         viewModel.presenter().onViewAttach();
         binding.setVariable(BR.viewModel, viewModel);
