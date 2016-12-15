@@ -52,7 +52,6 @@ public class ExPresenter extends CommonPresenter {
                         .flatMap(this::respFlatMap)
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(subscriber::onStart)
                         .subscribe(subscriber)
         );
     }
@@ -68,7 +67,6 @@ public class ExPresenter extends CommonPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .concatMap(converter)
-                        .doOnSubscribe(subscriber::onStart)
                         .subscribe(subscriber)
         );
     }
@@ -85,7 +83,6 @@ public class ExPresenter extends CommonPresenter {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(action1)
                         .concatMap(converter)
-                        .doOnSubscribe(subscriber::onStart)
                         .subscribe(subscriber)
         );
     }
@@ -116,7 +113,6 @@ public class ExPresenter extends CommonPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .concatMap(converter)
-                        .doOnSubscribe(observer::onStart)
                         .subscribe(observer)
         );
     }
@@ -132,7 +128,6 @@ public class ExPresenter extends CommonPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .flatMap(converter)
-                        .doOnSubscribe(observer::onStart)
                         .subscribe(observer)
         );
     }
@@ -147,7 +142,6 @@ public class ExPresenter extends CommonPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnError(this::postError)
-                        .doOnSubscribe(observer::onStart)
                         .subscribe(observer)
         );
     }
@@ -162,7 +156,6 @@ public class ExPresenter extends CommonPresenter {
                         .flatMap(this::respFlatMap)
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(observer::onStart)
                         .doOnNext(doOnNext)
                         .subscribe(observer)
         );
@@ -179,7 +172,6 @@ public class ExPresenter extends CommonPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(doOnNext)
-                        .doOnSubscribe(subscriber::onStart)
                         .subscribe(subscriber)
         );
     }
@@ -195,7 +187,6 @@ public class ExPresenter extends CommonPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .concatMap(func)
-                        .doOnSubscribe(subscriber::onStart)
                         .subscribe(subscriber)
         );
     }
@@ -209,7 +200,6 @@ public class ExPresenter extends CommonPresenter {
                         .filter(respEntity -> isAlive)
                         .flatMap(this::respFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(subscriber::onStart)
                         .subscribe(subscriber)
         );
     }
@@ -225,7 +215,6 @@ public class ExPresenter extends CommonPresenter {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(doOnNext)
                         .doOnNext((t) -> Timber.i("doOnNext %s  %d", isAlive, Thread.currentThread().getId()))
-                        .doOnSubscribe(subscriber::onStart)
                         .subscribe(subscriber)
         );
     }
