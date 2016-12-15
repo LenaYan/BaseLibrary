@@ -141,7 +141,6 @@ public class CommonPresenter implements IPresenter {
                         .filter(t -> isAlive)
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(observer::onStart)
                         .subscribe(observer)
         );
     }
@@ -216,7 +215,6 @@ public class CommonPresenter implements IPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .concatMap(converter)
-                        .doOnSubscribe(observer::onStart)
                         .subscribe(observer)
         );
     }
@@ -232,7 +230,6 @@ public class CommonPresenter implements IPresenter {
                         .concatMap(before)
                         .observeOn(AndroidSchedulers.mainThread())
                         .concatMap(after)
-                        .doOnSubscribe(observer::onStart)
                         .subscribe(observer)
         );
     }
@@ -246,7 +243,6 @@ public class CommonPresenter implements IPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnError(this::postError)
-                        .doOnSubscribe(observer::onStart)
                         .subscribe(observer)
         );
     }
@@ -260,7 +256,6 @@ public class CommonPresenter implements IPresenter {
                         .filter(data -> isAlive)
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(observer::onStart)
                         .doOnNext(doOnNext)
                         .subscribe(observer)
         );
@@ -316,7 +311,6 @@ public class CommonPresenter implements IPresenter {
                         .flatMap(this::dataFlatMap)
                         .observeOn(AndroidSchedulers.mainThread())
                         .concatMap(func)
-                        .doOnSubscribe(subscriber::onStart)
                         .subscribe(subscriber)
         );
     }
