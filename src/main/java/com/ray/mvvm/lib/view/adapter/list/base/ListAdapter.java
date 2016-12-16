@@ -191,7 +191,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     public void setList(List<T> list) {
         this.list = list;
         wrapMap.clear();
-        if (getItemCount() > 0) {
+        if (this.list != null && getItemCount() > 0) {
             for (T t : this.list) {
                 final long index = getIndex(t);
                 if (index == NO_INDEX)
