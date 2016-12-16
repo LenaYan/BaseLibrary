@@ -26,15 +26,14 @@ package com.ray.mvvm.lib.viewmodel;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.ray.mvvm.lib.interfaces.ILoadMore;
+import com.ray.mvvm.lib.model.model.ListRespEntity;
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.adapter.list.base.ListAdapter;
 import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
 import com.ray.mvvm.lib.widget.anotations.PageState;
 
-import java.util.List;
-
-public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> extends ListVM<P, V, D> implements ILoadMore {
+public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D> extends ListRespVM<P, V, D> implements ILoadMore {
 
     private static final int PAGE_NUM_START = 1;
 
@@ -42,7 +41,7 @@ public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> ex
     private boolean hasMore = true;
     private int loadedPage = -1;
 
-    public EndLessListVM(P presenter, V view, LinearLayoutManager layoutManager, ListAdapter<D> adapter) {
+    public EndLessListRespVM(P presenter, V view, LinearLayoutManager layoutManager, ListAdapter<D> adapter) {
         super(presenter, view, layoutManager, adapter);
     }
 
@@ -73,14 +72,13 @@ public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> ex
     protected void handleOnErrorState() {
         super.handleOnErrorState();
         final int totalCount = getAdapter().getItemCount();
-        setListItemType(ListViewItemType.LOAD_MORE_ERROR);
         getAdapter().notifyItemChanged(totalCount - 1);
     }
 
     @Override
-    protected void handleOnNextState(List<D> data) {
+    protected void handleOnNextState(ListRespEntity<D> data) {
         super.handleOnNextState(data);
-        this.hasMore = !isRespNull(data);
+        this.hasMore = data.isHasMore();
         loadedPage = pageNum;
         setListItemType(hasMore ? ListViewItemType.LOAD_MORE : ListViewItemType.NO_MORE);
         final int totalCount = getAdapter().getItemCount();
@@ -90,12 +88,15 @@ public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> ex
     protected abstract void exePageRequest(int pageNum);
 
     @Override
-    protected void bindResp(List<D> data, int originState) {
+    protected void bindResp(ListRespEntity<D> data, int originState) {
         switch (originState) {
             case PageState.LOAD_MORE:
-                getAdapter().addItems(data);
+                getAdapter().addItems(data.getList());
                 break;
-            default:
+            case PageState.CONTENT:
+            case PageState.LOADING:
+            case PageState.EMPTY:
+            case PageState.ERROR:
                 super.bindResp(data, originState);
                 break;
         }
