@@ -68,6 +68,7 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
         setErrorString(errorString);
         throwable.printStackTrace();
         handleOnErrorState();
+        onCompleted();
     }
 
     @Override
