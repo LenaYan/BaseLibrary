@@ -348,7 +348,7 @@ public class CommonPresenter implements IPresenter {
         return RequestBody.create(MediaType.parse("text/plain"), text);
     }
 
-    protected <T> Observable<T> mockCommonRespObservable(T t) {
+    protected <T> Observable<T> mockCommonRespObs(T t) {
         return Observable
                 .create((Subscriber<? super T> subscriber) -> {
                     subscriber.onNext(t);
@@ -357,7 +357,7 @@ public class CommonPresenter implements IPresenter {
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T> Observable<T> mockCommonRespObservable(Func0<T> func) {
+    protected <T> Observable<T> mockCommonRespObsFunc(Func0<T> func) {
         return Observable
                 .create((Subscriber<? super T> subscriber) -> {
                     subscriber.onNext(func.call());
@@ -366,7 +366,7 @@ public class CommonPresenter implements IPresenter {
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected Observable mockErrorRespObservable() {
+    protected Observable mockErrorRespObs() {
         return Observable
                 .error(new IllegalArgumentException("Error response"))
                 .delay(3, TimeUnit.SECONDS);
