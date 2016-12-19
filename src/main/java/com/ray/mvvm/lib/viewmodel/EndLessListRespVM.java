@@ -83,6 +83,10 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
         setListItemType(hasMore ? ListViewItemType.LOAD_MORE : ListViewItemType.NO_MORE);
         final int totalCount = getAdapter().getItemCount();
         getAdapter().notifyItemChanged(totalCount - 1);
+        int viewCount = getLayoutManager().getChildCount();
+        if (viewCount == totalCount) {
+            onLoadMore();
+        }
     }
 
     protected abstract void exePageRequest(int pageNum);
