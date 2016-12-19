@@ -38,7 +38,7 @@ import java.io.IOException;
 
 public abstract class PageVM<P extends IPresenter, V extends IView, D> extends StateVM<P, V> implements ExObserver<D> {
 
-    private D entity;
+    protected D entity;
 
     public PageVM(P presenter, V view) {
         super(presenter, view);
