@@ -1,0 +1,43 @@
+/*
+ *  Copyright (c) 2016. Istuary Innovation Group, Ltd.
+ *  Unauthorized copying of this file, via any medium is strictly prohibited proprietary and
+ *  confidential.
+ *  Created on Tue, 27 Sep 2016 14:56:34 +0800.
+ *  ProjectName: IronHide; ModuleName: IronHide; ClassName: base_lib.gradle.
+ *  Author: Lena; Last Modified: Tue, 27 Sep 2016 14:56:34 +0800.
+ *  This file is originally created by Lena.
+ *
+ */
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
