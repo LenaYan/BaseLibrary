@@ -1,0 +1,17 @@
+/*
+ *  Copyright (c) 2016.  Jie Jing Ke Ji, Ltd.
+ *  Unauthorized copying of this file, via any medium is strictly prohibited proprietary and
+ *  confidential.
+ *  Created on Wed, 9 Nov 2016 13:54:54 +0800.
+ *  ProjectName: WuLiu; ModuleName: WuLiu; ClassName: fir_pulish.gradle.
+ *  Author: Lena; Last Modified: Wed, 9 Nov 2016 13:54:54 +0800.
+ *  This file is originally created by Lena.
+ *
+ */
+
+apply plugin: 'im.fir.plugin.gradle'
+
+fir {
+    apiToken 'ccae4aeb7c3a4185abcd100bc6a0ee60'
+    changeLog 'No release log'
+}
