@@ -1,0 +1,132 @@
+/*
+ *  Copyright (c) 2016. Istuary Innovation Group, Ltd.
+ *  Unauthorized copying of this file, via any medium is strictly prohibited proprietary and
+ *  confidential.
+ *  Created on Tue, 27 Sep 2016 14:56:36 +0800.
+ *  ProjectName: IronHide; ModuleName: IronHide; ClassName: base_project.gradle.
+ *  Author: Lena; Last Modified: Tue, 27 Sep 2016 14:56:36 +0800.
+ *  This file is originally created by Lena.
+ *
+ */
+
+import java.text.SimpleDateFormat
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        disable 'InvalidPackage'
+        abortOnError false
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../wuliu.jks")
+            storePassword "111111"
+            keyAlias 'wuliu'
+            keyPassword '111111'
+        }
+        debug {
+
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        apkReleaseAction(variant)
+        variant.outputs.each { output ->
+            if (output == null || output.zipAlign == null)
+                return;
+            output.zipAlign.doLast() {
+                deleteUnalignApk(it)
+            }
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+}
+
+def apkReleaseAction(variant) {
+    if (variant.outputs) {
+        variant.outputs.each { output ->
+            mvApkFile(variant, output.outputFile)
+        }
+    }
+}
+
+def getDate() {
+    def date = new Date()
+    def formatter = new SimpleDateFormat("MM-dd-HH-mm");
+    return formatter.format(date)
+}
+
+def getGithash() {
+    new ByteArrayOutputStream().withStream { result ->
+        exec {
+            executable = 'git'
+            args = ['rev-parse', '--short', 'HEAD']
+            standardOutput = result
+        }
+        return result.toString().trim()
+    }
+}
+
+def getGitTag() {
+    new ByteArrayOutputStream().withStream { result ->
+        exec {
+            workingDir '../Bash/'
+            commandLine = './git_get_tag.sh'
+            standardOutput = result
+        }
+        return result.toString().trim()
+    }
+}
+
+def getGitMessage() {
+    new ByteArrayOutputStream().withStream { result ->
+        exec {
+            executable = 'git'
+            args = ['log', '--format=%B', '-n', '1', 'HEAD']
+            standardOutput = result
+        }
+        return result.toString().trim()
+    }
+}
+
+def mvApkFile(variant, outputFile) {
+    def f = outputFile
+    def msg = getGitMessage()
+    def isServer = false
+    def tag = getGitTag()
+    if ((msg.contains(' -->Release') || isServer) && (!tag.equals('undefined'))) {
+        def finalName = f.name.replace('.apk', "-Version-${variant.versionName}-Hash_${getGithash()}-Tag-${tag}-${getDate()}.apk")
+        def releasePath = "${System.getProperty("user.home")}/Bumblebee/${variant.versionName}"
+        def file = new File(releasePath);
+        if (!file.exists()) {
+            file.mkdir()
+        }
+        copy {
+            from "$outputFile.path"
+            into "$releasePath"
+            rename("$outputFile.name", "BumblebeeRelease$finalName")
+        }
+    }
+}
+
+def deleteUnalignApk(it) {
+    File file = file(it.inputFile)
+    if (file.exists())
+        file.delete()
+}
