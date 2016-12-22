@@ -153,7 +153,7 @@ public class BindingAdapter {
                 .into(imageView);
     }
 
-    @android.databinding.BindingAdapter(value = {"imgurl", "placeHolder", "showFade"}, requireAll = false)
+    @android.databinding.BindingAdapter(value = {"imgUrl", "placeHolder", "showFade"}, requireAll = false)
     public static void loadImageByPath(ImageView imageView, String imgurl, Drawable placeHolder, boolean showFade) {
         Glide.clear(imageView);
         if (StringUtil.isEmpty(imgurl)) {
@@ -167,17 +167,17 @@ public class BindingAdapter {
         }
     }
 
-    @android.databinding.BindingAdapter(value = {"imgurl", "placeHolder", "showFade"}, requireAll = false)
-    public static void loadImageByPath(RoundedImageView imageView, String imgurl, Drawable placeHolder, boolean showFade) {
+    @android.databinding.BindingAdapter(value = {"imgUrl", "placeHolder", "showFade"}, requireAll = false)
+    public static void loadImageByPath(RoundedImageView imageView, String imgUrl, Drawable placeHolder, boolean showFade) {
         Glide.clear(imageView);
-        if (StringUtil.isEmpty(imgurl)) {
+        if (StringUtil.isEmpty(imgUrl)) {
             imageView.setImageDrawable(placeHolder);
             return;
         }
         if (showFade) {
-            with(imageView.getContext()).load(imgurl).centerCrop().placeholder(placeHolder).crossFade().into(imageView);
+            with(imageView.getContext()).load(imgUrl).centerCrop().placeholder(placeHolder).crossFade().into(imageView);
         } else {
-            with(imageView.getContext()).load(imgurl).centerCrop().placeholder(placeHolder).dontAnimate().into(imageView);
+            with(imageView.getContext()).load(imgUrl).centerCrop().placeholder(placeHolder).dontAnimate().into(imageView);
         }
     }
 
@@ -191,9 +191,12 @@ public class BindingAdapter {
         textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, res, 0);
     }
 
-    @android.databinding.BindingAdapter(value = {"textId"})
-    public static void setTextRes(TextView textView, int res) {
-        textView.setText(res);
+    @android.databinding.BindingAdapter(value = {"textRes", "textColorRes"}, requireAll = false)
+    public static void setTextRes(TextView textView, int textRes, int textColorRes) {
+        if (textRes > 0)
+            textView.setText(textRes);
+        if (textColorRes > 0)
+            textView.setTextColor(textView.getResources().getColor(textColorRes));
     }
 
     @android.databinding.BindingAdapter(value = {"onTextChanged"})

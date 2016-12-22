@@ -27,6 +27,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.adapter.list.base.ListAdapter;
+import com.ray.mvvm.lib.view.adapter.list.base.StateListAdapter;
 import com.ray.mvvm.lib.view.base.view.IView;
 
 import java.util.List;
@@ -34,12 +35,13 @@ import java.util.List;
 public abstract class ListWrapperVM<P extends IPresenter, V extends IView, D, I> extends PageVM<P, V, D> {
 
     private final RecyclerView.LayoutManager layoutManager;
-    private final ListAdapter<I> adapter;
+    private final StateListAdapter<I> adapter;
 
-    public ListWrapperVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, ListAdapter<I> adapter) {
+    public ListWrapperVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, StateListAdapter<I> adapter) {
         super(presenter, view);
         this.layoutManager = layoutManager;
         this.adapter = adapter;
+        this.adapter.setStateVM(this);
     }
 
     @Override

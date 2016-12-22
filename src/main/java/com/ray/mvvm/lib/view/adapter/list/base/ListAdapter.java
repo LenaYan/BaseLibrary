@@ -31,17 +31,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.ray.mvvm.lib.app.Constants;
-import com.ray.mvvm.lib.databinding.StateEmptyLayoutBinding;
-import com.ray.mvvm.lib.databinding.StateErrorLayoutBinding;
-import com.ray.mvvm.lib.databinding.StateLoadMoreErrorLayoutBinding;
-import com.ray.mvvm.lib.databinding.StateLoadMoreLayoutBinding;
-import com.ray.mvvm.lib.databinding.StateLoadingLayoutBinding;
-import com.ray.mvvm.lib.databinding.StateNoMoreLayoutBinding;
 import com.ray.mvvm.lib.view.adapter.OnItemClick;
 import com.ray.mvvm.lib.view.adapter.list.viewholder.BaseViewHolder;
-import com.ray.mvvm.lib.viewmodel.StateVM;
-import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
-import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +42,11 @@ import static android.R.attr.id;
 public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
 
     private static final int NO_INDEX = -99;
+    private static final int NO_POSITION = -1;
 
     private List<T> list;
     private LongSparseArray<T> wrapMap = new LongSparseArray<>();
     private OnItemClick<T> itemClick;
-    private StateVM stateVM;
 
     public ListAdapter() {
     }
@@ -73,85 +64,15 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         this.itemClick = itemClick;
     }
 
-    public void setStateVM(StateVM stateVM) {
-        this.stateVM = stateVM;
-    }
-
     @Override
-    public final BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ViewDataBinding viewDataBinding;
-        final int state = stateVM.getState();
-        switch (state) {
-            case PageState.EMPTY:
-                viewDataBinding = StateEmptyLayoutBinding.inflate(inflater, parent, false);
-                break;
-            case PageState.ERROR:
-                viewDataBinding = StateErrorLayoutBinding.inflate(inflater, parent, false);
-                break;
-            case PageState.LOADING:
-                viewDataBinding = StateLoadingLayoutBinding.inflate(inflater, parent, false);
-                break;
-            default:
-            case PageState.CONTENT:
-            case PageState.LOAD_MORE:
-                switch (viewType) {
-                    default:
-                        viewDataBinding = createBinding(LayoutInflater.from(parent.getContext()), parent, viewType);
-                        break;
-                    case ListViewItemType.NO_MORE:
-                        viewDataBinding = StateNoMoreLayoutBinding.inflate(inflater, parent, false);
-                        break;
-                    case ListViewItemType.LOAD_MORE:
-                        viewDataBinding = StateLoadMoreLayoutBinding.inflate(inflater, parent, false);
-                        break;
-                    case ListViewItemType.LOAD_MORE_ERROR:
-                        viewDataBinding = StateLoadMoreErrorLayoutBinding.inflate(inflater, parent, false);
-                        break;
-                }
-                break;
-        }
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        ViewDataBinding viewDataBinding = createBinding(LayoutInflater.from(parent.getContext()), parent, viewType);
         return new BaseViewHolder(viewDataBinding);
     }
 
     @Override
     public int getItemCount() {
-        final int state = stateVM.getState();
-        switch (state) {
-            case PageState.EMPTY:
-            case PageState.ERROR:
-            case PageState.LOADING:
-                return 1;
-            default:
-            case PageState.CONTENT:
-            case PageState.LOAD_MORE:
-                return getDataCount() + getHeaderCount() + 1;
-        }
-    }
-
-    @Override
-    public final int getItemViewType(int position) {
-        final int state = stateVM.getState();
-        switch (state) {
-            case PageState.EMPTY:
-            case PageState.ERROR:
-            case PageState.LOADING:
-                return state;
-            default:
-            case PageState.CONTENT:
-            case PageState.LOAD_MORE:
-                final int listItemType = stateVM.getListItemType();
-                final int totalCount = getItemCount();
-                if (position == totalCount - 1) {
-                    return listItemType;
-                } else {
-                    return getRealItemViewType(position);
-                }
-        }
-    }
-
-    protected int getRealItemViewType(int position) {
-        return NO_INDEX;
+        return getDataCount() + getHeaderCount();
     }
 
     public int getDataCount() {
@@ -168,18 +89,8 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         bindingViewHolder(holder, position);
     }
 
-    private void bindingViewHolder(BaseViewHolder holder, int position) {
-        final int state = stateVM.getState();
-        final int listItemType = getItemViewType(position);
-        if (state == PageState.EMPTY || state == PageState.ERROR || state == PageState.LOADING) {
-            holder.bindData(stateVM);
-        } else {
-            if (listItemType == ListViewItemType.NO_MORE || listItemType == ListViewItemType.LOAD_MORE || listItemType == ListViewItemType.LOAD_MORE_ERROR)
-                holder.bindData(stateVM);
-            else {
-                holder.bindData(createViewModel(getItemViewType(position), position));
-            }
-        }
+    protected void bindingViewHolder(BaseViewHolder holder, int position) {
+        holder.bindData(createViewModel(getItemViewType(position), position));
     }
 
     protected abstract ViewDataBinding createBinding(LayoutInflater layoutInflater, ViewGroup parent, int viewType);
@@ -263,7 +174,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             list = new ArrayList<>();
             wrapMap.clear();
         }
-        int oldCount = getItemCount() - 1;
+        int oldEnd = getItemCount() - 1;
         int insertCount = insertList.size();
         list.addAll(insertList);
         for (T t : insertList) {
@@ -272,7 +183,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
                 break;
             wrapMap.put(index, t);
         }
-        notifyItemRangeInserted(oldCount, insertCount);
+        notifyItemRangeInserted(oldEnd, insertCount);
     }
 
     public void updateItem(int position, T item) {
@@ -293,7 +204,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         T localItem = wrapMap.get(key);
         if (localItem == null) return false;
         final int position = list.indexOf(localItem);
-        if (position == -1) return false;
+        if (position == NO_POSITION) return false;
         final int headerCount = getHeaderCount();
         notifyItemChanged(position + headerCount);
         return true;
@@ -306,7 +217,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         T localItem = wrapMap.get(key);
         if (localItem == null) return false;
         final int position = list.indexOf(localItem);
-        if (position == -1) return false;
+        if (position == NO_POSITION) return false;
         final int headerCount = getHeaderCount();
         wrapMap.put(key, t);
         list.set(position, t);
@@ -318,7 +229,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         T localItem = wrapMap.get(id);
         if (localItem == null) return false;
         final int position = list.indexOf(localItem);
-        if (position == -1) return false;
+        if (position == NO_POSITION) return false;
         final int headerCount = getHeaderCount();
         notifyItemChanged(position + headerCount);
         return true;
@@ -328,7 +239,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         T localItem = wrapMap.get(id);
         if (localItem == null) return;
         final int position = list.indexOf(localItem);
-        if (position == -1) return;
+        if (position == NO_POSITION) return;
         final int headerCount = getHeaderCount();
         wrapMap.remove(key);
         list.remove(position);
@@ -356,7 +267,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         T localItem = wrapMap.get(key);
         if (localItem == null) return;
         int position = list.indexOf(localItem);
-        if (position == -1) return;
+        if (position == NO_POSITION) return;
         final int viewPosition = position + getHeaderCount();
         wrapMap.remove(key);
         list.remove(position);
@@ -374,7 +285,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         T localItem = wrapMap.get(key);
         if (localItem == null) return;
         int position = list.indexOf(localItem);
-        if (position == -1) return;
+        if (position == NO_POSITION) return;
         final int viewPosition = position + getHeaderCount();
         wrapMap.remove(key);
         list.remove(position);

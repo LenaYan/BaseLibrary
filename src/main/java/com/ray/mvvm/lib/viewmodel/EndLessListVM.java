@@ -27,7 +27,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.ray.mvvm.lib.interfaces.ILoadMore;
 import com.ray.mvvm.lib.presenter.IPresenter;
-import com.ray.mvvm.lib.view.adapter.list.base.ListAdapter;
+import com.ray.mvvm.lib.view.adapter.list.base.StateListAdapter;
 import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
 import com.ray.mvvm.lib.widget.anotations.PageState;
@@ -42,7 +42,7 @@ public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> ex
     private boolean hasMore = true;
     private int loadedPage = -1;
 
-    public EndLessListVM(P presenter, V view, LinearLayoutManager layoutManager, ListAdapter<D> adapter) {
+    public EndLessListVM(P presenter, V view, LinearLayoutManager layoutManager, StateListAdapter<D> adapter) {
         super(presenter, view, layoutManager, adapter);
     }
 

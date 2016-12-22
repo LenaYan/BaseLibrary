@@ -27,6 +27,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.adapter.list.base.ListAdapter;
+import com.ray.mvvm.lib.view.adapter.list.base.StateListAdapter;
 import com.ray.mvvm.lib.view.base.view.IView;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public abstract class ListVM<P extends IPresenter, V extends IView, D> extends S
     private final RecyclerView.LayoutManager layoutManager;
     private ListAdapter<D> adapter;
 
-    public ListVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, ListAdapter<D> adapter) {
+    public ListVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, StateListAdapter<D> adapter) {
         super(presenter, view);
         this.layoutManager = layoutManager;
         this.adapter = adapter;
