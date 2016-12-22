@@ -191,9 +191,12 @@ public class BindingAdapter {
         textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, res, 0);
     }
 
-    @android.databinding.BindingAdapter(value = {"textId"})
-    public static void setTextRes(TextView textView, int res) {
-        textView.setText(res);
+    @android.databinding.BindingAdapter(value = {"textRes", "textColorRes"}, requireAll = false)
+    public static void setTextRes(TextView textView, int textRes, int textColorRes) {
+        if (textRes > 0)
+            textView.setText(textRes);
+        if (textColorRes > 0)
+            textView.setTextColor(textView.getResources().getColor(textColorRes));
     }
 
     @android.databinding.BindingAdapter(value = {"onTextChanged"})

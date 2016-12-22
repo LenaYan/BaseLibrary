@@ -28,14 +28,15 @@ import android.support.v7.widget.RecyclerView;
 import com.ray.mvvm.lib.model.model.ListRespEntity;
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.adapter.list.base.ListAdapter;
+import com.ray.mvvm.lib.view.adapter.list.base.StateListAdapter;
 import com.ray.mvvm.lib.view.base.view.IView;
 
 public abstract class ListRespVM<P extends IPresenter, V extends IView, D> extends SwipRefreshVM<P, V, ListRespEntity<D>> {
 
     private final RecyclerView.LayoutManager layoutManager;
-    private ListAdapter<D> adapter;
+    private StateListAdapter<D> adapter;
 
-    public ListRespVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, ListAdapter<D> adapter) {
+    public ListRespVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, StateListAdapter<D> adapter) {
         super(presenter, view);
         this.layoutManager = layoutManager;
         this.adapter = adapter;
