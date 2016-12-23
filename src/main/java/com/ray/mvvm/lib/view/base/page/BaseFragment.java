@@ -41,6 +41,24 @@ import com.ray.mvvm.lib.widget.utils.ToastUtil;
 public class BaseFragment extends Fragment implements IView {
 
     private ProgressDialog progressDialog;
+    private boolean isResumed;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isResumed = true;
+    }
+
+    @Override
+    public boolean isPageResume() {
+        return isResumed;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isResumed = false;
+    }
 
     @Override
     public void showToast(int stringRes) {
@@ -116,6 +134,12 @@ public class BaseFragment extends Fragment implements IView {
 
     @Override
     public void intentFinish() {
+        getActivity().finish();
+    }
+
+    @Override
+    public void intentFinish(@ActivityAction int action) {
+        getActivity().setResult(action);
         getActivity().finish();
     }
 

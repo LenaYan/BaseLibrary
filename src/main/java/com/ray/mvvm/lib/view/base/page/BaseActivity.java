@@ -46,10 +46,23 @@ import com.ray.mvvm.lib.widget.utils.ToastUtil;
 public class BaseActivity extends AppCompatActivity implements IView {
 
     private ProgressDialog progressDialog;
+    private boolean isResumed;
 
     @Override
     public void onResume() {
         super.onResume();
+        isResumed = true;
+    }
+
+    @Override
+    public boolean isPageResume() {
+        return isResumed;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isResumed = false;
     }
 
     @Override
@@ -158,6 +171,12 @@ public class BaseActivity extends AppCompatActivity implements IView {
     }
 
     @Override
+    public void intentFinish(@ActivityAction int action) {
+        setResult(action);
+        finish();
+    }
+
+    @Override
     public void intentFinish(Intent intent, int action) {
         setResult(action, intent);
         finish();
@@ -196,7 +215,7 @@ public class BaseActivity extends AppCompatActivity implements IView {
 
     @Override
     public void refreshOptionsMenu() {
-        invalidateOptionsMenu();
+        supportInvalidateOptionsMenu();
     }
 
     protected boolean isCurrentlyOnMainThread() {

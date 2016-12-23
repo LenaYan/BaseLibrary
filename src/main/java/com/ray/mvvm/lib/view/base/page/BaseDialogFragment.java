@@ -43,7 +43,26 @@ import com.ray.mvvm.lib.widget.anotations.ActivityAction;
 import com.ray.mvvm.lib.widget.utils.ToastUtil;
 
 public class BaseDialogFragment extends DialogFragment implements IView {
+
     private ProgressDialog progressDialog;
+    private boolean isResumed;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isResumed = true;
+    }
+
+    @Override
+    public boolean isPageResume() {
+        return isResumed;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isResumed = false;
+    }
 
     @NonNull
     @Override
@@ -128,6 +147,12 @@ public class BaseDialogFragment extends DialogFragment implements IView {
 
     @Override
     public void intentFinish() {
+        getActivity().finish();
+    }
+
+    @Override
+    public void intentFinish(@ActivityAction int action) {
+        getActivity().setResult(action);
         getActivity().finish();
     }
 
