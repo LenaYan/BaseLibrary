@@ -47,4 +47,5 @@ public interface IView extends IRedirect, IPageControl {
 
     void postRunnable(Runnable runnable);
 
+    boolean isPageResume();
 }
