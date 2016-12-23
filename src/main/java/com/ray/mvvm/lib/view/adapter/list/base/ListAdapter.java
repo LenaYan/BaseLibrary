@@ -46,7 +46,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     private List<T> list;
     private LongSparseArray<T> wrapMap = new LongSparseArray<>();
-    private OnItemClick<T> itemClick;
+    protected OnItemClick<T> itemClick;
 
     public ListAdapter() {
     }
