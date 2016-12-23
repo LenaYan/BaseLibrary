@@ -43,6 +43,8 @@ interface IRedirect {
 
     void intentFinish();
 
+    void intentFinish(@ActivityAction int action);
+
     void intentFinish(Intent intent, @ActivityAction int action);
 
     void intentFinish(Bundle bundle, @ActivityAction int action);

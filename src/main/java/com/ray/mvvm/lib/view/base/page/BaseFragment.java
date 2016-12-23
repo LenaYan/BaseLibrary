@@ -138,6 +138,12 @@ public class BaseFragment extends Fragment implements IView {
     }
 
     @Override
+    public void intentFinish(@ActivityAction int action) {
+        getActivity().setResult(action);
+        getActivity().finish();
+    }
+
+    @Override
     public void intentFinish(Intent intent, int action) {
         getActivity().setResult(action, intent);
         getActivity().finish();

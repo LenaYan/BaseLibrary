@@ -171,6 +171,12 @@ public class BaseActivity extends AppCompatActivity implements IView {
     }
 
     @Override
+    public void intentFinish(@ActivityAction int action) {
+        setResult(action);
+        finish();
+    }
+
+    @Override
     public void intentFinish(Intent intent, int action) {
         setResult(action, intent);
         finish();
