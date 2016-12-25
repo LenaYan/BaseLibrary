@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <recipe>
-    <#include "../common/recipe_manifest.xml.ftl" />
+    <#include "recipe_manifest.xml.ftl" />
 
 <#if hasToolbar>
     <instantiate from="root/res/layout/app_bar.xml.ftl"
