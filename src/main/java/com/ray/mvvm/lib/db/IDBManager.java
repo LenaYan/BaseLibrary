@@ -25,6 +25,7 @@ package com.ray.mvvm.lib.db;
 
 import java.util.List;
 
+import io.realm.Realm;
 import io.realm.RealmModel;
 import rx.Observable;
 import rx.functions.Action0;
@@ -40,6 +41,8 @@ public interface IDBManager<T extends RealmModel> {
     Observable<T> findLastObs();
 
     T findFirst();
+
+    T findFirst(Realm realm);
 
     T findLast();
 
