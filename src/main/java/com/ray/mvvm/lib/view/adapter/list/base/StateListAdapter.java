@@ -45,7 +45,7 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
 
     private static final int NO_INDEX = -99;
 
-    private StateVM stateVM;
+    private StateVM stateVM = null;
 
     public StateListAdapter() {
     }

@@ -26,38 +26,14 @@ package com.ray.mvvm.lib.viewmodel;
 import android.support.v7.widget.RecyclerView;
 
 import com.ray.mvvm.lib.presenter.IPresenter;
-import com.ray.mvvm.lib.view.adapter.list.base.ListAdapter;
+import com.ray.mvvm.lib.view.adapter.list.base.StateListAdapter;
 import com.ray.mvvm.lib.view.base.view.IView;
 
-import java.util.List;
+public abstract class StateListVM<P extends IPresenter, V extends IView, D> extends ListVM<P, V, D> {
 
-public abstract class ListVM<P extends IPresenter, V extends IView, D> extends SwipRefreshVM<P, V, List<D>> {
-
-    private final RecyclerView.LayoutManager layoutManager;
-    private ListAdapter<D> adapter;
-
-    public ListVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, ListAdapter<D> adapter) {
-        super(presenter, view);
-        this.layoutManager = layoutManager;
-        this.adapter = adapter;
+    public StateListVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, StateListAdapter<D> adapter) {
+        super(presenter, view, layoutManager, adapter);
+        adapter.setStateVM(this);
     }
 
-    @Override
-    protected final boolean isRespNull(List<D> data) {
-        return data == null || data.size() == 0;
-    }
-
-    public ListAdapter<D> getAdapter() {
-        return adapter;
-    }
-
-    public RecyclerView.LayoutManager getLayoutManager() {
-        return layoutManager;
-    }
-
-    @Override
-    protected void bindResp(List<D> data, int originState) {
-        adapter.setList(data);
-        layoutManager.scrollToPosition(0);
-    }
 }

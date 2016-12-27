@@ -41,7 +41,7 @@
         android:orientation="vertical"
         android:text="@string/have_no_more"
         android:textColor="#000000"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:visibility="@{viewModel.noMoreVisibility, default = visible}" />
 
-    <!--android:visibility="@{viewModel.noMoreVisibility, default = visible}"-->
 </layout>
