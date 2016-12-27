@@ -59,10 +59,12 @@ public abstract class StateVM<P extends IPresenter, V extends IView> extends Bas
     private int emptyMsgRes = com.ray.mvvm.lib.R.string.state_empty_msg;
     private String errorString;
     private int state = PageState.CONTENT;
-    private int listItemType = ListViewItemType.NO_MORE;
     private boolean isNetworkError = false;
     private int emptyAddButtonVisibility = GONE;
     private View.OnClickListener emptyAddClicked;
+
+    private int listItemType = ListViewItemType.NO_MORE;
+    private int noMoreVisibility = View.GONE;
 
     public StateVM(P presenter, V view) {
         super(presenter, view);
@@ -167,5 +169,15 @@ public abstract class StateVM<P extends IPresenter, V extends IView> extends Bas
     @Bindable
     public int getContentVisibility() {
         return state == PageState.CONTENT ? View.VISIBLE : View.GONE;
+    }
+
+    public void setNoMoreVisibility(@Visibility int noMoreVisibility) {
+        this.noMoreVisibility = noMoreVisibility;
+        notifyPropertyChanged(BR.noMoreVisibility);
+    }
+
+    @Bindable
+    public int getNoMoreVisibility() {
+        return noMoreVisibility;
     }
 }

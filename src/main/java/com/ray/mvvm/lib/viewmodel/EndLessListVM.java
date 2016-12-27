@@ -34,7 +34,7 @@ import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import java.util.List;
 
-public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> extends ListVM<P, V, D> implements ILoadMore {
+public abstract class EndLessListVM<P extends IPresenter, V extends IView, D> extends StateListVM<P, V, D> implements ILoadMore {
 
     private static final int PAGE_NUM_START = 1;
 
