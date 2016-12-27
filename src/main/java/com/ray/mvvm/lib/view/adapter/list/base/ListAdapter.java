@@ -100,6 +100,10 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     public void setList(List<T> list) {
+        setList(list, true);
+    }
+
+    public void setList(List<T> list, boolean notify) {
         this.list = list;
         wrapMap.clear();
         if (this.list != null && getItemCount() > 0) {
@@ -110,7 +114,8 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
                 wrapMap.put(index, t);
             }
         }
-        notifyDataSetChanged();
+        if (notify)
+            notifyDataSetChanged();
     }
 
     public void setListWithoutHeader(List<T> list) {
