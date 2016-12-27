@@ -141,6 +141,8 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
         return data == null;
     }
 
-    protected abstract void exeRequest();
+    protected void exeRequest() {
+
+    }
 
 }
