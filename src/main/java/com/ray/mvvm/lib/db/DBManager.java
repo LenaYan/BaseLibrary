@@ -94,6 +94,16 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
     }
 
     @Override
+    public T findFirst(Realm realm) {
+        RealmResults<T> results = realm.where(clazz).findAll();
+        if (results.size() == 0) {
+            return null;
+        } else {
+            return results.first();
+        }
+    }
+
+    @Override
     public T findLast() {
         RealmResults<T> results = realm.where(clazz).findAll();
         if (results.size() == 0) {
