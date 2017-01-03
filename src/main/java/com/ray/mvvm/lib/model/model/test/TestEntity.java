@@ -47,6 +47,7 @@ public class TestEntity implements Parcelable {
 
     public static final String KEY = "TestEntity";
 
+    private long id = System.nanoTime();
     private String title;
 
     private String description;
@@ -57,6 +58,14 @@ public class TestEntity implements Parcelable {
     public TestEntity(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -82,16 +91,18 @@ public class TestEntity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
         dest.writeString(this.title);
         dest.writeString(this.description);
     }
 
     protected TestEntity(Parcel in) {
+        this.id = in.readLong();
         this.title = in.readString();
         this.description = in.readString();
     }
 
-    public static final Parcelable.Creator<TestEntity> CREATOR = new Parcelable.Creator<TestEntity>() {
+    public static final Creator<TestEntity> CREATOR = new Creator<TestEntity>() {
         @Override
         public TestEntity createFromParcel(Parcel source) {
             return new TestEntity(source);
