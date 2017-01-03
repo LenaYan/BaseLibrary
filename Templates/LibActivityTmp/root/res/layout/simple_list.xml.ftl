@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data>
+    <data class="${packageName}.binding.<#if hasToolbar && appBarLayoutName??>Content<#else>Activity</#if>${pageName}Binding">
 
         <import type="${packageName}.vm.${pageName}VM" />
 

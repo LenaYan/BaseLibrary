@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data>
+    <data class="${packageName}.binding.Fragment${pageName}Binding">
 
         <import type="${packageName}.vm.${pageName}VM" />
 
