@@ -51,25 +51,25 @@ public class APIServiceModule {
 
     @Provides
     @PerApplication
-    TopicService provideTopicService(Retrofit retrofit) {
+    static TopicService provideTopicService(Retrofit retrofit) {
         return retrofit.create(TopicService.class);
     }
 
     @Provides
     @PerApplication
-    MemberService provideMemberService(Retrofit retrofit) {
+    static MemberService provideMemberService(Retrofit retrofit) {
         return retrofit.create(MemberService.class);
     }
 
     @Provides
     @PerApplication
-    NodeService provideNodeService(Retrofit retrofit) {
+    static NodeService provideNodeService(Retrofit retrofit) {
         return retrofit.create(NodeService.class);
     }
 
     @Provides
     @PerApplication
-    ReplyService provideReplyService(Retrofit retrofit) {
+    static ReplyService provideReplyService(Retrofit retrofit) {
         return retrofit.create(ReplyService.class);
     }
 

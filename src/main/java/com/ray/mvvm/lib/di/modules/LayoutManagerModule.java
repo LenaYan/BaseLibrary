@@ -41,19 +41,19 @@ public class LayoutManagerModule {
 
     @Provides
     @Named(ListType.VERTICAL)
-    LinearLayoutManager provideVerticalLayout(@Named(ContextType.ACTIVITY) @NonNull Context context) {
+    static LinearLayoutManager provideVerticalLayout(@Named(ContextType.ACTIVITY) @NonNull Context context) {
         return new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
     }
 
     @Provides
     @Named(ListType.HORIZONTAL)
-    LinearLayoutManager provideHorizontalLayout(@Named(ContextType.ACTIVITY) @NonNull Context context) {
+    static LinearLayoutManager provideHorizontalLayout(@Named(ContextType.ACTIVITY) @NonNull Context context) {
         return new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
     }
 
     @Provides
     @Named(ListType.GRID)
-    GridLayoutManager provideGridLayout(@Named(ContextType.ACTIVITY) @NonNull Context context) {
+    static GridLayoutManager provideGridLayout(@Named(ContextType.ACTIVITY) @NonNull Context context) {
         return new GridLayoutManager(context, 3);
     }
 

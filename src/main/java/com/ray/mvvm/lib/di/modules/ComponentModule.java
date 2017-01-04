@@ -47,7 +47,7 @@ public class ComponentModule {
 
     @Provides
     @PerApplication
-    Moshi provideMoshi() {
+    static Moshi provideMoshi() {
         return new Moshi.Builder()
                 .add(new RespEntityAdapter())
                 .build();
@@ -55,7 +55,7 @@ public class ComponentModule {
 
     @Provides
     @PerApplication
-    Realm provideRealm(@Named(ContextType.APPLICATION) Context context) {
+    static Realm provideRealm(@Named(ContextType.APPLICATION) Context context) {
         Realm.init(context);
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
                 .migration((realm, oldVersion, newVersion) ->
@@ -70,13 +70,13 @@ public class ComponentModule {
 
     @Provides
     @PerApplication
-    RxPermissions provideRxPermission(@Named(ContextType.APPLICATION) Context context) {
+    static RxPermissions provideRxPermission(@Named(ContextType.APPLICATION) Context context) {
         return RxPermissions.getInstance(context);
     }
 
     @Provides
     @PerApplication
-    ITopicDBManager provideTopicDB(Realm realm) {
+    static ITopicDBManager provideTopicDB(Realm realm) {
         return new TopicDBManager(realm);
     }
 

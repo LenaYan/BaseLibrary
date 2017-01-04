@@ -57,7 +57,7 @@ public class OkHttpModule {
 
     @Provides
     @PerApplication
-    OkHttpClient provideOkHttp(IFileControl fileCache) {
+    static OkHttpClient provideOkHttp(IFileControl fileCache) {
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
         OkHttpInterceptorUtil.okhttpInterceptor(builder)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)

@@ -25,8 +25,6 @@ package com.ray.mvvm.lib.di.modules;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.preference.PreferenceManager;
 
 import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
@@ -41,16 +39,10 @@ public class SPModule {
 
     @Provides
     @PerApplication
-    SharedPreferences provideSP(@Named(ContextType.APPLICATION) Context context) {
+    static SharedPreferences provideSP(@Named(ContextType.APPLICATION) Context context) {
         String applicationId = context.getApplicationContext().getPackageName();
-        PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences sharedPrefs;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            sharedPrefs = context.getSharedPreferences(applicationId, Context.MODE_MULTI_PROCESS);
-        } else {
-            sharedPrefs = context.getSharedPreferences(applicationId, Context.MODE_PRIVATE);
-        }
-        return sharedPrefs;
+//        PreferenceManager.getDefaultSharedPreferences(context);
+        return context.getSharedPreferences(applicationId, Context.MODE_PRIVATE);
     }
 
 }
