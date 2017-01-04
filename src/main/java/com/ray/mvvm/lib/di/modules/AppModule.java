@@ -48,7 +48,7 @@ import dagger.Provides;
         FileModule.class,
         APIServiceModule.class
 })
-public class AppModule {
+public final class AppModule {
 
     private Application application;
 

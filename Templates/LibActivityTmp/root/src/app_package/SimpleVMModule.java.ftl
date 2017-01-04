@@ -20,7 +20,7 @@ import dagger.Provides;
 <#else>
 @Module
 </#if>
-public class ${pageName}VMModule {
+public final class ${pageName}VMModule {
 
 	private ${pageName}Contract.View view;
 

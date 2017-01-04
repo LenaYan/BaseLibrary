@@ -97,16 +97,6 @@ public class CommonPresenter implements IPresenter {
     }
 
     @Override
-    public <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action) {
-        subscribe(observable
-                .throttleFirst(1, TimeUnit.SECONDS)
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .onBackpressureLatest()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(action::call));
-    }
-
-    @Override
     public <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> eventAction) {
         subscribe(
                 RxBus.instance()

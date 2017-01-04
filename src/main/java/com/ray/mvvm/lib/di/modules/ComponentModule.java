@@ -43,7 +43,7 @@ import io.realm.RealmConfiguration;
 import timber.log.Timber;
 
 @Module
-public class ComponentModule {
+public final class ComponentModule {
 
     @Provides
     @PerApplication

@@ -35,7 +35,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class SPModule {
+public final class SPModule {
 
     @Provides
     @PerApplication

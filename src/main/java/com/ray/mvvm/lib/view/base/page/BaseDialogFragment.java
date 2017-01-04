@@ -42,8 +42,17 @@ import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.anotations.ActivityAction;
 import com.ray.mvvm.lib.widget.utils.ToastUtil;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
+
 public class BaseDialogFragment extends DialogFragment implements IView {
 
+    private CompositeSubscription subscription = new CompositeSubscription();
     private ProgressDialog progressDialog;
     private boolean isResumed;
 
@@ -62,6 +71,12 @@ public class BaseDialogFragment extends DialogFragment implements IView {
     public void onStop() {
         super.onStop();
         isResumed = false;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        subscription.unsubscribe();
     }
 
     @NonNull
@@ -249,4 +264,18 @@ public class BaseDialogFragment extends DialogFragment implements IView {
             view.post(runnable);
     }
 
+    @Override
+    public void subscribe(Subscription subscription) {
+        this.subscription.add(subscription);
+    }
+
+    @Override
+    public <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action) {
+        subscribe(observable
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .onBackpressureLatest()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(action::call));
+    }
 }

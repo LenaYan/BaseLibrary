@@ -43,7 +43,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import timber.log.Timber;
 
 @Module
-public class OkHttpModule {
+public final class OkHttpModule {
 
     private static final long CONNECT_TIMEOUT = 30;
     private static final long WRITE_TIMEOUT = 30;

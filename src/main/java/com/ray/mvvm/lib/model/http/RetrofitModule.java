@@ -34,7 +34,7 @@ import retrofit2.Retrofit;
 import retrofit2.RxJavaCallAdapterFactory;
 
 @Module
-public class RetrofitModule {
+public final class RetrofitModule {
 
     @Provides
     @PerApplication

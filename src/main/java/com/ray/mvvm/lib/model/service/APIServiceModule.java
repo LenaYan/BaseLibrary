@@ -47,7 +47,7 @@ import retrofit2.Retrofit;
  * \               ||     ||
  */
 @Module
-public class APIServiceModule {
+public final class APIServiceModule {
 
     @Provides
     @PerApplication

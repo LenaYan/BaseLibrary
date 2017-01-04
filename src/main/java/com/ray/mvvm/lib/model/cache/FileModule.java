@@ -34,7 +34,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class FileModule {
+public final class FileModule {
 
     @Provides
     @PerApplication
