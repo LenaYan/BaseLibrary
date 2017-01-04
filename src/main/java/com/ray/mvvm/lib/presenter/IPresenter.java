@@ -38,4 +38,5 @@ public interface IPresenter extends ILifeCycle {
 
     <V> void subscribe(Observable<V> publishSubject, Action1<? super V> action);
 
+    <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action);
 }

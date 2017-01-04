@@ -43,6 +43,8 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import javax.inject.Named;
 
 import dagger.Component;
+import dagger.releasablereferences.ForReleasableReferences;
+import dagger.releasablereferences.ReleasableReferenceManager;
 import io.realm.Realm;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -50,6 +52,9 @@ import retrofit2.Retrofit;
 @PerApplication
 @Component(modules = {AppModule.class})
 public interface AppComp {
+
+    @ForReleasableReferences(PerApplication.class)
+    ReleasableReferenceManager releaseableReferenceManager();
 
     void inject(BaseApplication application);
 

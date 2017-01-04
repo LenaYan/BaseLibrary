@@ -28,9 +28,9 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.ray.mvvm.lib.di.IBuildComp;
+import com.ray.mvvm.lib.di.modules.AppModule;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.model.model.RespEntity;
-import com.ray.mvvm.lib.di.modules.AppModule;
 import com.ray.mvvm.lib.widget.eventbus.RxBus;
 import com.ray.mvvm.lib.widget.utils.DeviceUtil;
 import com.ray.mvvm.lib.widget.utils.StringUtil;
@@ -55,6 +55,17 @@ public class BaseApplication extends Application implements IBuildComp {
         super.onCreate();
         buildComp();
         subscribeEvent();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        appComp.releaseableReferenceManager().releaseStrongReferences();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
     }
 
     @Override
