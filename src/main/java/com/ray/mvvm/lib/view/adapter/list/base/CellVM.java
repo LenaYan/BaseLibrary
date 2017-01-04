@@ -27,6 +27,7 @@ import android.databinding.BaseObservable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.ray.mvvm.lib.app.Constants;
 import com.ray.mvvm.lib.view.adapter.OnItemClick;
 
 public class CellVM<T> extends BaseObservable {
@@ -72,13 +73,12 @@ public class CellVM<T> extends BaseObservable {
 
     public void onContentClicked(View view) {
         if (itemClick != null) {
-            final int position = viewHolder.getAdapterPosition();
-            itemClick.onItemClick(position, view, entity);
+            itemClick.onItemClick(getPosition(), view, entity);
         }
     }
 
     public int getPosition() {
-        return viewHolder.getAdapterPosition();
+        return viewHolder == null ? Constants.NO_POSITION : viewHolder.getAdapterPosition();
     }
 
 }
