@@ -34,6 +34,7 @@ public class CellVM<T> extends BaseObservable {
 
     protected T entity;
     private RecyclerView.ViewHolder viewHolder;
+    private int position = Constants.NO_POSITION;
     private OnItemClick<T> itemClick;
 
     public CellVM() {
@@ -59,6 +60,17 @@ public class CellVM<T> extends BaseObservable {
         this.itemClick = itemClick;
     }
 
+    public CellVM(T entity, int position) {
+        this.entity = entity;
+        this.position = position;
+    }
+
+    public CellVM(T entity, int position, OnItemClick<T> itemClick) {
+        this.entity = entity;
+        this.itemClick = itemClick;
+        this.position = position;
+    }
+
     public void setItemClick(OnItemClick<T> itemClick) {
         this.itemClick = itemClick;
     }
@@ -78,7 +90,7 @@ public class CellVM<T> extends BaseObservable {
     }
 
     public int getPosition() {
-        return viewHolder == null ? Constants.NO_POSITION : viewHolder.getAdapterPosition();
+        return viewHolder == null ? position : viewHolder.getAdapterPosition();
     }
 
 }
