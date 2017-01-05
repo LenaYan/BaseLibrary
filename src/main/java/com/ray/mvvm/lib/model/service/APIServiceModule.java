@@ -43,6 +43,5 @@ import dagger.Module;
  * \               ||     ||
  */
 @Module
-public class APIServiceModule {
-    // TODO: 29/11/2016 For request services provides
+public final class APIServiceModule {
 }

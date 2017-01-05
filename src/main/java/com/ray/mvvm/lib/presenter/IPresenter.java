@@ -36,6 +36,6 @@ public interface IPresenter extends ILifeCycle {
 
     <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> action1);
 
-    <V> void subscribe(Observable<V> publishSubject, Action1<? super V> action);
+    <V> void subscribe(Observable<V> observable, Action1<? super V> action);
 
 }

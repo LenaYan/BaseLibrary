@@ -90,13 +90,13 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     protected void bindingViewHolder(BaseViewHolder holder, int position) {
-        holder.bindData(createViewModel(getItemViewType(position), position));
+        holder.bindData(createViewModel(holder, position, getItemViewType(position)));
     }
 
     protected abstract ViewDataBinding createBinding(LayoutInflater layoutInflater, ViewGroup parent, int viewType);
 
-    protected BaseObservable createViewModel(int viewType, int position) {
-        return new CellVM<>(getItem(position), position, itemClick);
+    protected BaseObservable createViewModel(RecyclerView.ViewHolder holder, int position, int viewType) {
+        return new CellVM<>(getItem(position), holder, itemClick);
     }
 
     public void setList(List<T> list) {

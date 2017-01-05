@@ -9,7 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ${pageName}VMModule {
+public final class ${pageName}VMModule {
 
 	private ${pageName}Fragment fragment;
 

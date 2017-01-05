@@ -34,11 +34,11 @@ import retrofit2.Retrofit;
 import retrofit2.RxJavaCallAdapterFactory;
 
 @Module
-public class RetrofitModule {
+public final class RetrofitModule {
 
     @Provides
     @PerApplication
-    Retrofit provideRetrofit(OkHttpClient okHttpClient, Moshi moshi) {
+    static Retrofit provideRetrofit(OkHttpClient okHttpClient, Moshi moshi) {
         return new Retrofit
                 .Builder()
                 .baseUrl(Host.BASE_URL)

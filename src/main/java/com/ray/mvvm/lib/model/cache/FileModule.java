@@ -34,11 +34,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class FileModule {
+public final class FileModule {
 
     @Provides
     @PerApplication
-    IFileControl provideFileCache(@Named(ContextType.APPLICATION) Context context) {
+    static IFileControl provideFileCache(@Named(ContextType.APPLICATION) Context context) {
         return new FileControl(context);
     }
 

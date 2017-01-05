@@ -43,8 +43,17 @@ import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.anotations.ActivityAction;
 import com.ray.mvvm.lib.widget.utils.ToastUtil;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
+
 public class BaseActivity extends AppCompatActivity implements IView {
 
+    private CompositeSubscription subscription = new CompositeSubscription();
     private ProgressDialog progressDialog;
     private boolean isResumed;
 
@@ -68,6 +77,12 @@ public class BaseActivity extends AppCompatActivity implements IView {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        subscription.unsubscribe();
     }
 
     @Override
@@ -268,6 +283,21 @@ public class BaseActivity extends AppCompatActivity implements IView {
     @Override
     public void postRunnable(Runnable runnable) {
         this.getWindow().getDecorView().post(runnable);
+    }
+
+    @Override
+    public void subscribe(Subscription subscription) {
+        this.subscription.add(subscription);
+    }
+
+    @Override
+    public <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action) {
+        subscribe(observable
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .onBackpressureLatest()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(action::call));
     }
 
     public void setupTouchOutSideUI(View view) {

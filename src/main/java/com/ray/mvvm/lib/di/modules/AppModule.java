@@ -50,7 +50,7 @@ import dagger.Provides;
         APIServiceModule.class,
         DBModule.class
 })
-public class AppModule {
+public final class AppModule {
 
     private Application application;
 

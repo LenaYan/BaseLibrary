@@ -41,11 +41,11 @@ import io.realm.RealmConfiguration;
 import timber.log.Timber;
 
 @Module
-public class ComponentModule {
+public final class ComponentModule {
 
     @Provides
     @PerApplication
-    Moshi provideMoshi() {
+    static Moshi provideMoshi() {
         return new Moshi.Builder()
                 .add(new RespEntityAdapter())
                 .build();
@@ -53,7 +53,7 @@ public class ComponentModule {
 
     @Provides
     @PerApplication
-    Realm provideRealm(@Named(ContextType.APPLICATION) Context context) {
+    static Realm provideRealm(@Named(ContextType.APPLICATION) Context context) {
         Realm.init(context);
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
                 .migration((realm, oldVersion, newVersion) ->
@@ -68,8 +68,7 @@ public class ComponentModule {
 
     @Provides
     @PerApplication
-    RxPermissions provideRxPermission(@Named(ContextType.APPLICATION) Context context) {
+    static RxPermissions provideRxPermission(@Named(ContextType.APPLICATION) Context context) {
         return RxPermissions.getInstance(context);
     }
-
 }

@@ -25,6 +25,10 @@ package com.ray.mvvm.lib.view.base.view;
 
 import android.graphics.drawable.Drawable;
 
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Action1;
+
 public interface IView extends IRedirect, IPageControl {
 
     String findString(int resId);
@@ -48,4 +52,8 @@ public interface IView extends IRedirect, IPageControl {
     void postRunnable(Runnable runnable);
 
     boolean isPageResume();
+
+    void subscribe(Subscription subscription);
+
+    <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action);
 }
