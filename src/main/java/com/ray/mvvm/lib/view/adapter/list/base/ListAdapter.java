@@ -85,11 +85,11 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
+    public final void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
         bindingViewHolder(holder, position);
     }
 
-    protected void bindingViewHolder(BaseViewHolder holder, int position) {
+    void bindingViewHolder(BaseViewHolder holder, int position) {
         holder.bindData(createViewModel(holder, position, getItemViewType(position)));
     }
 

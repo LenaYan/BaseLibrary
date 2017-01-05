@@ -117,6 +117,7 @@ dependencies {
     compile depMap.RxBindingDesign
     compile depMap.RxBindingRecyclerView
 //  compile depMap.RxLeanBack
+    compile depMap.RxJavaProguard
 
     compile depMap.Dagger
     annotationProcessor depMap.DaggerCompile
@@ -125,19 +126,12 @@ dependencies {
     compile depMap.RoundedImageview
     compile depMap.Timber
     compile depMap.RxPermissions
-//    compile depMap.JobQueue
-    compile depMap.androidCrop
-    compile depMap.FlexBox
-    compile depMap.ScaleImageView
     compile depMap.Moshi
     compile depMap.StethoRealm
 
     debugCompile depMap.Stetho
     debugCompile depMap.StethoOkhttp3
 
-    androidTestCompile(depMap.EspressoCore, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
 
     compile depMap.Guava
 
@@ -145,34 +139,9 @@ dependencies {
 
     provided depMap.LeakCanary
 
-    compile depMap.EspressoIDLing
-
-    // Dependencies for local unit tests
     testCompile depMap.JUnit
-    testCompile depMap.MockitoAll
-    testCompile depMap.Hamcrest
-
-    // Android Testing Support Library's runner and rules
-    androidTestCompile depMap.RunnerSupport
-    androidTestCompile depMap.RulesSupport
-
-    // Dependencies for android unit tests
     androidTestCompile depMap.JUnit
-    androidTestCompile depMap.FestAssert
-    androidTestCompile depMap.FestAndroid
-    androidTestCompile depMap.Robolectric
-    androidTestCompile depMap.MockitoCore
-    androidTestCompile depMap.DexMaker
-    androidTestCompile depMap.DexMakerMockito
-    androidTestCompile depMap.EspressoCore
-    androidTestCompile depMap.EspressoContrib
-    androidTestCompile depMap.EspressoIntents
-    androidTestCompile depMap.Annotations
-    androidTestCompile depMap.SupportV4
-    androidTestCompile depMap.AppCompat
-    androidTestCompile depMap.Design
-    androidTestCompile depMap.RecyclerView
-//    androidTestCompile depMap.UIAutomator
-    androidTestCompile depMap.Annotations
-
+    androidTestCompile(depMap.EspressoCore, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
