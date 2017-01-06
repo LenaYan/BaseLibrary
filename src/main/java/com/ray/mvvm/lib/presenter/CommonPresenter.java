@@ -93,8 +93,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(subscriber);
     }
 
-    @Override
-    public void subscribe(Subscription subscription) {
+    protected void subscribe(Subscription subscription) {
         this.subscription.add(subscription);
     }
 

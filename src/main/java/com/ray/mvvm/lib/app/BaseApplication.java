@@ -107,10 +107,8 @@ public class BaseApplication extends Application implements IBuildComp {
     }
 
     public void handleEvent(ErrorEvent errorEvent) {
-        if (errorEvent != null) {
-            if (!StringUtil.isEmpty(errorEvent.getMessage()))
-                ToastUtil.show(BaseApplication.this, errorEvent.getMessage());
-        }
+        if (!StringUtil.isEmpty(errorEvent.getMessage()))
+            ToastUtil.show(BaseApplication.this, errorEvent.getMessage());
     }
 
 }

@@ -28,7 +28,6 @@ import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.functions.Action1;
 
 public interface IPresenter {
@@ -41,7 +40,7 @@ public interface IPresenter {
 
     <T> void subscribe(Observable<T> observable, Subscriber<T> subscriber);
 
-    void subscribe(Subscription subscription);
+//    void subscribe(Subscription subscription);
 
     void unsubscribe();
 }
