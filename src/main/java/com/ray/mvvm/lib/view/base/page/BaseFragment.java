@@ -23,6 +23,7 @@
 
 package com.ray.mvvm.lib.view.base.page;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -197,17 +198,17 @@ public class BaseFragment extends Fragment implements IView {
     }
 
     @Override
-    public void intent(Class aClass) {
-        intent(aClass, null);
+    public <T extends Activity> void intent(Class<T> aClass) {
+        intent(aClass, new Bundle());
     }
 
     @Override
-    public void intentForResult(Class aClass, int requestCode) {
+    public <T extends Activity> void intentForResult(Class<T> aClass, int requestCode) {
         intentForResult(aClass, requestCode, null);
     }
 
     @Override
-    public void intent(Class aClass, Bundle bundle) {
+    public <T extends Activity> void intent(Class<T> aClass, Bundle bundle) {
         Intent intent = new Intent(getActivity(), aClass);
         if (bundle != null)
             intent.putExtras(bundle);
@@ -220,13 +221,13 @@ public class BaseFragment extends Fragment implements IView {
     }
 
     @Override
-    public void intent(Intent intent, Class<?> aClass) {
+    public <T extends Activity> void intent(Class<T> aClass, Intent intent) {
         intent.setClass(getActivity(), aClass);
         startActivity(intent);
     }
 
     @Override
-    public void intentForResult(Class aClass, int requestCode, Bundle bundle) {
+    public <T extends Activity> void intentForResult(Class<T> aClass, int requestCode, Bundle bundle) {
         Intent intent = new Intent(getActivity(), aClass);
         if (bundle != null)
             intent.putExtras(bundle);
@@ -259,10 +260,10 @@ public class BaseFragment extends Fragment implements IView {
     }
 
     @Override
-    public void intentFinishNewTask(Class<?> aClass) {
+    public <T extends Activity> void intentFinishNewTask(Class<T> aClass) {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent(intent, aClass);
+        intent(aClass, intent);
     }
 
     @Override
