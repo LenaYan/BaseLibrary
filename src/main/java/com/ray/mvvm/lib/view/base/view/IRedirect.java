@@ -23,23 +23,25 @@
 
 package com.ray.mvvm.lib.view.base.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.ray.mvvm.lib.widget.anotations.ActivityAction;
 
 interface IRedirect {
-    void intent(Class aClass);
 
     void intent(Intent intent);
 
-    void intent(Intent intent, Class<?> aClass);
+    <T extends Activity> void intent(Class<T> aClass);
 
-    void intentForResult(Class aClass, int requestCode);
+    <T extends Activity> void intent(Class<T> aClass, Bundle bundle);
 
-    void intent(Class aClass, Bundle bundle);
+    <T extends Activity> void intent(Class<T> aClass, Intent intent);
 
-    void intentForResult(Class aClass, int requestCode, Bundle bundle);
+    <T extends Activity> void intentForResult(Class<T> aClass, int requestCode);
+
+    <T extends Activity> void intentForResult(Class<T> aClass, int requestCode, Bundle bundle);
 
     void intentFinish();
 
@@ -49,5 +51,5 @@ interface IRedirect {
 
     void intentFinish(Bundle bundle, @ActivityAction int action);
 
-    void intentFinishNewTask(Class<?> aClass);
+    <T extends Activity> void intentFinishNewTask(Class<T> aClass);
 }
