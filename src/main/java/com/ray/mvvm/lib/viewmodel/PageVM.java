@@ -36,6 +36,8 @@ import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import java.io.IOException;
 
+import timber.log.Timber;
+
 public abstract class PageVM<P extends IPresenter, V extends IView, D> extends StateVM<P, V> implements ExObserver<D> {
 
     protected D entity;
@@ -51,10 +53,12 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
 
     @Override
     public void onStart() {
+        Timber.i("-------onStart----------");
     }
 
     @Override
     public void onError(Throwable throwable) {
+        Timber.i("-------onError----------");
         String errorString;
         if (throwable instanceof ErrorEvent) {
             errorString = throwable.getMessage();
@@ -73,6 +77,7 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
 
     @Override
     public void onNext(D data) {
+        Timber.i("-------onNext----------");
         final int state = getState();
         handleOnNextState(data);
         bindResp(data, state);
@@ -81,10 +86,7 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
 
     @Override
     public void onCompleted() {
-    }
-
-    protected void handleOnStartState(int lastState) {
-
+        Timber.i("-------onCompleted----------");
     }
 
     protected void handleOnNextState(D data) {

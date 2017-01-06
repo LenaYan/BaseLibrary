@@ -41,31 +41,20 @@ import com.ray.mvvm.lib.view.base.comp.ActivityComp;
 import com.ray.mvvm.lib.view.base.comp.DaggerActivityComp;
 import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.viewmodel.BaseVM;
+import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.squareup.leakcanary.RefWatcher;
+
+import rx.Subscription;
 
 public abstract class BaseDIActivity extends BaseActivity implements IBuildComp {
 
     private ActivityComp activityComp;
-    private BaseVM viewModel;
+    private Subscription subscription;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         buildComp();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (activityComp != null) {
-            if (viewModel != null) {
-                viewModel.presenter().onViewDetach();
-                final RefWatcher refWatcher = activityComp.refWatcher();
-                refWatcher.watch(viewModel);
-                refWatcher.watch(viewModel.presenter());
-            }
-            activityComp.refWatcher().watch(this);
-        }
-        super.onDestroy();
     }
 
     protected AppComp getAppComp() {
@@ -99,8 +88,20 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         }
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
-        this.viewModel = viewModel;
-        viewModel.presenter().onViewAttach();
+        viewModel.presenter().setLifecycleObs(lifecycleSubject.asObservable(), LifecycleEvent.DESTROY);
+        subscription = lifecycleSubject
+                .subscribe(activityEvent -> {
+                    if (activityEvent == LifecycleEvent.DESTROY) {
+                        viewModel.presenter().unsubscribe();
+                        final RefWatcher refWatcher = BaseApplication.getRefWatcher(BaseDIActivity.this);
+                        if (refWatcher != null) {
+                            refWatcher.watch(viewModel);
+                            refWatcher.watch(viewModel.presenter());
+                            refWatcher.watch(this);
+                        }
+                        subscription.unsubscribe();
+                    }
+                });
         binding.setVariable(BR.viewModel, viewModel);
         if (ViewDataBinding.getBuildSdkInt() < Build.VERSION_CODES.KITKAT) {
             binding.executePendingBindings();

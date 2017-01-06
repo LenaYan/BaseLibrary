@@ -20,9 +20,7 @@ public final class ${pageName}VMModule {
 	@Provides
 	@PerFragment
 	${pageName}VM provideVM(${pageName}P presenter){
-    	${pageName}VM viewModel = new ${pageName}VM(presenter, fragment);
-    	fragment.setViewModel(viewModel);
-		return viewModel;
+		return new ${pageName}VM(presenter, fragment);
 	}
 
 }

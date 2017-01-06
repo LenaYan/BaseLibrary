@@ -118,6 +118,8 @@ dependencies {
     compile depMap.RxBindingRecyclerView
 //  compile depMap.RxLeanBack
     compile depMap.RxJavaProguard
+    compile depMap.RxLifecycle
+    compile depMap.RxLifecycleAndroid
 
     compile depMap.Dagger
     annotationProcessor depMap.DaggerCompile

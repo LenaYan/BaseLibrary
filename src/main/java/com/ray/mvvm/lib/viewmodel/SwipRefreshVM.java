@@ -31,6 +31,7 @@ import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.anotations.PageState;
 
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subjects.PublishSubject;
 
 public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> extends PageVM<P, V, D> implements SwipeRefreshLayout.OnRefreshListener {
@@ -43,9 +44,12 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
     public SwipRefreshVM(P presenter, V view) {
         super(presenter, view);
         refreshSubject = PublishSubject.create();
-        presenter.subscribe(refreshSubject
-                        .filter(refresh -> refresh != isRefreshing),
-                refresh -> {
+        refreshSubject
+                .filter(refresh -> refresh != isRefreshing)
+                .onBackpressureBuffer()
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.bindUntilEvent())
+                .subscribe(refresh -> {
                     isRefreshing = refresh;
                     notifyPropertyChanged(BR.refreshing);
                     if (isRefreshing)

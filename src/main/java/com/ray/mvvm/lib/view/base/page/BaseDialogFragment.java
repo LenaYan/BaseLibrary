@@ -29,7 +29,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -40,43 +42,117 @@ import android.view.inputmethod.InputMethodManager;
 import com.ray.mvvm.lib.R;
 import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.anotations.ActivityAction;
+import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
+import com.ray.mvvm.lib.widget.lifecycle.RxPageLifecycle;
 import com.ray.mvvm.lib.widget.utils.ToastUtil;
+import com.trello.rxlifecycle.LifecycleProvider;
+import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle.RxLifecycle;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.subscriptions.CompositeSubscription;
+import rx.subjects.BehaviorSubject;
 
-public class BaseDialogFragment extends DialogFragment implements IView {
+public class BaseDialogFragment extends DialogFragment implements IView, LifecycleProvider<LifecycleEvent> {
 
-    private CompositeSubscription subscription = new CompositeSubscription();
+    protected BehaviorSubject<LifecycleEvent> lifecycleSubject = BehaviorSubject.create();
     private ProgressDialog progressDialog;
-    private boolean isResumed;
+
+    @Nonnull
+    @Override
+    public Observable<LifecycleEvent> lifecycle() {
+        return lifecycleSubject.asObservable();
+    }
+
+    @Nonnull
+    @Override
+    public <T> LifecycleTransformer<T> bindUntilEvent(@Nonnull LifecycleEvent lifecycleEvent) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, lifecycleEvent);
+    }
 
     @Override
+    public <T> LifecycleTransformer<T> bindUntilEvent() {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, LifecycleEvent.DETACH);
+    }
+
+    @Nonnull
+    @Override
+    public <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxPageLifecycle.bind(lifecycleSubject);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        lifecycleSubject.onNext(LifecycleEvent.ATTACH);
+    }
+
+    @Override
+    @CallSuper
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        lifecycleSubject.onNext(LifecycleEvent.CREATE);
+    }
+
+    @Override
+    @CallSuper
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        lifecycleSubject.onNext(LifecycleEvent.CREATE_VIEW);
+    }
+
+    @Override
+    @CallSuper
+    public void onStart() {
+        super.onStart();
+        lifecycleSubject.onNext(LifecycleEvent.START);
+    }
+
+    @Override
+    @CallSuper
     public void onResume() {
         super.onResume();
-        isResumed = true;
+        lifecycleSubject.onNext(LifecycleEvent.RESUME);
     }
 
     @Override
-    public boolean isPageResume() {
-        return isResumed;
+    @CallSuper
+    public void onPause() {
+        lifecycleSubject.onNext(LifecycleEvent.PAUSE);
+        super.onPause();
     }
 
     @Override
+    @CallSuper
     public void onStop() {
+        lifecycleSubject.onNext(LifecycleEvent.STOP);
         super.onStop();
-        isResumed = false;
     }
 
     @Override
+    @CallSuper
+    public void onDestroyView() {
+        lifecycleSubject.onNext(LifecycleEvent.DESTROY_VIEW);
+        super.onDestroyView();
+    }
+
+    @Override
+    @CallSuper
+    public void onDestroy() {
+        lifecycleSubject.onNext(LifecycleEvent.DESTROY);
+        super.onDestroy();
+    }
+
+    @Override
+    @CallSuper
     public void onDetach() {
+        lifecycleSubject.onNext(LifecycleEvent.DETACH);
         super.onDetach();
-        subscription.unsubscribe();
     }
 
     @NonNull
@@ -265,17 +341,13 @@ public class BaseDialogFragment extends DialogFragment implements IView {
     }
 
     @Override
-    public void subscribe(Subscription subscription) {
-        this.subscription.add(subscription);
-    }
-
-    @Override
     public <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action) {
-        subscribe(observable
+        observable
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .onBackpressureLatest()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(action::call));
+                .compose(bindUntilEvent(LifecycleEvent.DESTROY))
+                .subscribe(action::call);
     }
 }
