@@ -8,7 +8,7 @@ import ${libPackage}.viewmodel.ListVM;
 import ${packageName}.contract.${pageName}Contract;
 
 <#if isWithLoadMore>
-public class ${pageName}VM extends EndLessListVM<${pageName}Contract.Presenter, ${pageName}Contract.View, T>{
+public class ${pageName}VM extends EndLessListVM<${pageName}Contract.Presenter, ${pageName}Contract.View, T> {
 
    public ${pageName}VM(${pageName}Contract.Presenter presenter, ${pageName}Contract.View view, LinearLayoutManager layoutManager, StateListAdapter<T> adapter) {
 <#else>

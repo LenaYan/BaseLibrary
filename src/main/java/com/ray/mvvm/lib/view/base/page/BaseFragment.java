@@ -82,7 +82,7 @@ public class BaseFragment extends Fragment implements IView {
         RxBus.instance()
                 .asObservable(aClass)
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
+                .compose(bindUntilLastEvent())
                 .subscribe(onNext);
     }
 

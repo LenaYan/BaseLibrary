@@ -94,7 +94,7 @@ public class BaseActivity extends AppCompatActivity implements IView {
         RxBus.instance()
                 .asObservable(aClass)
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
+                .compose(bindUntilLastEvent())
                 .subscribe(onNext);
     }
 
