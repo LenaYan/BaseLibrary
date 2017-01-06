@@ -1,16 +1,17 @@
 package ${packageName};
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ${libPackage}.view.base.page.BaseDIFragment;
 import ${packageName}.binding.Fragment${pageName}Binding;
 import ${packageName}.contract.Dagger${pageName}Contract_Comp;
 import ${packageName}.contract.${pageName}Contract;
 import ${packageName}.vm.${pageName}VM;
 import ${packageName}.vm.module.${pageName}VMModule;
+import ${libPackage}.view.base.page.BaseDIFragment;
 
 import javax.inject.Inject;
 

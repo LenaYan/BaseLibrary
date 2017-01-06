@@ -48,7 +48,7 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
                 .filter(refresh -> refresh != isRefreshing)
                 .onBackpressureBuffer()
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.bindUntilEvent())
+                .compose(view.bindUntilLastEvent())
                 .subscribe(refresh -> {
                     isRefreshing = refresh;
                     notifyPropertyChanged(BR.refreshing);

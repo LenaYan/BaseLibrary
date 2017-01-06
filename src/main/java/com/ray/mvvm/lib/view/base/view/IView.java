@@ -25,6 +25,7 @@ package com.ray.mvvm.lib.view.base.view;
 
 import android.graphics.drawable.Drawable;
 
+import com.ray.mvvm.lib.widget.eventbus.event.BaseEvent;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -56,6 +57,7 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
 
     <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action);
 
-    <T> LifecycleTransformer<T> bindUntilEvent();
+    <T> LifecycleTransformer<T> bindUntilLastEvent();
 
+    <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext);
 }

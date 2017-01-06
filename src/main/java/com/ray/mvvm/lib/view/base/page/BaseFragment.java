@@ -38,10 +38,11 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.anotations.ActivityAction;
+import com.ray.mvvm.lib.widget.eventbus.RxBus;
+import com.ray.mvvm.lib.widget.eventbus.event.BaseEvent;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.ray.mvvm.lib.widget.lifecycle.RxPageLifecycle;
 import com.ray.mvvm.lib.widget.utils.ToastUtil;
-import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 
@@ -54,7 +55,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subjects.BehaviorSubject;
 
-public class BaseFragment extends Fragment implements IView, LifecycleProvider<LifecycleEvent> {
+public class BaseFragment extends Fragment implements IView {
 
     protected BehaviorSubject<LifecycleEvent> lifecycleSubject = BehaviorSubject.create();
     private ProgressDialog progressDialog;
@@ -72,8 +73,17 @@ public class BaseFragment extends Fragment implements IView, LifecycleProvider<L
     }
 
     @Override
-    public <T> LifecycleTransformer<T> bindUntilEvent() {
+    public <T> LifecycleTransformer<T> bindUntilLastEvent() {
         return RxLifecycle.bindUntilEvent(lifecycleSubject, LifecycleEvent.DETACH);
+    }
+
+    @Override
+    public <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext) {
+        RxBus.instance()
+                .asObservable(aClass)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(bindToLifecycle())
+                .subscribe(onNext);
     }
 
     @Nonnull

@@ -1,9 +1,9 @@
 package ${packageName}.vm.module;
 
-import ${libPackage}.di.scope.PerFragment;
-import ${packageName}.${pageName}Fragment;
+import ${packageName}.contract.${pageName}Contract;
 import ${packageName}.presenter.${pageName}P;
 import ${packageName}.vm.${pageName}VM;
+import ${libPackage}.di.scope.PerFragment;
 
 import dagger.Module;
 import dagger.Provides;
@@ -11,16 +11,16 @@ import dagger.Provides;
 @Module
 public final class ${pageName}VMModule {
 
-	private ${pageName}Fragment fragment;
+	private ${pageName}Contract.View view;
 
-	public ${pageName}VMModule(${pageName}Fragment fragment) {
-		this.fragment = fragment;
+	public ${pageName}VMModule(${pageName}Contract.View view) {
+		this.view = view;
 	}
 
 	@Provides
 	@PerFragment
 	${pageName}VM provideVM(${pageName}P presenter){
-		return new ${pageName}VM(presenter, fragment);
+		return new ${pageName}VM(presenter, view);
 	}
 
 }
