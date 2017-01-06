@@ -86,7 +86,7 @@ public class BaseDialogFragment extends DialogFragment implements IView {
         RxBus.instance()
                 .asObservable(aClass)
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
+                .compose(bindUntilLastEvent())
                 .subscribe(onNext);
     }
 

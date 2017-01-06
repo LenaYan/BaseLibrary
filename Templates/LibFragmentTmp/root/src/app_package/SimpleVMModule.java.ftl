@@ -19,7 +19,7 @@ public final class ${pageName}VMModule {
 
 	@Provides
 	@PerFragment
-	${pageName}VM provideVM(${pageName}P presenter){
+	${pageName}VM provideVM(${pageName}P presenter) {
 		return new ${pageName}VM(presenter, view);
 	}
 
