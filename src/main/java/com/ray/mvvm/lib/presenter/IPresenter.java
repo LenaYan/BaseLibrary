@@ -23,19 +23,25 @@
 
 package com.ray.mvvm.lib.presenter;
 
-import com.ray.mvvm.lib.view.base.view.ILifeCycle;
 import com.ray.mvvm.lib.widget.eventbus.event.BaseEvent;
+import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action1;
 
-public interface IPresenter extends ILifeCycle {
-
-    void subscribe(Subscription subscription);
+public interface IPresenter {
 
     <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> action1);
 
-    <V> void subscribe(Observable<V> observable, Action1<? super V> action);
+    <T> void subscribe(Observable<T> observable, Action1<? super T> action);
 
+    void setLifecycleObs(Observable<LifecycleEvent> obs, LifecycleEvent lifecycleEvent);
+
+    <T> void subscribe(Observable<T> observable, Subscriber<T> subscriber);
+
+    void subscribe(Subscription subscription);
+
+    void unsubscribe();
 }

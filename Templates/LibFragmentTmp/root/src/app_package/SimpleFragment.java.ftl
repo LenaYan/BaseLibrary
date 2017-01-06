@@ -14,8 +14,11 @@ public class ${fragmentName} extends BaseDIFragment implements ${pageName}Contra
     @Inject ${pageName}VM viewModel;
 
     @Override
-    protected int onCreateView() {
-        return R.layout.${layoutName};
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Fragment${pageName}Binding binding = Fragment${pageName}Binding.inflate(inflater, container, false);
+        binding.setViewModel(viewModel);
+        bindLifecycle(viewModel);
+        return binding.getRoot();
     }
 
     @Override

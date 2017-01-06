@@ -341,5 +341,6 @@ public class BindingAdapter {
         if (jsInterface != null)
             webView.addJavascriptInterface(jsInterface, "IronHide");
     }
+
 }
 

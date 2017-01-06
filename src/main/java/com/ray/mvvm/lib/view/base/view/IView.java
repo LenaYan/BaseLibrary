@@ -25,11 +25,14 @@ package com.ray.mvvm.lib.view.base.view;
 
 import android.graphics.drawable.Drawable;
 
+import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
+import com.trello.rxlifecycle.LifecycleProvider;
+import com.trello.rxlifecycle.LifecycleTransformer;
+
 import rx.Observable;
-import rx.Subscription;
 import rx.functions.Action1;
 
-public interface IView extends IRedirect, IPageControl {
+public interface IView extends IRedirect, IPageControl, LifecycleProvider<LifecycleEvent> {
 
     String findString(int resId);
 
@@ -51,9 +54,8 @@ public interface IView extends IRedirect, IPageControl {
 
     void postRunnable(Runnable runnable);
 
-    boolean isPageResume();
-
-    void subscribe(Subscription subscription);
-
     <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action);
+
+    <T> LifecycleTransformer<T> bindUntilEvent();
+
 }

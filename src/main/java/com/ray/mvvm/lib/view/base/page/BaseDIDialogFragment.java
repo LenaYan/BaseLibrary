@@ -23,26 +23,21 @@
 
 package com.ray.mvvm.lib.view.base.page;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.ray.mvvm.lib.BR;
+import com.ray.mvvm.lib.app.BaseApplication;
 import com.ray.mvvm.lib.di.IBuildComp;
 import com.ray.mvvm.lib.view.base.comp.ActivityComp;
 import com.ray.mvvm.lib.view.base.comp.DaggerFragmentComp;
 import com.ray.mvvm.lib.view.base.comp.FragmentComp;
 import com.ray.mvvm.lib.viewmodel.BaseVM;
+import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.squareup.leakcanary.RefWatcher;
 
 public abstract class BaseDIDialogFragment extends BaseDialogFragment implements IBuildComp {
 
     private FragmentComp fragmentComp;
-    private BaseVM viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,41 +45,19 @@ public abstract class BaseDIDialogFragment extends BaseDialogFragment implements
         buildComp();
     }
 
-    @Nullable
-    @Override
-    public final View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewDataBinding dataBinding = DataBindingUtil.inflate(inflater, onCreateView(), container, false);
-        dataBinding.setVariable(BR.viewModel, viewModel);
-        return dataBinding.getRoot();
-    }
-
-    protected abstract int onCreateView();
-
-    public void setViewModel(BaseVM viewModel) {
-        this.viewModel = viewModel;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (viewModel != null)
-            viewModel.presenter().onViewAttach();
-    }
-
-    @Override
-    public void onDetach() {
-        if (viewModel != null)
-            viewModel.presenter().onViewDetach();
-        super.onDetach();
-    }
-
-    @Override
-    public void onDestroy() {
-        final RefWatcher refWatcher = fragmentComp.refWatcher();
-        refWatcher.watch(viewModel.presenter());
-        refWatcher.watch(viewModel);
-        refWatcher.watch(this);
-        super.onDestroy();
+    protected void bindLifecycle(BaseVM viewModel) {
+        viewModel.presenter().setLifecycleObs(lifecycleSubject.asObservable(), LifecycleEvent.DETACH);
+        lifecycleSubject
+                .subscribe(activityEvent -> {
+                    if (activityEvent == LifecycleEvent.DETACH) {
+                        final RefWatcher refWatcher = BaseApplication.getRefWatcher(getActivity());
+                        if (refWatcher != null) {
+                            refWatcher.watch(viewModel);
+                            refWatcher.watch(viewModel.presenter());
+                            refWatcher.watch(this);
+                        }
+                    }
+                });
     }
 
     protected FragmentComp fragmentComp() {

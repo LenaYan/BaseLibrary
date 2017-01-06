@@ -30,11 +30,12 @@ import android.support.multidex.MultiDex;
 import com.ray.mvvm.lib.di.IBuildComp;
 import com.ray.mvvm.lib.di.modules.AppModule;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
-import com.ray.mvvm.lib.model.model.RespEntity;
 import com.ray.mvvm.lib.widget.eventbus.RxBus;
 import com.ray.mvvm.lib.widget.utils.DeviceUtil;
 import com.ray.mvvm.lib.widget.utils.StringUtil;
 import com.ray.mvvm.lib.widget.utils.ToastUtil;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,10 +45,17 @@ public class BaseApplication extends Application implements IBuildComp {
     private AppComp appComp;
     private Subscription subscription;
 
+    public static RefWatcher getRefWatcher(Context context) {
+        BaseApplication application = (BaseApplication) context.getApplicationContext();
+        return application.refWatcher;
+    }
+
+    public RefWatcher refWatcher;
+
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(base);
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(context);
+        MultiDex.install(context);
     }
 
     @Override
@@ -55,6 +63,9 @@ public class BaseApplication extends Application implements IBuildComp {
         super.onCreate();
         buildComp();
         subscribeEvent();
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            refWatcher = LeakCanary.install(this);
+        }
     }
 
     @Override
@@ -99,8 +110,6 @@ public class BaseApplication extends Application implements IBuildComp {
         if (errorEvent != null) {
             if (!StringUtil.isEmpty(errorEvent.getMessage()))
                 ToastUtil.show(BaseApplication.this, errorEvent.getMessage());
-            if (errorEvent.getCode() == RespEntity.AUTH_ERROR) {
-            }
         }
     }
 

@@ -32,8 +32,6 @@ import com.ray.mvvm.lib.model.http.RetrofitModule;
 import com.ray.mvvm.lib.model.http.okhttp.OkHttpModule;
 import com.ray.mvvm.lib.model.service.APIServiceModule;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Named;
 
@@ -66,12 +64,6 @@ public final class AppModule {
     @PerApplication
     Application provideApp() {
         return application;
-    }
-
-    @Provides
-    @PerApplication
-    RefWatcher provideRefWatcher() {
-        return LeakCanary.install(application);
     }
 
 }

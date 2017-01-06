@@ -43,180 +43,160 @@ import timber.log.Timber;
 public class ExPresenter extends CommonPresenter {
 
     protected <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(subscriber)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .subscribe(subscriber);
     }
 
     protected <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<R> subscriber) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .concatMap(converter)
-                        .subscribe(subscriber)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .concatMap(converter)
+                .subscribe(subscriber);
     }
 
     protected <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<R> subscriber, Action1<T> action1) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(action1)
-                        .concatMap(converter)
-                        .subscribe(subscriber)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .doOnNext(action1)
+                .concatMap(converter)
+                .subscribe(subscriber);
     }
 
     protected <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .concatMap(converter)
-                        .subscribe()
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .concatMap(converter)
+                .subscribe();
     }
 
     protected <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull ExObserver<R> observer) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .concatMap(converter)
-                        .subscribe(observer)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .doOnSubscribe(observer::onStart)
+                .concatMap(converter)
+                .subscribe(observer);
     }
 
     protected <T extends ExRespEntity, R> void subscribeReqFlatMap(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull ExObserver<R> observer) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .flatMap(converter)
-                        .subscribe(observer)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .doOnSubscribe(observer::onStart)
+                .flatMap(converter)
+                .subscribe(observer);
     }
 
     protected <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, ExObserver<T> observer) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError(this::postError)
-                        .subscribe(observer)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .doOnSubscribe(observer::onStart)
+                .doOnError(this::postError)
+                .subscribe(observer);
     }
 
     protected <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, ExObserver<T> observer, Action1<T> doOnNext) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(doOnNext)
-                        .subscribe(observer)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .doOnSubscribe(observer::onStart)
+                .doOnNext(doOnNext)
+                .subscribe(observer);
     }
 
     protected <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber, Action1<T> doOnNext) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(doOnNext)
-                        .subscribe(subscriber)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .doOnNext(doOnNext)
+                .subscribe(subscriber);
     }
 
     protected <T extends ExRespEntity, R> void subscribeReqWithFunc(@NonNull Observable<T> observable, @NonNull Subscriber<R> subscriber, Func1<? super T, ? extends Observable<? extends R>> func) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .flatMap(this::dataFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .concatMap(func)
-                        .subscribe(subscriber)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .flatMap(this::dataFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .concatMap(func)
+                .subscribe(subscriber);
     }
 
     protected <T extends ExRespEntity> void subscribeNoResp(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(subscriber)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .subscribe(subscriber);
     }
 
     protected <T extends ExRespEntity> void subscribeNoResp(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber, Action1<T> doOnNext) {
-        subscription.add(
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .doOnUnsubscribe(this::unSubscribe)
-                        .doOnError(this::postError)
-                        .filter(respEntity -> isAlive)
-                        .flatMap(this::respFlatMap)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(doOnNext)
-                        .doOnNext((t) -> Timber.i("doOnNext %s  %d", isAlive, Thread.currentThread().getId()))
-                        .subscribe(subscriber)
-        );
+        observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::respFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .doOnNext(doOnNext)
+                .doOnNext((t) -> Timber.i("doOnNext  %d", Thread.currentThread().getId()))
+                .subscribe(subscriber);
     }
 
     private <Y extends ExRespEntity> Observable<Y> respFlatMap(Y respEntity) {
