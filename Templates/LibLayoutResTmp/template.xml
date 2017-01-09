@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<template name="Layout XML File"
+    description="Creates a new XML layout file."
+    format="5"
+    revision="2">
+
+    <category value="XML" />
+
+    <parameter name="Layout File Name"
+        constraints="layout|unique|nonempty"
+        default="layout"
+        help="Name of the layout XML file."
+        id="layoutName"
+        type="string" />
+
+    <parameter name="Root Tag"
+        constraints="nonempty"
+        default="LinearLayout"
+        help="The root XML tag for the new file"
+        id="rootTag"
+        type="string" />
+
+    <parameter name="Is Databinding Layout"
+        default="true"
+        help="The layout file is a databinding layout or not"
+        id="isBindingLayout"
+        type="boolean" />
+
+    <execute file="recipe.xml.ftl" />
+
+</template>
