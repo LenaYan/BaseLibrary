@@ -23,5 +23,5 @@
 
 package com.ray.mvvm.lib.model.model;
 
-public class NullEntity {
+public class VoidEntity {
 }

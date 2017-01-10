@@ -23,13 +23,13 @@
 
 package com.ray.mvvm.lib.view.adapter.list.base;
 
-import android.databinding.BaseObservable;
 import android.databinding.ViewDataBinding;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.ray.mvvm.lib.BR;
 import com.ray.mvvm.lib.app.Constants;
 import com.ray.mvvm.lib.view.adapter.OnItemClick;
 import com.ray.mvvm.lib.view.adapter.list.viewholder.BaseViewHolder;
@@ -65,7 +65,11 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public final BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return onCreateViewHolderIml(parent, viewType);
+    }
+
+    BaseViewHolder onCreateViewHolderIml(ViewGroup parent, int viewType) {
         ViewDataBinding viewDataBinding = createBinding(LayoutInflater.from(parent.getContext()), parent, viewType);
         return new BaseViewHolder(viewDataBinding);
     }
@@ -90,14 +94,17 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     void bindingViewHolder(BaseViewHolder holder, int position) {
-        holder.bindData(createViewModel(holder, position, getItemViewType(position)));
+        final int viewType = holder.getItemViewType();
+        holder.bindData(getViewModelBRId(viewType), createViewModel(holder, position));
+    }
+
+    protected int getViewModelBRId(int viewType) {
+        return BR.viewModel;
     }
 
     protected abstract ViewDataBinding createBinding(LayoutInflater layoutInflater, ViewGroup parent, int viewType);
 
-    protected BaseObservable createViewModel(RecyclerView.ViewHolder holder, int position, int viewType) {
-        return new CellVM<>(getItem(position), holder, itemClick);
-    }
+    protected abstract Object createViewModel(RecyclerView.ViewHolder holder, int position);
 
     public void setList(List<T> list) {
         setList(list, true);

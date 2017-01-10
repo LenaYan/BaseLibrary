@@ -28,6 +28,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.ray.mvvm.lib.BR;
 import com.ray.mvvm.lib.view.adapter.list.viewholder.BaseViewHolder;
 
 import java.util.List;
@@ -44,13 +45,15 @@ public abstract class PageAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.bindData(createViewModel(getItemViewType(position), position));
+        final int itemViewType = holder.getItemViewType();
+        holder.bindData(getViewModelBRId(itemViewType), createViewModel(itemViewType, position));
     }
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
-        holder.bindData(createViewModel(getItemViewType(position), position));
+        final int itemViewType = holder.getItemViewType();
+        holder.bindData(itemViewType, createViewModel(itemViewType, position));
     }
 
     @Override
@@ -59,6 +62,10 @@ public abstract class PageAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemCount() {
         return getViewTypeCount();
+    }
+
+    protected int getViewModelBRId(int viewType) {
+        return BR.viewModel;
     }
 
     protected abstract int getViewTypeCount();
