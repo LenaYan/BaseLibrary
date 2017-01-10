@@ -33,7 +33,6 @@ import com.ray.mvvm.lib.databinding.StateLoadMoreErrorLayoutBinding;
 import com.ray.mvvm.lib.databinding.StateLoadMoreLayoutBinding;
 import com.ray.mvvm.lib.databinding.StateLoadingLayoutBinding;
 import com.ray.mvvm.lib.databinding.StateNoMoreLayoutBinding;
-import com.ray.mvvm.lib.view.adapter.OnItemClick;
 import com.ray.mvvm.lib.view.adapter.list.viewholder.BaseViewHolder;
 import com.ray.mvvm.lib.viewmodel.StateVM;
 import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
@@ -41,16 +40,7 @@ import com.ray.mvvm.lib.widget.anotations.PageState;
 
 public abstract class StateListAdapter<T> extends ListAdapter<T> {
 
-    private static final int NO_INDEX = -99;
-
     private StateVM stateVM = null;
-
-    public StateListAdapter() {
-    }
-
-    public StateListAdapter(OnItemClick<T> itemClick) {
-        super(itemClick);
-    }
 
     public void setStateVM(StateVM stateVM) {
         this.stateVM = stateVM;

@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 
 import com.ray.mvvm.lib.BR;
 import com.ray.mvvm.lib.app.Constants;
-import com.ray.mvvm.lib.view.adapter.OnItemClick;
 import com.ray.mvvm.lib.view.adapter.list.viewholder.BaseViewHolder;
 
 import java.util.ArrayList;
@@ -41,27 +40,17 @@ import static android.R.attr.id;
 
 public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
 
-    private static final int NO_INDEX = -99;
+    protected static final int NO_INDEX = -99;
     private static final int NO_POSITION = -1;
 
     private List<T> list;
     private LongSparseArray<T> wrapMap = new LongSparseArray<>();
-    protected OnItemClick<T> itemClick;
 
     public ListAdapter() {
     }
 
-    public ListAdapter(OnItemClick<T> itemClick) {
-        this.itemClick = itemClick;
-    }
-
     public ListAdapter(List<T> list) {
-        this.list = list;
-    }
-
-    public ListAdapter(List<T> list, OnItemClick<T> itemClick) {
-        this.list = list;
-        this.itemClick = itemClick;
+        setList(list, false);
     }
 
     @Override
@@ -146,10 +135,6 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     public List<T> getList() {
         return list;
-    }
-
-    public void setItemClick(OnItemClick<T> itemClick) {
-        this.itemClick = itemClick;
     }
 
     public final T getItem(int position) {
