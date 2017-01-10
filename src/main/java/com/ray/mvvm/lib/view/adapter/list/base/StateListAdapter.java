@@ -127,11 +127,12 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
     protected void bindingViewHolder(BaseViewHolder holder, int position) {
         final int state = stateVM.getState();
         final int listItemType = getItemViewType(position);
+        final int viewType = holder.getItemViewType();
         if (state == PageState.EMPTY || state == PageState.ERROR || state == PageState.LOADING) {
-            holder.bindData(holder.getItemViewType(), stateVM);
+            holder.bindData(getViewModelBRId(viewType), stateVM);
         } else {
             if (listItemType == ListViewItemType.NO_MORE || listItemType == ListViewItemType.LOAD_MORE || listItemType == ListViewItemType.LOAD_MORE_ERROR)
-                holder.bindData(holder.getItemViewType(), stateVM);
+                holder.bindData(getViewModelBRId(viewType), stateVM);
             else {
                 super.bindingViewHolder(holder, position);
             }
