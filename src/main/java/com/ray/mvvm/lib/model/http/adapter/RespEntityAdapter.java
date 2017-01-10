@@ -23,24 +23,23 @@
 
 package com.ray.mvvm.lib.model.http.adapter;
 
-import com.ray.mvvm.lib.model.model.NullEntity;
 import com.ray.mvvm.lib.model.model.RespEntity;
+import com.ray.mvvm.lib.model.model.VoidEntity;
 import com.squareup.moshi.FromJson;
 import com.squareup.moshi.ToJson;
 
 public class RespEntityAdapter {
 
     @ToJson
-    public RespEntity<NullEntity> toJson(RespEntity respEntity) {
-        RespEntity<NullEntity> entity = new RespEntity<>();
+    public RespEntity<VoidEntity> toJson(RespEntity respEntity) {
+        RespEntity<VoidEntity> entity = new RespEntity<>();
         entity.setCode(respEntity.getCode());
         entity.setMessage(respEntity.getMessage());
-        entity.setData(new NullEntity());
         return entity;
     }
 
     @FromJson
-    public RespEntity fromJson(RespEntity<NullEntity> respEntity) {
+    public RespEntity fromJson(RespEntity<VoidEntity> respEntity) {
         RespEntity entity = new RespEntity();
         entity.setCode(respEntity.getCode());
         entity.setMessage(respEntity.getMessage());

@@ -39,8 +39,6 @@ import com.ray.mvvm.lib.viewmodel.StateVM;
 import com.ray.mvvm.lib.widget.anotations.ListViewItemType;
 import com.ray.mvvm.lib.widget.anotations.PageState;
 
-import java.util.List;
-
 public abstract class StateListAdapter<T> extends ListAdapter<T> {
 
     private static final int NO_INDEX = -99;
@@ -54,20 +52,12 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
         super(itemClick);
     }
 
-    public StateListAdapter(List<T> list) {
-        super(list);
-    }
-
-    public StateListAdapter(List<T> list, OnItemClick<T> itemClick) {
-        super(list, itemClick);
-    }
-
     public void setStateVM(StateVM stateVM) {
         this.stateVM = stateVM;
     }
 
     @Override
-    public final BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    BaseViewHolder onCreateViewHolderIml(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ViewDataBinding viewDataBinding;
         final int state = stateVM.getState();
@@ -148,10 +138,10 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
         final int state = stateVM.getState();
         final int listItemType = getItemViewType(position);
         if (state == PageState.EMPTY || state == PageState.ERROR || state == PageState.LOADING) {
-            holder.bindData(stateVM);
+            holder.bindData(holder.getItemViewType(), stateVM);
         } else {
             if (listItemType == ListViewItemType.NO_MORE || listItemType == ListViewItemType.LOAD_MORE || listItemType == ListViewItemType.LOAD_MORE_ERROR)
-                holder.bindData(stateVM);
+                holder.bindData(holder.getItemViewType(), stateVM);
             else {
                 super.bindingViewHolder(holder, position);
             }

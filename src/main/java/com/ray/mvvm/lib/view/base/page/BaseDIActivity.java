@@ -80,7 +80,10 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
     }
 
     private <P extends IPresenter, V extends IView> void bindViewModel(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
-        ViewDataBinding binding = DataBindingUtil.setContentView(this, layoutRes);
+        bindViewModel(DataBindingUtil.setContentView(this, layoutRes), viewModel, homeAsUp);
+    }
+
+    protected <P extends IPresenter, V extends IView, B extends ViewDataBinding> void bindViewModel(B binding, BaseVM<P, V> viewModel, boolean homeAsUp) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setSubtitle("");
