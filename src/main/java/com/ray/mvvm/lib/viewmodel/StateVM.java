@@ -61,7 +61,6 @@ public abstract class StateVM<P extends IPresenter, V extends IView> extends Bas
     private int state = PageState.CONTENT;
     private boolean isNetworkError = false;
     private int emptyAddButtonVisibility = GONE;
-    private View.OnClickListener emptyAddClicked;
 
     private int listItemType = ListViewItemType.NO_MORE;
     private int noMoreVisibility = View.GONE;
@@ -140,15 +139,11 @@ public abstract class StateVM<P extends IPresenter, V extends IView> extends Bas
         return emptyAddButtonVisibility;
     }
 
-    public void setEmptyAddButtonVisibility(@Visibility int emptyAddButtonVisibility, View.OnClickListener emptyAddClicked) {
-        this.emptyAddClicked = emptyAddClicked;
+    public void setEmptyAddButtonVisibility(@Visibility int emptyAddButtonVisibility) {
         this.emptyAddButtonVisibility = emptyAddButtonVisibility;
     }
 
     public void onEmptyAddClicked(View view) {
-        if (emptyAddClicked != null) {
-            emptyAddClicked.onClick(view);
-        }
     }
 
     @Bindable

@@ -42,7 +42,8 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class BaseApplication extends Application implements IBuildComp {
 
-    private AppComp appComp;
+    AppComp appComp;
+    RefWatcher refWatcher;
     private Subscription subscription;
 
     public static RefWatcher getRefWatcher(Context context) {
@@ -50,7 +51,10 @@ public class BaseApplication extends Application implements IBuildComp {
         return application.refWatcher;
     }
 
-    public RefWatcher refWatcher;
+    public static AppComp getAppComp(Context context) {
+        BaseApplication application = (BaseApplication) context.getApplicationContext();
+        return application.appComp;
+    }
 
     @Override
     protected void attachBaseContext(Context context) {
@@ -85,11 +89,6 @@ public class BaseApplication extends Application implements IBuildComp {
                 .builder()
                 .appModule(new AppModule(this))
                 .build();
-        appComp.inject(this);
-    }
-
-    public AppComp appComp() {
-        return appComp;
     }
 
     protected void init(String channel) {

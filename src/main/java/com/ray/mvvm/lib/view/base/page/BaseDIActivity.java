@@ -32,7 +32,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.ray.mvvm.lib.BR;
 import com.ray.mvvm.lib.R;
-import com.ray.mvvm.lib.app.AppComp;
 import com.ray.mvvm.lib.app.BaseApplication;
 import com.ray.mvvm.lib.di.IBuildComp;
 import com.ray.mvvm.lib.di.modules.ActivityModule;
@@ -57,15 +56,11 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         buildComp();
     }
 
-    protected AppComp getAppComp() {
-        return ((BaseApplication) getApplication()).appComp();
-    }
-
     protected ActivityComp getActivityComp() {
         if (activityComp == null)
             activityComp = DaggerActivityComp
                     .builder()
-                    .appComp(getAppComp())
+                    .appComp(BaseApplication.getAppComp(this))
                     .activityModule(new ActivityModule(this))
                     .build();
         return activityComp;

@@ -55,8 +55,6 @@ public interface AppComp {
     @ForReleasableReferences(PerApplication.class)
     ReleasableReferenceManager releaseableReferenceManager();
 
-    void inject(BaseApplication application);
-
     @Named(ContextType.APPLICATION)
     Context appContext();
 
