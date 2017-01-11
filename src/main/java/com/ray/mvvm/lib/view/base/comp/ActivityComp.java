@@ -28,9 +28,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ray.mvvm.lib.app.AppComp;
-import com.ray.mvvm.lib.di.scope.PerBaseActivity;
-import com.ray.mvvm.lib.view.base.page.BaseActivity;
 import com.ray.mvvm.lib.di.modules.ActivityModule;
+import com.ray.mvvm.lib.di.scope.PerBaseActivity;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
 
 import javax.inject.Named;
@@ -40,8 +39,6 @@ import dagger.Component;
 @PerBaseActivity
 @Component(modules = {ActivityModule.class}, dependencies = AppComp.class)
 public interface ActivityComp extends AppComp {
-
-    void inject(BaseActivity baseActivity);
 
     @Named(ContextType.ACTIVITY)
     Context activityContext();

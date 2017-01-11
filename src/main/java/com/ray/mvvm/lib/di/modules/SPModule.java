@@ -40,9 +40,7 @@ public final class SPModule {
     @Provides
     @PerApplication
     static SharedPreferences provideSP(@Named(ContextType.APPLICATION) Context context) {
-        String applicationId = context.getApplicationContext().getPackageName();
-//        PreferenceManager.getDefaultSharedPreferences(context);
-        return context.getSharedPreferences(applicationId, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(context.getApplicationContext().getPackageName(), Context.MODE_PRIVATE);
     }
 
 }

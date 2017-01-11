@@ -134,6 +134,7 @@ dependencies {
     debugCompile depMap.Stetho
     debugCompile depMap.StethoOkhttp3
 
+    provided depMap.JavaxAnnotations
 
     compile depMap.Guava
 
@@ -141,6 +142,7 @@ dependencies {
 
     provided depMap.LeakCanary
 
+    testCompile depMap.Annotations
     testCompile depMap.JUnit
     androidTestCompile depMap.JUnit
     androidTestCompile(depMap.EspressoCore, {

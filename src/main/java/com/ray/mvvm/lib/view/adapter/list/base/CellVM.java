@@ -27,14 +27,13 @@ import android.databinding.BaseObservable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.ray.mvvm.lib.app.Constants;
 import com.ray.mvvm.lib.view.adapter.OnItemClick;
 
 public class CellVM<T> extends BaseObservable {
 
     protected T entity;
     private RecyclerView.ViewHolder viewHolder;
-    private int position = Constants.NO_POSITION;
+    private int position = ListAdapter.NO_POSITION;
     private OnItemClick<T> itemClick;
 
     public CellVM() {

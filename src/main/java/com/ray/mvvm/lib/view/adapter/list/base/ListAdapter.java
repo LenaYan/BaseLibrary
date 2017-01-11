@@ -30,7 +30,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.ray.mvvm.lib.BR;
-import com.ray.mvvm.lib.app.Constants;
 import com.ray.mvvm.lib.view.adapter.list.viewholder.BaseViewHolder;
 
 import java.util.ArrayList;
@@ -41,7 +40,8 @@ import static android.R.attr.id;
 public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
 
     protected static final int NO_INDEX = -99;
-    private static final int NO_POSITION = -1;
+    public static final int NO_POSITION = -1;
+    public static final int ITEM_TYPE_NONE = -1;
 
     private List<T> list;
     private LongSparseArray<T> wrapMap = new LongSparseArray<>();
@@ -184,7 +184,7 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     public void updateItem(int position, T item) {
-        if (position != Constants.NO_POSITION && item != null) {
+        if (position != NO_POSITION && item != null) {
             T origin = getItem(position);
             if (origin != null && getIndex(origin) == getIndex(item)) {
                 final int headerCount = getHeaderCount();
