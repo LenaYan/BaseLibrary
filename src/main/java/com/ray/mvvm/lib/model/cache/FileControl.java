@@ -50,7 +50,7 @@ import javax.inject.Inject;
 
 import timber.log.Timber;
 
- class FileControl implements IFileControl {
+class FileControl implements IFileControl {
 
     public interface OnFileChangedListener<T> {
         void onChanged(T o);
@@ -98,7 +98,7 @@ import timber.log.Timber;
     private void install(Context context) {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             sRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
-            sCacheRoot = sRoot + "/cache";
+            sCacheRoot = sRoot + context.getPackageName() + "/cache";
             File file = new File(sCacheRoot);
             if (!file.exists()) {
                 if (!file.mkdirs())
