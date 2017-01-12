@@ -60,4 +60,6 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     <T> LifecycleTransformer<T> bindUntilLastEvent();
 
     <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext);
+
+    <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext, LifecycleEvent lifecycleEvent);
 }
