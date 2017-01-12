@@ -95,6 +95,31 @@ public class BaseActivity extends AppCompatActivity implements IView {
         RxBus.instance()
                 .asObservable(aClass)
                 .observeOn(AndroidSchedulers.mainThread())
+                .delay(t ->
+                        lifecycle()
+                                .filter(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
+                                .map(lifecycleEvent -> {
+                                    t.setLifecycleEvent(lifecycleEvent);
+                                    return t;
+                                })
+                )
+                .compose(bindUntilLastEvent())
+                .subscribe(onNext);
+    }
+
+    @Override
+    public <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext, LifecycleEvent event) {
+        RxBus.instance()
+                .asObservable(aClass)
+                .observeOn(AndroidSchedulers.mainThread())
+                .delay(t ->
+                        lifecycle()
+                                .filter(lifecycleEvent -> lifecycleEvent == event)
+                                .map(lifecycleEvent -> {
+                                    t.setLifecycleEvent(lifecycleEvent);
+                                    return t;
+                                })
+                )
                 .compose(bindUntilLastEvent())
                 .subscribe(onNext);
     }

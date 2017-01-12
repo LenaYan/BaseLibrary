@@ -68,7 +68,6 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
         } else {
             errorString = throwable.getMessage();
         }
-        view.showToast(errorString);
         setErrorString(errorString);
         throwable.printStackTrace();
         handleOnErrorState();

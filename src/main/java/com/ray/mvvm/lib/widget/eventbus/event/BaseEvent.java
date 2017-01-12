@@ -25,8 +25,11 @@ package com.ray.mvvm.lib.widget.eventbus.event;
 
 import android.os.Bundle;
 
+import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
+
 public class BaseEvent extends Throwable {
 
+    private LifecycleEvent lifecycleEvent;
     private int code;
     private String message;
     private Bundle bundle;
@@ -41,6 +44,14 @@ public class BaseEvent extends Throwable {
     public BaseEvent(int code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public LifecycleEvent getLifecycleEvent() {
+        return lifecycleEvent;
+    }
+
+    public void setLifecycleEvent(LifecycleEvent lifecycleEvent) {
+        this.lifecycleEvent = lifecycleEvent;
     }
 
     public int getCode() {
