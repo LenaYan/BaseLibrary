@@ -40,7 +40,7 @@ import timber.log.Timber;
 
 public abstract class PageVM<P extends IPresenter, V extends IView, D> extends StateVM<P, V> implements ExObserver<D> {
 
-    protected D entity;
+    protected D data;
 
     public PageVM(P presenter, V view) {
         super(presenter, view);
@@ -115,18 +115,18 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
         }
     }
 
-    public void setEntity(D entity) {
-        this.entity = entity;
-        notifyPropertyChanged(BR.entity);
+    public void setData(D data) {
+        this.data = data;
+        notifyPropertyChanged(BR.data);
     }
 
     @Bindable
-    public D getEntity() {
-        return entity;
+    public D getData() {
+        return data;
     }
 
     protected void bindResp(D data, int originState) {
-        setEntity(data);
+        setData(data);
     }
 
     public void startRequest() {

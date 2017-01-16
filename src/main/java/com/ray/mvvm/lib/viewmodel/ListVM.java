@@ -57,6 +57,7 @@ public abstract class ListVM<P extends IPresenter, V extends IView, D> extends S
 
     @Override
     protected void bindResp(List<D> data, int originState) {
+        setData(data);
         adapter.setList(data);
         layoutManager.scrollToPosition(0);
     }

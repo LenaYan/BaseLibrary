@@ -40,6 +40,7 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
     private int pageNum = PAGE_NUM_START;
     private boolean hasMore = true;
     private int loadedPage = -1;
+    private boolean loadMoreEnabled = true;
 
     public EndLessListRespVM(P presenter, V view, LinearLayoutManager layoutManager, StateListAdapter<D> adapter) {
         super(presenter, view, layoutManager, adapter);
@@ -60,7 +61,7 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
     public final void onLoadMore() {
         if (getAdapter().getDataCount() == 0)
             return;
-        if (!hasMore || loadedPage < pageNum)
+        if (!hasMore || loadedPage < pageNum || !loadMoreEnabled)
             return;
         setState(PageState.LOAD_MORE);
         setListItemType(ListViewItemType.LOAD_MORE);
@@ -78,6 +79,8 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
     @Override
     protected void handleOnNextState(ListRespEntity<D> data) {
         super.handleOnNextState(data);
+        if (!loadMoreEnabled)
+            return;
         final boolean isRespNull = !isRespNull(data);
         final int oldItemCount = getAdapter().getItemCount();
         this.hasMore = isRespNull;
@@ -99,11 +102,17 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
                 break;
         }
         final int newCount = this.hasMore ? 0 : data.getList().size();
-        this.view.postRunnable(() -> {
-            final int newViewCount = getLayoutManager().getChildCount();
-            if (this.hasMore && newViewCount - 1 == newCount) {
-                onLoadMore();
-            }
-        });
+        if (loadMoreEnabled)
+            this.view.postRunnable(() -> {
+                final int newViewCount = getLayoutManager().getChildCount();
+                if (this.hasMore && newViewCount - 1 == newCount) {
+                    onLoadMore();
+                }
+            });
     }
+
+    public void setLoadMoreEnabled(boolean loadMoreEnabled) {
+        this.loadMoreEnabled = loadMoreEnabled;
+    }
+
 }

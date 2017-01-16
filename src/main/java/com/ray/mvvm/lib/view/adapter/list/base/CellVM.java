@@ -31,7 +31,7 @@ import com.ray.mvvm.lib.view.adapter.OnItemClick;
 
 public class CellVM<T> extends BaseObservable {
 
-    protected T entity;
+    protected T data;
     private RecyclerView.ViewHolder viewHolder;
     private int position = ListAdapter.NO_POSITION;
     private OnItemClick<T> itemClick;
@@ -39,33 +39,33 @@ public class CellVM<T> extends BaseObservable {
     public CellVM() {
     }
 
-    public CellVM(T entity, OnItemClick<T> itemClick) {
-        this.entity = entity;
+    public CellVM(T data, OnItemClick<T> itemClick) {
+        this.data = data;
         this.itemClick = itemClick;
     }
 
-    public CellVM(T entity) {
-        this.entity = entity;
+    public CellVM(T data) {
+        this.data = data;
     }
 
-    public CellVM(T entity, RecyclerView.ViewHolder viewHolder) {
-        this.entity = entity;
+    public CellVM(T data, RecyclerView.ViewHolder viewHolder) {
+        this.data = data;
         this.viewHolder = viewHolder;
     }
 
-    public CellVM(T entity, RecyclerView.ViewHolder viewHolder, OnItemClick<T> itemClick) {
-        this.entity = entity;
+    public CellVM(T data, RecyclerView.ViewHolder viewHolder, OnItemClick<T> itemClick) {
+        this.data = data;
         this.viewHolder = viewHolder;
         this.itemClick = itemClick;
     }
 
-    public CellVM(T entity, int position) {
-        this.entity = entity;
+    public CellVM(T data, int position) {
+        this.data = data;
         this.position = position;
     }
 
-    public CellVM(T entity, int position, OnItemClick<T> itemClick) {
-        this.entity = entity;
+    public CellVM(T data, int position, OnItemClick<T> itemClick) {
+        this.data = data;
         this.itemClick = itemClick;
         this.position = position;
     }
@@ -74,8 +74,8 @@ public class CellVM<T> extends BaseObservable {
         this.itemClick = itemClick;
     }
 
-    public T getEntity() {
-        return entity;
+    public T getData() {
+        return data;
     }
 
     public OnItemClick<T> getItemClick() {
@@ -84,7 +84,7 @@ public class CellVM<T> extends BaseObservable {
 
     public void onContentClicked(View view) {
         if (itemClick != null) {
-            itemClick.onItemClick(getPosition(), view, entity);
+            itemClick.onItemClick(getPosition(), view, data);
         }
     }
 
