@@ -49,6 +49,8 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
     @Override
     BaseViewHolder onCreateViewHolderIml(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if (stateVM == null)
+            return new BaseViewHolder(createBinding(inflater, parent, viewType));
         ViewDataBinding viewDataBinding;
         final int state = stateVM.getState();
         switch (state) {
@@ -66,7 +68,7 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
             case PageState.LOAD_MORE:
                 switch (viewType) {
                     default:
-                        viewDataBinding = createBinding(LayoutInflater.from(parent.getContext()), parent, viewType);
+                        viewDataBinding = createBinding(inflater, parent, viewType);
                         break;
                     case ListViewItemType.NO_MORE:
                         viewDataBinding = StateNoMoreLayoutBinding.inflate(inflater, parent, false);
@@ -85,6 +87,8 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
 
     @Override
     public int getItemCount() {
+        if (stateVM == null)
+            return super.getItemCount();
         final int state = stateVM.getState();
         switch (state) {
             case PageState.EMPTY:
@@ -100,6 +104,8 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
 
     @Override
     public final int getItemViewType(int position) {
+        if (stateVM == null)
+            return super.getItemViewType(position);
         final int state = stateVM.getState();
         switch (state) {
             case PageState.EMPTY:
@@ -125,6 +131,10 @@ public abstract class StateListAdapter<T> extends ListAdapter<T> {
 
     @Override
     protected void bindingViewHolder(BaseViewHolder holder, int position) {
+        if (stateVM == null) {
+            super.bindingViewHolder(holder, position);
+            return;
+        }
         final int state = stateVM.getState();
         final int listItemType = getItemViewType(position);
         final int viewType = holder.getItemViewType();

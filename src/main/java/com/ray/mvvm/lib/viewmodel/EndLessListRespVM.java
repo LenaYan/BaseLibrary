@@ -78,15 +78,12 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
     @Override
     protected void handleOnNextState(ListRespEntity<D> data) {
         super.handleOnNextState(data);
-        this.hasMore = data.isHasMore();
+        final boolean isRespNull = !isRespNull(data);
+        final int oldItemCount = getAdapter().getItemCount();
+        this.hasMore = isRespNull;
         loadedPage = pageNum;
         setListItemType(hasMore ? ListViewItemType.LOAD_MORE : ListViewItemType.NO_MORE);
-        final int totalCount = getAdapter().getItemCount();
-        getAdapter().notifyItemChanged(totalCount - 1);
-        int viewCount = getLayoutManager().getChildCount();
-        if (viewCount == totalCount) {
-            onLoadMore();
-        }
+        getAdapter().notifyItemChanged(oldItemCount - 1);
     }
 
     protected abstract void exePageRequest(int pageNum);
@@ -97,12 +94,16 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
             case PageState.LOAD_MORE:
                 getAdapter().addItems(data.getList());
                 break;
-            case PageState.CONTENT:
-            case PageState.LOADING:
-            case PageState.EMPTY:
-            case PageState.ERROR:
+            default:
                 super.bindResp(data, originState);
                 break;
         }
+        final int newCount = this.hasMore ? 0 : data.getList().size();
+        this.view.postRunnable(() -> {
+            final int newViewCount = getLayoutManager().getChildCount();
+            if (this.hasMore && newViewCount - 1 == newCount) {
+                onLoadMore();
+            }
+        });
     }
 }

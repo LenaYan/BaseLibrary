@@ -31,9 +31,15 @@ import com.ray.mvvm.lib.view.base.view.IView;
 
 public abstract class StateListVM<P extends IPresenter, V extends IView, D> extends ListVM<P, V, D> {
 
+    private StateListAdapter<D> stateListAdapter;
+
     public StateListVM(P presenter, V view, RecyclerView.LayoutManager layoutManager, StateListAdapter<D> adapter) {
         super(presenter, view, layoutManager, adapter);
-        adapter.setStateVM(this);
+        stateListAdapter = adapter;
+        stateListAdapter.setStateVM(this);
     }
 
+    public StateListAdapter<D> getStateListAdapter() {
+        return stateListAdapter;
+    }
 }
