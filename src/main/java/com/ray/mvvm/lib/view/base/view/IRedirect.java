@@ -29,7 +29,7 @@ import android.os.Bundle;
 
 import com.ray.mvvm.lib.widget.anotations.ActivityAction;
 
-interface IRedirect {
+public interface IRedirect {
 
     void intent(Intent intent);
 

@@ -330,8 +330,10 @@ public class BindingAdapter {
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         webView.setVerticalScrollBarEnabled(false);
         webView.setHorizontalScrollBarEnabled(false);
-        if (webViewClient != null)
-            webView.setWebViewClient(webViewClient);
+        if (webViewClient == null) {
+            webViewClient = new WebViewClient();
+        }
+        webView.setWebViewClient(webViewClient);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
         if (!StringUtil.isEmpty(data))
@@ -339,7 +341,13 @@ public class BindingAdapter {
         if (!StringUtil.isEmpty(url))
             webView.loadUrl(url);
         if (jsInterface != null)
-            webView.addJavascriptInterface(jsInterface, "IronHide");
+            webView.addJavascriptInterface(jsInterface, "JsInterface");
+    }
+
+    @android.databinding.BindingAdapter(value = {"colorSchemeResources"})
+    public static void bingSwipRefeshSchemaColor(SwipeRefreshLayout refreshLayout, int colorSchemeResources) {
+        int[] colors = {colorSchemeResources};
+        refreshLayout.setColorSchemeColors(colors);
     }
 
 }

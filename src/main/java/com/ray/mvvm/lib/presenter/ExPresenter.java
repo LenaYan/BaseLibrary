@@ -175,7 +175,7 @@ public class ExPresenter extends CommonPresenter {
                 .subscribe(subscriber);
     }
 
-    protected <T extends ExRespEntity> void subscribeNoResp(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
+    protected void subscribeNoResp(@NonNull Observable<ExRespEntity> observable, @NonNull Subscriber<ExRespEntity> subscriber) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -186,7 +186,7 @@ public class ExPresenter extends CommonPresenter {
                 .subscribe(subscriber);
     }
 
-    protected <T extends ExRespEntity> void subscribeNoResp(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber, Action1<T> doOnNext) {
+    protected void subscribeNoResp(@NonNull Observable<ExRespEntity> observable, @NonNull Subscriber<ExRespEntity> subscriber, Action1<ExRespEntity> doOnNext) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)

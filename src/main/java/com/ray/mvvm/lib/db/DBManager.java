@@ -242,8 +242,7 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
                         realm.executeTransactionAsync(realm ->
                                         Observable
                                                 .create((Subscriber<? super Boolean> subscriber1) -> {
-                                                    realm.where(clazz).findAll().deleteAllFromRealm();
-                                                    subscriber1.onNext(true);
+                                                    subscriber1.onNext(realm.where(clazz).findAll().deleteAllFromRealm());
                                                     subscriber1.onCompleted();
                                                 })
                                                 .observeOn(AndroidSchedulers.mainThread())

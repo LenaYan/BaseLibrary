@@ -39,8 +39,6 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
     private PublishSubject<Boolean> refreshSubject;
     private boolean isRefreshing;
 
-    private int[] colors = {com.ray.mvvm.lib.R.color.SwipRefreshColor};
-
     public SwipRefreshVM(P presenter, V view) {
         super(presenter, view);
         refreshSubject = PublishSubject.create();
@@ -55,10 +53,6 @@ public abstract class SwipRefreshVM<P extends IPresenter, V extends IView, D> ex
                     if (isRefreshing)
                         onRefresh();
                 });
-    }
-
-    public int[] getColors() {
-        return colors;
     }
 
     @Override
