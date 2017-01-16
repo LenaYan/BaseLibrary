@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.ray.mvvm.lib.view.web.WebViewVM" />
+
+        <variable
+            name="viewModel"
+            type="WebViewVM" />
+    </data>
+
+    <android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipe_refresh_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:colorSchemeResources="@{@color/SwipRefreshColor}"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:onRefreshListener="@{viewModel}"
+        app:refresh="@{viewModel.refreshing}"
+        tools:context="com.ray.mvvm.lib.view.web.WebViewActivity">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:padding="0dp" />
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:url="@{viewModel.url}" />
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</layout>

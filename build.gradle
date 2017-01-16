@@ -148,4 +148,5 @@ dependencies {
     androidTestCompile(depMap.EspressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 }
