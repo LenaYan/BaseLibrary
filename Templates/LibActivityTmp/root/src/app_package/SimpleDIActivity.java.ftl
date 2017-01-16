@@ -2,12 +2,12 @@ package ${packageName};
 
 import android.os.Bundle;
 
-import ${libPackage}.view.base.page.BaseDIActivity;
 import ${realAppPackage}.R;
 import ${packageName}.contract.${pageName}Contract;
 import ${packageName}.contract.Dagger${pageName}Contract_Comp;
 import ${packageName}.vm.${pageName}VM;
 import ${packageName}.vm.module.${pageName}VMModule;
+import ${libPackage}.view.base.page.BaseDIActivity;
 
 import javax.inject.Inject;
 

@@ -35,6 +35,26 @@
         suggest="fragment_${classToResource(fragmentName)}"
         type="string" />
 
+    <parameter name="Contain List"
+        default="false"
+        help="If true, the layout will include RecyclerView and SwipRefreshLayout "
+        id="isWithList"
+        type="boolean" />
+
+    <parameter name="With list page state"
+        default="isWithList"
+        help="If true, the list will show page state like loading,error,empty"
+        id="isShowPageState"
+        type="boolean"
+        visibility="isWithList" />
+
+    <parameter name="With load more"
+        default="false"
+        help="If true, the list will be endless"
+        id="isWithLoadMore"
+        type="boolean"
+        visibility="isWithList" />
+
     <thumbs>
         <thumb>template_blank_fragment.png</thumb>
     </thumbs>
