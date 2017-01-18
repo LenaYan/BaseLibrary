@@ -87,7 +87,7 @@ public class CommonPresenter implements IPresenter {
     }
 
     @Override
-    public <T> void subscribe(Observable<T> observable, Subscriber<T> subscriber) {
+    public <T> void subscribe(Observable<? extends T> observable, Subscriber<? super T> subscriber) {
         observable
                 .compose(lifecycleTransformer())
                 .subscribe(subscriber);
@@ -103,7 +103,7 @@ public class CommonPresenter implements IPresenter {
     }
 
     @Override
-    public <V> void subscribe(Observable<V> observable, Action1<? super V> action) {
+    public <T> void subscribe(Observable<? extends T> observable, Action1<? super T> action) {
         observable
                 .onBackpressureBuffer()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -120,7 +120,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(eventAction);
     }
 
-    protected <T> void subscribeCommonReq(@NonNull Observable<T> observable, Action1<T> action1) {
+    protected <T> void subscribeCommonReq(@NonNull Observable<? extends T> observable, Action1<? super T> action1) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -131,7 +131,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(action1);
     }
 
-    protected <T> void subscribeAsync(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
+    protected <T> void subscribeAsync(@NonNull Observable<? extends T> observable, @NonNull Subscriber<? super T> subscriber) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -142,7 +142,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(subscriber);
     }
 
-    protected <T> void subscribeAsync(@NonNull Observable<T> observable, @NonNull ExObserver<T> observer) {
+    protected <T> void subscribeAsync(@NonNull Observable<? extends T> observable, @NonNull ExObserver<? super T> observer) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -154,7 +154,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(observer);
     }
 
-    protected <T> void subscribeCommonReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
+    protected <T> void subscribeCommonReq(@NonNull Observable<? extends T> observable, @NonNull Subscriber<? super T> subscriber) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -165,7 +165,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(subscriber);
     }
 
-    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<R> subscriber) {
+    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<? extends T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<? super R> subscriber) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -177,7 +177,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(subscriber);
     }
 
-    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<R> subscriber, Action1<T> action1) {
+    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<? extends T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<? super R> subscriber, Action1<? super T> action1) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -190,7 +190,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(subscriber);
     }
 
-    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter) {
+    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<? extends T> observable, Func1<? super T, ? extends Observable<? extends R>> converter) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -202,7 +202,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe();
     }
 
-    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull ExObserver<R> observer) {
+    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<? extends T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull ExObserver<? super R> observer) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -215,7 +215,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(observer);
     }
 
-    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends T>> before, Func1<? super T, ? extends Observable<? extends R>> after, @NonNull ExObserver<R> observer) {
+    protected <T, R> void subscribeCommonReqConcat(@NonNull Observable<? extends T> observable, Func1<? super T, ? extends Observable<? extends T>> before, Func1<? super T, ? extends Observable<? extends R>> after, @NonNull ExObserver<? super R> observer) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -229,7 +229,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(observer);
     }
 
-    protected <T> void subscribeCommonReq(@NonNull Observable<T> observable, ExObserver<T> observer) {
+    protected <T> void subscribeCommonReq(@NonNull Observable<? extends T> observable, ExObserver<? super T> observer) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -241,7 +241,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(observer);
     }
 
-    protected <T> void subscribeCommonReq(@NonNull Observable<T> observable, ExObserver<T> observer, Action1<T> doOnNext) {
+    protected <T> void subscribeCommonReq(@NonNull Observable<? extends T> observable, ExObserver<? super T> observer, Action1<? super T> doOnNext) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -254,7 +254,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(observer);
     }
 
-    protected <T> void subscribeCommonReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber, Action1<T> doOnNext) {
+    protected <T> void subscribeCommonReq(@NonNull Observable<? extends T> observable, @NonNull Subscriber<? super T> subscriber, Action1<? super T> doOnNext) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -266,7 +266,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(subscriber);
     }
 
-    protected <T> void subscribeCommonNoResp(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
+    protected <T> void subscribeCommonNoResp(@NonNull Observable<? extends T> observable, @NonNull Subscriber<? super T> subscriber) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -276,7 +276,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(subscriber);
     }
 
-    protected <T> void subscribeCommonNoResp(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber, Action1<T> doOnNext) {
+    protected <T> void subscribeCommonNoResp(@NonNull Observable<? extends T> observable, @NonNull Subscriber<? super T> subscriber, Action1<? super T> doOnNext) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -287,7 +287,7 @@ public class CommonPresenter implements IPresenter {
                 .subscribe(subscriber);
     }
 
-    public <T, R> void subscribeCommonReqWithFunc(@NonNull Observable<T> observable, @NonNull Subscriber<R> subscriber, Func1<? super T, ? extends Observable<? extends R>> func) {
+    public <T, R> void subscribeCommonReqWithFunc(@NonNull Observable<? extends T> observable, @NonNull Subscriber<? super R> subscriber, Func1<? super T, ? extends Observable<? extends R>> func) {
         observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
