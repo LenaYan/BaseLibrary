@@ -24,8 +24,6 @@
 package com.ray.mvvm.lib.app;
 
 public interface Constants {
-
     int TIMER_SEC_IN_MIN = 60;
     int PAGE_SIZE_DEFAULT = 20;
-
 }
