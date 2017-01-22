@@ -8,6 +8,7 @@ import ${packageName}.contract.Dagger${pageName}Contract_Comp;
 import ${packageName}.vm.${pageName}VM;
 import ${packageName}.vm.module.${pageName}VMModule;
 import ${libPackage}.view.base.page.BaseDIActivity;
+import com.ray.mvvm.lib.view.base.view.IRedirect;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,11 @@ import android.view.MenuItem;
 </#if>
 
 public class ${activityClass} extends BaseDIActivity implements ${pageName}Contract.View{
+
+    public static void start(IRedirect redirect) {
+        Bundle bundle = new Bundle();
+        redirect.intent(${activityClass}.class, bundle);
+    }
 
     @Inject ${pageName}VM viewModel;
 
