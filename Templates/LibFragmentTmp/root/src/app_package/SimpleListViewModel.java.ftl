@@ -12,7 +12,7 @@ public class ${pageName}VM extends EndLessListVM<${pageName}Contract.Presenter, 
 
    public ${pageName}VM(${pageName}Contract.Presenter presenter, ${pageName}Contract.View view, LinearLayoutManager layoutManager, StateListAdapter<T> adapter) {
 <#else>
-public class ${pageName}VM extends <#if isShowPageState>State</#if>ListVM<${pageName}Contract.Presenter, ${pageName}Contract.View, T> {
+public class ${pageName}VM extends <#if isShowPageState>State</#if>ListVM<${pageName}Contract.Presenter, ${pageName}Contract.View, T>{
 
    public ${pageName}VM(${pageName}Contract.Presenter presenter, ${pageName}Contract.View view, RecyclerView.LayoutManager layoutManager, <#if isShowPageState>State</#if>ListAdapter<T> adapter) {
 </#if>
