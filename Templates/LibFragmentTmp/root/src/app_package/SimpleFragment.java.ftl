@@ -17,6 +17,13 @@ import javax.inject.Inject;
 
 public class ${fragmentName} extends BaseDIFragment implements ${pageName}Contract.View {
 
+    public static ${fragmentName} newInstance() {
+        ${fragmentName} fragment = new ${fragmentName}();
+        Bundle bundle = new Bundle();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Inject ${pageName}VM viewModel;
 
     @Override
@@ -35,6 +42,5 @@ public class ${fragmentName} extends BaseDIFragment implements ${pageName}Contra
             .${moduleNameUncapFirst}(new ${pageName}VMModule(this))
             .build()
             .inject(this);
-
     }
 }
