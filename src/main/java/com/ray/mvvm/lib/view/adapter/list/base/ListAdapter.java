@@ -146,8 +146,33 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         return wrapMap.get(id);
     }
 
-    public void addItem(T t) {
-        addItem(0, t);
+    public void addItemToHead(T t) {
+        if (t == null)
+            return;
+        if (list == null) {
+            list = new ArrayList<>();
+            wrapMap.clear();
+        }
+        list.add(0, t);
+        final long index = getIndex(t);
+        if (index != NO_INDEX)
+            wrapMap.put(index, t);
+        notifyItemInserted(0);
+    }
+
+    public void addItemToFoot(T t) {
+        if (t == null)
+            return;
+        if (list == null) {
+            list = new ArrayList<>();
+            wrapMap.clear();
+        }
+        final int position = list.size();
+        list.add(position, t);
+        final long index = getIndex(t);
+        if (index != NO_INDEX)
+            wrapMap.put(index, t);
+        notifyItemInserted(position);
     }
 
     public void addItem(int position, T t) {
@@ -159,9 +184,32 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         }
         list.add(position, t);
         final long index = getIndex(t);
+        if (index != NO_INDEX) {
+            wrapMap.clear();
+            if (this.list != null && getItemCount() > 0) {
+                for (T item : this.list) {
+                    final long itemIndex = getIndex(t);
+                    if (itemIndex == NO_INDEX)
+                        break;
+                    wrapMap.put(index, item);
+                }
+            }
+        }
+        notifyItemInserted(position);
+    }
+
+    public void setItem(int position, T t) {
+        if (t == null)
+            return;
+        if (list == null) {
+            list = new ArrayList<>();
+            wrapMap.clear();
+        }
+        list.set(position, t);
+        final long index = getIndex(t);
         if (index != NO_INDEX)
             wrapMap.put(index, t);
-        notifyItemInserted(position);
+        notifyItemChanged(position);
     }
 
     public void addItems(List<T> insertList) {

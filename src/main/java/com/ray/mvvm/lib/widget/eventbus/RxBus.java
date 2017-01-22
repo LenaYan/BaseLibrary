@@ -33,8 +33,7 @@ import rx.subjects.Subject;
 public class RxBus {
 
     private static volatile RxBus instance = new RxBus();
-
-    private Subject<Object, Object> bus = new SerializedSubject<>(PublishSubject.create());
+    private Subject<? super BaseEvent, ? extends BaseEvent> bus = new SerializedSubject<>(PublishSubject.create());
 
     public static RxBus instance() {
         RxBus rxBus = instance;
@@ -49,22 +48,15 @@ public class RxBus {
         return rxBus;
     }
 
-    public void post(Object event) {
+    public <T extends BaseEvent> void post(T event) {
         bus.onNext(event);
     }
 
     public <T extends BaseEvent> Observable<T> asObservable(final Class<T> aClass) {
         return bus.asObservable()
-                .filter(event ->
-                        aClass.isInstance(event)
-                )
+                .filter(aClass::isInstance)
                 .cast(aClass);
     }
-
-    public Observable<BaseEvent> asObservable() {
-        return bus.asObservable().cast(BaseEvent.class);
-    }
-
 
     public boolean hasObservers() {
         return bus.hasObservers();
