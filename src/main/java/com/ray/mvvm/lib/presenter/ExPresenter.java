@@ -25,6 +25,7 @@ package com.ray.mvvm.lib.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.ray.mvvm.lib.interfaces.OnStartAction;
 import com.ray.mvvm.lib.model.http.ErrorType;
 import com.ray.mvvm.lib.model.http.ExObserver;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
@@ -42,164 +43,91 @@ import timber.log.Timber;
 
 public class ExPresenter extends CommonPresenter {
 
-    protected <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
+    private <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .subscribe(subscriber);
     }
 
-    protected <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<R> subscriber) {
+    private <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<R> subscriber) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .concatMap(converter)
                 .subscribe(subscriber);
     }
 
-    protected <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<R> subscriber, Action1<T> action1) {
+    private <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull Subscriber<R> subscriber, Action1<T> action1) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .doOnNext(action1)
                 .concatMap(converter)
                 .subscribe(subscriber);
     }
 
-    protected <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter) {
+    private <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .concatMap(converter)
                 .subscribe();
     }
 
-    protected <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull ExObserver<R> observer) {
+    private <T extends ExRespEntity, R> void subscribeReqConcat(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull ExObserver<R> observer) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .doOnSubscribe(observer::onStart)
                 .concatMap(converter)
                 .subscribe(observer);
     }
 
-    protected <T extends ExRespEntity, R> void subscribeReqFlatMap(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull ExObserver<R> observer) {
+    private <T extends ExRespEntity, R> void subscribeReqFlatMap(@NonNull Observable<T> observable, Func1<? super T, ? extends Observable<? extends R>> converter, @NonNull ExObserver<R> observer) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
-                .doOnSubscribe(observer::onStart)
+                .compose(exObservableTransformer(observer))
                 .flatMap(converter)
                 .subscribe(observer);
     }
 
-    protected <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, ExObserver<T> observer) {
+    private <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, ExObserver<T> observer) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
-                .doOnSubscribe(observer::onStart)
-                .doOnError(this::postError)
+                .compose(exObservableTransformer(observer))
                 .subscribe(observer);
     }
 
-    protected <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, ExObserver<T> observer, Action1<T> doOnNext) {
+    private <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, ExObserver<T> observer, Action1<T> doOnNext) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
-                .doOnSubscribe(observer::onStart)
+                .compose(exObservableTransformer(observer))
                 .doOnNext(doOnNext)
                 .subscribe(observer);
     }
 
-    protected <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber, Action1<T> doOnNext) {
+    private <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber, Action1<T> doOnNext) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .doOnNext(doOnNext)
                 .subscribe(subscriber);
     }
 
-    protected <T extends ExRespEntity, R> void subscribeReqWithFunc(@NonNull Observable<T> observable, @NonNull Subscriber<R> subscriber, Func1<? super T, ? extends Observable<? extends R>> func) {
+    private <T extends ExRespEntity, R> void subscribeReqWithFunc(@NonNull Observable<T> observable, @NonNull Subscriber<R> subscriber, Func1<? super T, ? extends Observable<? extends R>> func) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .flatMap(this::dataFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .concatMap(func)
                 .subscribe(subscriber);
     }
 
-    protected void subscribeNoResp(@NonNull Observable<ExRespEntity> observable, @NonNull Subscriber<ExRespEntity> subscriber) {
+    private void subscribeNoResp(@NonNull Observable<ExRespEntity> observable, @NonNull Subscriber<ExRespEntity> subscriber) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .subscribe(subscriber);
     }
 
-    protected void subscribeNoResp(@NonNull Observable<ExRespEntity> observable, @NonNull Subscriber<ExRespEntity> subscriber, Action1<ExRespEntity> doOnNext) {
+    private void subscribeNoResp(@NonNull Observable<ExRespEntity> observable, @NonNull Subscriber<ExRespEntity> subscriber, Action1<ExRespEntity> doOnNext) {
         observable
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
-                .flatMap(this::respFlatMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(lifecycleTransformer())
+                .compose(exObservableTransformer())
                 .doOnNext(doOnNext)
                 .doOnNext((t) -> Timber.i("doOnNext  %d", Thread.currentThread().getId()))
                 .subscribe(subscriber);
     }
 
-    private <Y extends ExRespEntity> Observable<Y> respFlatMap(Y respEntity) {
+    protected <Y extends ExRespEntity> Observable<Y> respFlatMap(Y respEntity) {
         return Observable.create((subscriber) -> {
             if (respEntity == null) {
                 subscriber.onError(new ErrorEvent(ErrorType.RESP_BODY_EMPTY, "Response entity is empty."));
@@ -213,7 +141,7 @@ public class ExPresenter extends CommonPresenter {
         });
     }
 
-    protected Observable<ExRespEntity> mockJieJingRespObservable() {
+    protected Observable<ExRespEntity> mockRespObservable() {
         return Observable
                 .create(new Observable.OnSubscribe<ExRespEntity>() {
                     @Override
@@ -225,7 +153,7 @@ public class ExPresenter extends CommonPresenter {
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T extends ExRespEntity> Observable<T> mockJieJingRespObservable(T t) {
+    protected <T extends ExRespEntity> Observable<T> mockRespObservable(T t) {
         return Observable
                 .create(new Observable.OnSubscribe<T>() {
                     @Override
@@ -236,4 +164,40 @@ public class ExPresenter extends CommonPresenter {
                 })
                 .delay(3, TimeUnit.SECONDS);
     }
+
+    protected <T extends ExRespEntity> Observable.Transformer<T, T> exObservableTransformer() {
+        return observable -> observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::dataFlatMap)
+                .flatMap(this::respFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer());
+    }
+
+    protected <T extends ExRespEntity> Observable.Transformer<T, T> exObservableTransformer(OnStartAction startListener) {
+        return observable -> observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::dataFlatMap)
+                .flatMap(this::respFlatMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer())
+                .doOnSubscribe(startListener::onStart);
+    }
+
+    protected <T extends ExRespEntity, R> Observable.Transformer<T, R> exObservableTransformer(Func1<? super T, ? extends Observable<? extends R>> func) {
+        return observable -> observable
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnError(this::postError)
+                .flatMap(this::dataFlatMap)
+                .flatMap(this::respFlatMap)
+                .concatMap(func)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(lifecycleTransformer());
+    }
+
 }

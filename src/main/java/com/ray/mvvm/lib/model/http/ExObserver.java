@@ -23,10 +23,9 @@
 
 package com.ray.mvvm.lib.model.http;
 
+import com.ray.mvvm.lib.interfaces.OnStartAction;
+
 import rx.Observer;
 
-public interface ExObserver<T> extends Observer<T> {
-
-    void onStart();
-
+public interface ExObserver<T> extends Observer<T>, OnStartAction {
 }

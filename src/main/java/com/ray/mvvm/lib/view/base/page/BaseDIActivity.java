@@ -90,7 +90,6 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         subscription = lifecycleSubject
                 .subscribe(activityEvent -> {
                     if (activityEvent == LifecycleEvent.DESTROY) {
-                        viewModel.presenter().unsubscribe();
                         final RefWatcher refWatcher = BaseApplication.getRefWatcher(BaseDIActivity.this);
                         if (refWatcher != null) {
                             refWatcher.watch(viewModel);
