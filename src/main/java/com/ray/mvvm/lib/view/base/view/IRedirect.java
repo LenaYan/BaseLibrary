@@ -23,33 +23,94 @@
 
 package com.ray.mvvm.lib.view.base.view;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.ray.mvvm.lib.widget.anotations.ActivityAction;
 
 public interface IRedirect {
 
-    void intent(Intent intent);
+    @TargetApi(Build.VERSION_CODES.N)
+    default <T extends Activity> void intent(Class<T> aClass) {
+        intent(aClass, new Bundle());
+    }
 
-    <T extends Activity> void intent(Class<T> aClass);
+    @TargetApi(Build.VERSION_CODES.N)
+    default <T extends Activity> void intentForResult(Class<T> aClass, int requestCode) {
+        intentForResult(aClass, requestCode, null);
+    }
 
-    <T extends Activity> void intent(Class<T> aClass, Bundle bundle);
+    @TargetApi(Build.VERSION_CODES.N)
+    default <T extends Activity> void intent(Class<T> aClass, Bundle bundle) {
+        Activity activity = activity();
+        Intent intent = new Intent(activity, aClass);
+        if (bundle != null)
+            intent.putExtras(bundle);
+        activity.startActivity(intent);
+    }
 
-    <T extends Activity> void intent(Class<T> aClass, Intent intent);
+    @TargetApi(Build.VERSION_CODES.N)
+    default void intent(Intent intent) {
+        Activity activity = activity();
+        activity.startActivity(intent);
+    }
 
-    <T extends Activity> void intentForResult(Class<T> aClass, int requestCode);
+    @TargetApi(Build.VERSION_CODES.N)
+    default <T extends Activity> void intent(Class<T> aClass, Intent intent) {
+        Activity activity = activity();
+        intent.setClass(activity, aClass);
+        activity.startActivity(intent);
+    }
 
-    <T extends Activity> void intentForResult(Class<T> aClass, int requestCode, Bundle bundle);
+    @TargetApi(Build.VERSION_CODES.N)
+    default <T extends Activity> void intentForResult(Class<T> aClass, int requestCode, Bundle bundle) {
+        Activity activity = activity();
+        Intent intent = new Intent(activity, aClass);
+        if (bundle != null)
+            intent.putExtras(bundle);
+        activity.startActivityForResult(intent, requestCode);
+    }
 
-    void intentFinish();
+    @TargetApi(Build.VERSION_CODES.N)
+    default void intentFinish() {
+        Activity activity = activity();
+        activity.finish();
+    }
 
-    void intentFinish(@ActivityAction int action);
+    @TargetApi(Build.VERSION_CODES.N)
+    default void intentFinish(@ActivityAction int action) {
+        Activity activity = activity();
+        activity.setResult(action);
+        activity.finish();
+    }
 
-    void intentFinish(Intent intent, @ActivityAction int action);
+    @TargetApi(Build.VERSION_CODES.N)
+    default void intentFinish(Intent intent, int action) {
+        Activity activity = activity();
+        activity.setResult(action, intent);
+        activity.finish();
+    }
 
-    void intentFinish(Bundle bundle, @ActivityAction int action);
+    @TargetApi(Build.VERSION_CODES.N)
+    default void intentFinish(Bundle bundle, @ActivityAction int action) {
+        Activity activity = activity();
+        Intent intent = activity.getIntent();
+        if (bundle != null)
+            intent.putExtras(bundle);
+        activity.setResult(action, intent);
+        activity.finish();
+    }
 
-    <T extends Activity> void intentFinishNewTask(Class<T> aClass);
+    @TargetApi(Build.VERSION_CODES.N)
+    default <T extends Activity> void intentFinishNewTask(Class<T> aClass) {
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent(aClass, intent);
+    }
+
+    AppCompatActivity activity();
 }

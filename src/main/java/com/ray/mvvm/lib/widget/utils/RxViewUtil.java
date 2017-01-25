@@ -30,7 +30,7 @@ import rx.android.schedulers.AndroidSchedulers;
  * \               ||----w |
  * \               ||     ||
  */
-public class RxUtil {
+public final class RxViewUtil {
 
     public static Observable<Void> throttleClick(MenuItem menuItem) {
         return RxMenuItem
@@ -53,7 +53,7 @@ public class RxUtil {
 //                .filter(charSequence -> charSequence != null && charSequence.length() > 0)
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .onBackpressureLatest()
-                .subscribeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public static Observable<Void> throttleViewClicked(View view) {
@@ -61,7 +61,7 @@ public class RxUtil {
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .onBackpressureLatest()
-                .subscribeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public static Observable<Void> throttleViewClicked(MenuItem menuItem) {
@@ -69,7 +69,7 @@ public class RxUtil {
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .onBackpressureLatest()
-                .subscribeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

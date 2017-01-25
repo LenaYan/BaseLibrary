@@ -65,7 +65,7 @@ import com.ray.mvvm.lib.widget.view.OnLoadMoreListener;
 
 import static com.bumptech.glide.Glide.with;
 
-public class BindingAdapter {
+public final class BindingAdapter {
 
     @android.databinding.BindingAdapter(value = {"normalTitleColor", "selectedTitleColor"}, requireAll = true)
     public static void setTabLayoutTextColor(TabLayout tabLayout, int normalTitleColor, int selectedTitleColor) {

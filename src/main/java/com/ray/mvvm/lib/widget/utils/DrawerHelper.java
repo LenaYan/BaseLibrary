@@ -25,7 +25,7 @@ package com.ray.mvvm.lib.widget.utils;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 
-public class DrawerHelper {
+public final class DrawerHelper {
     public static MaterialMenuDrawable.IconState generateState(MaterialMenuDrawable.IconState previous) {
         return previous == MaterialMenuDrawable.IconState.ARROW ? MaterialMenuDrawable.IconState.BURGER : MaterialMenuDrawable.IconState.ARROW;
     }

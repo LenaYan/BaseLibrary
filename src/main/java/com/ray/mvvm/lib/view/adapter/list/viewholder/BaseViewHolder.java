@@ -26,7 +26,7 @@ package com.ray.mvvm.lib.view.adapter.list.viewholder;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 
-public class BaseViewHolder extends RecyclerView.ViewHolder {
+public final class BaseViewHolder extends RecyclerView.ViewHolder {
 
     private final ViewDataBinding binding;
 
@@ -34,7 +34,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         super(binding.getRoot());
         this.binding = binding;
     }
-    
+
     public void bindData(int viewModelId, Object t) {
         binding.setVariable(viewModelId, t);
         binding.executePendingBindings();

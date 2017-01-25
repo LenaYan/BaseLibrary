@@ -44,7 +44,7 @@ import io.realm.Realm;
  * \               ||----w |
  * \               ||     ||
  */
-public class TopicDBManager extends DBManager<TopicEntity> implements ITopicDBManager {
+public final class TopicDBManager extends DBManager<TopicEntity> implements ITopicDBManager {
 
     public TopicDBManager(Realm realm) {
         super(realm, TopicEntity.class);

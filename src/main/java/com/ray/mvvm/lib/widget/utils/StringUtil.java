@@ -25,7 +25,7 @@ package com.ray.mvvm.lib.widget.utils;
 
 import android.text.TextUtils;
 
-public class StringUtil {
+public final class StringUtil {
 
     public static boolean isEmpty(CharSequence charSequence) {
         if (TextUtils.isEmpty(charSequence)) return true;

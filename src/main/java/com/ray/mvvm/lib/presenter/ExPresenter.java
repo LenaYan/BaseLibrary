@@ -41,7 +41,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class ExPresenter extends CommonPresenter {
+public final class ExPresenter extends CommonPresenter {
 
     private <T extends ExRespEntity> void subscribeReq(@NonNull Observable<T> observable, @NonNull Subscriber<T> subscriber) {
         observable

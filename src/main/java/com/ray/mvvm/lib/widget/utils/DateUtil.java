@@ -26,7 +26,7 @@ package com.ray.mvvm.lib.widget.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateUtil {
+public final class DateUtil {
 
     private static SimpleDateFormat simpleDateFormat;
 

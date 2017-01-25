@@ -37,7 +37,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class LayoutManagerModule {
+public final class LayoutManagerModule {
 
     @Provides
     @Named(ListType.VERTICAL)

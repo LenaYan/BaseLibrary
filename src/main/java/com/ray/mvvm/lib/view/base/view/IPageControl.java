@@ -31,10 +31,6 @@ interface IPageControl {
 
     void hideProgressDialog();
 
-    void showToast(int stringRes);
-
-    void showToast(String string);
-
     void refreshOptionsMenu();
 
 }

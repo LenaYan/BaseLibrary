@@ -23,42 +23,26 @@
 
 package com.ray.mvvm.lib.view.base.page;
 
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.ray.mvvm.lib.R;
 import com.ray.mvvm.lib.view.base.view.IView;
-import com.ray.mvvm.lib.widget.anotations.ActivityAction;
-import com.ray.mvvm.lib.widget.eventbus.RxBus;
-import com.ray.mvvm.lib.widget.eventbus.event.BaseEvent;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.ray.mvvm.lib.widget.lifecycle.RxPageLifecycle;
-import com.ray.mvvm.lib.widget.utils.ToastUtil;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.subjects.BehaviorSubject;
 
 public class BaseActivity extends AppCompatActivity implements IView {
@@ -66,11 +50,35 @@ public class BaseActivity extends AppCompatActivity implements IView {
     protected BehaviorSubject<LifecycleEvent> lifecycleSubject = BehaviorSubject.create();
     private ProgressDialog progressDialog;
 
+    @Override
+    public ProgressDialog getProgressDialog(boolean cancelable) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setCancelable(cancelable);
+            progressDialog.setContentView(com.ray.mvvm.lib.R.layout.layout_progress);
+        }
+        return progressDialog;
+    }
+
+    @Override
+    public AppCompatActivity activity() {
+        return this;
+    }
+
+    @Override
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public boolean isPageAlive() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 ? !isFinishing() && !isDestroyed() : !isFinishing();
+    }
+
     @CheckResult
     @Nonnull
     @Override
     public Observable<LifecycleEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
+        return lifecycleSubject.asObservable().doOnError(throwable -> {
+            showToast(throwable.getMessage());
+            throwable.printStackTrace();
+        });
     }
 
     @Nonnull
@@ -91,42 +99,12 @@ public class BaseActivity extends AppCompatActivity implements IView {
     }
 
     @Override
-    public <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext) {
-        RxBus.instance()
-                .asObservable(aClass)
-                .observeOn(AndroidSchedulers.mainThread())
-                .delay(t ->
-                        lifecycle()
-                                .filter(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
-                                .map(lifecycleEvent -> {
-                                    t.setLifecycleEvent(lifecycleEvent);
-                                    return t;
-                                })
-                )
-                .compose(bindUntilLastEvent())
-                .subscribe(onNext);
-    }
-
-    @Override
-    public <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext, LifecycleEvent event) {
-        RxBus.instance()
-                .asObservable(aClass)
-                .observeOn(AndroidSchedulers.mainThread())
-                .delay(t ->
-                        lifecycle()
-                                .filter(lifecycleEvent -> lifecycleEvent == event)
-                                .map(lifecycleEvent -> {
-                                    t.setLifecycleEvent(lifecycleEvent);
-                                    return t;
-                                })
-                )
-                .compose(bindUntilLastEvent())
-                .subscribe(onNext);
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lifecycleSubject.doOnError(throwable -> {
+            throwable.printStackTrace();
+            showToast(throwable.getMessage());
+        });
         lifecycleSubject.onNext(LifecycleEvent.CREATE);
     }
 
@@ -168,46 +146,13 @@ public class BaseActivity extends AppCompatActivity implements IView {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void showProgressDialog() {
-        showProgressDialog(true);
-    }
-
-    @Override
-    public void showProgressDialog(boolean cancelable) {
-        if (isFinishing()) return;
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setCancelable(cancelable);
-        }
-        if (!progressDialog.isShowing()) {
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-            progressDialog.setContentView(com.ray.mvvm.lib.R.layout.layout_progress);
-        }
-    }
-
-    @Override
-    public void hideProgressDialog() {
-        if (isFinishing()) return;
-        if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
-    }
-
-    @Override
-    public void showToast(int stringRes) {
-        ToastUtil.show(getApplicationContext(), getString(stringRes));
-    }
-
-    @Override
-    public void showToast(String string) {
-        ToastUtil.show(getApplicationContext(), string);
-    }
-
-    protected void initViews(int layoutResID) {
+    @Deprecated
+    protected final void initViews(int layoutResID) {
         initViews(layoutResID, true);
     }
 
-    protected void initViews(int layoutResID, boolean homeAsUp) {
+    @Deprecated
+    protected final void initViews(int layoutResID, boolean homeAsUp) {
         setContentView(layoutResID);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -218,171 +163,4 @@ public class BaseActivity extends AppCompatActivity implements IView {
         }
     }
 
-    @Override
-    public <T extends Activity> void intent(Class<T> aClass) {
-        intent(aClass, new Bundle());
-    }
-
-    @Override
-    public <T extends Activity> void intentForResult(Class<T> aClass, int requestCode) {
-        intentForResult(aClass, requestCode, null);
-    }
-
-    @Override
-    public <T extends Activity> void intent(Class<T> aClass, Bundle bundle) {
-        Intent intent = new Intent(this, aClass);
-        if (bundle != null)
-            intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    @Override
-    public void intent(Intent intent) {
-        startActivity(intent);
-    }
-
-    @Override
-    public <T extends Activity> void intent(Class<T> aClass, Intent intent) {
-        intent.setClass(this, aClass);
-        startActivity(intent);
-    }
-
-    @Override
-    public <T extends Activity> void intentForResult(Class<T> aClass, int requestCode, Bundle bundle) {
-        Intent intent = new Intent(this, aClass);
-        if (bundle != null)
-            intent.putExtras(bundle);
-        startActivityForResult(intent, requestCode);
-    }
-
-    @Override
-    public void intentFinish() {
-        finish();
-    }
-
-    @Override
-    public void intentFinish(@ActivityAction int action) {
-        setResult(action);
-        finish();
-    }
-
-    @Override
-    public void intentFinish(Intent intent, int action) {
-        setResult(action, intent);
-        finish();
-    }
-
-    @Override
-    public void intentFinish(Bundle bundle, @ActivityAction int action) {
-        Intent intent = getIntent();
-        if (bundle != null)
-            intent.putExtras(bundle);
-        setResult(action, intent);
-        finish();
-    }
-
-    @Override
-    public <T extends Activity> void intentFinishNewTask(Class<T> aClass) {
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent(aClass, intent);
-    }
-
-    @Override
-    public String findString(int resId) {
-        return super.getString(resId);
-    }
-
-    @Override
-    public Drawable findDrawable(int resId) {
-        return ContextCompat.getDrawable(this, resId);
-    }
-
-    @Override
-    public void setTitle(String title) {
-        super.setTitle(title);
-    }
-
-    @Override
-    public void refreshOptionsMenu() {
-        supportInvalidateOptionsMenu();
-    }
-
-    protected boolean isCurrentlyOnMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
-    }
-
-    @Override
-    public void setSubTitle(String subTitle) {
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setSubtitle(subTitle);
-    }
-
-    @Override
-    public String[] findStringRes(int resId) {
-        return getResources().getStringArray(resId);
-    }
-
-    @Override
-    public int findDimen(int resId) {
-        return getResources().getDimensionPixelSize(resId);
-    }
-
-    @Override
-    public int findColor(int resId) {
-        return ContextCompat.getColor(this, resId);
-    }
-
-    @Override
-    public void hideSoftwareInput() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            view.post(() -> {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            });
-        }
-    }
-
-    @Override
-    public void showSoftwareInput() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            view.post(() -> {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-            });
-        }
-    }
-
-    @Override
-    public void postRunnable(Runnable runnable) {
-        this.getWindow().getDecorView().post(runnable);
-    }
-
-    @Override
-    public <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action) {
-        observable
-                .throttleFirst(1, TimeUnit.SECONDS)
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .onBackpressureLatest()
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindUntilEvent(LifecycleEvent.DESTROY))
-                .subscribe(action::call);
-    }
-
-    public void setupTouchOutSideUI(View view) {
-        if (!(view instanceof EditText)) {
-            view.setOnTouchListener((v, event) -> {
-                hideSoftwareInput();
-                return false;
-            });
-        }
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                View innerView = ((ViewGroup) view).getChildAt(i);
-                setupTouchOutSideUI(innerView);
-            }
-        }
-    }
 }

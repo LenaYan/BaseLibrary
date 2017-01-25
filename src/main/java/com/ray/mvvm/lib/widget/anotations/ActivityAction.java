@@ -32,6 +32,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @Documented
 @Retention(RetentionPolicy.SOURCE)
-@IntDef({Activity.RESULT_CANCELED,Activity.RESULT_FIRST_USER,Activity.RESULT_OK})
+@IntDef({Activity.RESULT_CANCELED, Activity.RESULT_FIRST_USER, Activity.RESULT_OK})
 public @interface ActivityAction {
 }
