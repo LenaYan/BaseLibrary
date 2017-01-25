@@ -55,7 +55,7 @@ public class BaseActivity extends AppCompatActivity implements IView {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setCancelable(cancelable);
-            progressDialog.setContentView(com.ray.mvvm.lib.R.layout.layout_progress);
+            progressDialog.setView(getLayoutInflater().inflate(com.ray.mvvm.lib.R.layout.layout_progress, null));
         }
         return progressDialog;
     }
