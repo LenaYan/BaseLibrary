@@ -156,6 +156,12 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
+    default void setTitle(CharSequence title) {
+        ActionBar actionBar = activity().getSupportActionBar();
+        actionBar.setTitle(title);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
     default void setSubTitle(CharSequence subTitle) {
         ActionBar actionBar = activity().getSupportActionBar();
         if (actionBar != null)
@@ -180,7 +186,6 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
         Activity activity = activity();
         ToastUtil.show(activity.getApplicationContext(), string);
     }
-
 
     @TargetApi(Build.VERSION_CODES.N)
     default <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action) {
