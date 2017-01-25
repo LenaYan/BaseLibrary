@@ -50,9 +50,9 @@ import javax.inject.Inject;
 
 import timber.log.Timber;
 
-class FileControl implements IFileControl {
+final class FileControl implements IFileControl {
 
-    public interface OnFileChangedListener<T> {
+    interface OnFileChangedListener<T> {
         void onChanged(T o);
     }
 

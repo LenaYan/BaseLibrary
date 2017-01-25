@@ -30,10 +30,13 @@ import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
-public class RxBus {
+public final class RxBus {
 
     private static volatile RxBus instance = new RxBus();
     private Subject<? super BaseEvent, ? extends BaseEvent> bus = new SerializedSubject<>(PublishSubject.create());
+
+    private RxBus() {
+    }
 
     public static RxBus instance() {
         RxBus rxBus = instance;

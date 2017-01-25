@@ -35,7 +35,7 @@ import android.view.WindowManager;
 
 import timber.log.Timber;
 
-public class DeviceUtil {
+public final class DeviceUtil {
 
     public static int sScreenWidth;
     public static int sScreenHeight;

@@ -23,5 +23,5 @@
 
 package com.ray.mvvm.lib.widget.eventbus.event;
 
-public class HttpEvent extends BaseEvent {
+public final class HttpEvent extends BaseEvent {
 }

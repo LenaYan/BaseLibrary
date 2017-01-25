@@ -25,7 +25,7 @@ package com.ray.mvvm.lib.widget.utils;
 
 import java.util.List;
 
-public class Util {
+public final class ListUtil {
 
     public static <T> boolean listNotNull(List<T> list) {
         return list != null && list.size() > 0;

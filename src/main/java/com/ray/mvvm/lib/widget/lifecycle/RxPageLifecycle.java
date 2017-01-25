@@ -27,7 +27,7 @@ import rx.functions.Func1;
  * \               ||----w |
  * \               ||     ||
  */
-public class RxPageLifecycle {
+public final class RxPageLifecycle {
 
     @NonNull
     @CheckResult

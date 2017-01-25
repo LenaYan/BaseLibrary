@@ -26,7 +26,7 @@ package com.ray.mvvm.lib.widget.utils;
 import android.content.Context;
 import android.widget.Toast;
 
-public class ToastUtil {
+public final class ToastUtil {
 
     public static void show(Context context, String message) {
         if (context == null) {

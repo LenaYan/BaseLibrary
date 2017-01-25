@@ -36,7 +36,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ActivityModule {
+public final class ActivityModule {
 
     private AppCompatActivity activity;
 

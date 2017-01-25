@@ -29,15 +29,6 @@ import rx.Observable;
 
 public interface IPresenter {
 
-//    <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> action1);
-//
-//    <T> void subscribe(Observable<? extends T> observable, Action1<? super T> action);
-
     void setLifecycleObs(Observable<LifecycleEvent> obs, LifecycleEvent lifecycleEvent);
 
-//    <T> void subscribe(Observable<? extends T> observable, Subscriber<? super T> subscriber);
-
-//    void subscribe(Subscription subscription);
-
-//    void unsubscribe();
 }

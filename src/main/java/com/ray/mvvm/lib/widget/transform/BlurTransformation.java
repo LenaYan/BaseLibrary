@@ -36,7 +36,7 @@ import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapResource;
 
-public class BlurTransformation implements Transformation<Bitmap> {
+public final class BlurTransformation implements Transformation<Bitmap> {
 
     private static int MAX_RADIUS = 25;
     private static int DEFAULT_DOWN_SAMPLING = 1;
