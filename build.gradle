@@ -24,7 +24,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 //Androiddevmetrics based on sdk 21
-//apply plugin: 'com.frogermcs.androiddevmetrics'
+apply plugin: 'com.frogermcs.androiddevmetrics'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 
