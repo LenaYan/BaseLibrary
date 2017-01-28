@@ -1,13 +1,11 @@
 package com.ray.mvvm.sample.model.model;
 
-import com.ray.mvvm.lib.view.adapter.OnItemClick;
-
 /**
  * Created by Android Studio.
  * ProjectName: AndroidMVVM
  * Author:  Lena
- * Date: 27/01/2017
- * Time: 7:44 PM
+ * Date: 28/01/2017
+ * Time: 9:24 PM
  * \ --------------------------------------------
  * \| The only thing that is constant is change!  |
  * \ --------------------------------------------
@@ -19,21 +17,39 @@ import com.ray.mvvm.lib.view.adapter.OnItemClick;
  * \               ||----w |
  * \               ||     ||
  */
-public final class SampleEntity {
+public final class TestEntity {
 
     private String name;
-    private OnItemClick<SampleEntity> itemClick;
+    private String des;
+    private long time;
 
-    public SampleEntity(String name, OnItemClick<SampleEntity> itemClick) {
+    public TestEntity(String name, String des, long time) {
         this.name = name;
-        this.itemClick = itemClick;
+        this.des = des;
+        this.time = time;
     }
 
     public String getName() {
         return name;
     }
 
-    public OnItemClick<SampleEntity> getItemClick() {
-        return itemClick;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }
