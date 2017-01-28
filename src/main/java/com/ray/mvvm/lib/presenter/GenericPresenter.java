@@ -42,7 +42,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public final class GenericPresenter extends CommonPresenter {
+public class GenericPresenter extends CommonPresenter {
 
     private <T> void subscribeGenericReq(@NonNull Observable<RespEntity<T>> observable, @NonNull Subscriber<T> subscriber) {
         observable
