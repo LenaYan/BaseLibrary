@@ -4,7 +4,7 @@
     format="5"
     revision="2">
 
-    <category value="XML" />
+    <category value="MVVM" />
 
     <parameter name="Layout File Name"
         constraints="layout|unique|nonempty"

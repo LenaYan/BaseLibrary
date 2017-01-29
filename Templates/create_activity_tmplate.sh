@@ -1,6 +1,5 @@
 #!/bin/bash
-activityTmpDir="RayBasicActivityTmp"
-DIR="/Applications/Android Studio.app/Contents/plugins/android/lib/templates/activities/${activityTmpDir}/"
+DIR="/Applications/Android Studio.app/Contents/plugins/android/lib/templates/activities/RayBasicActivityTmp/"
 if [ -d "$DIR" ]; then
     printf '%s\n' "Template is exist,deleting it---->($DIR)"
     rm -rf "$DIR"

@@ -1,9 +1,8 @@
 #!/bin/bash
-layoutResTmpDir="LayoutResourceFile"
-DIR="/Applications/Android Studio.app/Contents/plugins/android/lib/templates/other/${layoutResTmpDir}/"
+DIR="/Applications/Android Studio.app/Contents/plugins/android/lib/templates/other/LayoutResourceFile/"
 if [ -d "$DIR" ]; then
     printf '%s\n' "Template is exist,deleting it---->($DIR)"
     rm -rf "$DIR"
 fi
-    cp -r "LibLayoutResTmp" "$DIR"
+    cp -r "MVVMLibLayoutResTmp" "$DIR"
 
