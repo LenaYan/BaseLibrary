@@ -44,6 +44,7 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
 
     public EndLessListRespVM(P presenter, V view, LinearLayoutManager layoutManager, StateListAdapter<D> adapter) {
         super(presenter, view, layoutManager, adapter);
+        adapter.setStateVM(this);
     }
 
     @Override
