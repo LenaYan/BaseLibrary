@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+<#if isWithSwipRefresh>
         <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,5 +36,17 @@
                 </#if>
                 app:layoutManager="@{viewModel.layoutManager}"/>
         </android.support.v4.widget.SwipeRefreshLayout>
-     </RelativeLayout>
+<#else>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/padding_l"
+            app:adapter="@{viewModel.adapter}"
+            <#if isWithLoadMore>
+            app:onLoadMore="@{viewModel}"
+            </#if>
+            app:layoutManager="@{viewModel.layoutManager}"/>
+</#if>
+    </RelativeLayout>
 </layout>
