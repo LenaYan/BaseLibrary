@@ -72,7 +72,7 @@
 
     <parameter name="Contain PageState"
         default="false"
-        help="If true, the layout will include a SwipeRefreshLayout layout"
+        help="If true, the layout will include state layouts"
         id="isWithPageState"
         type="boolean" />
 

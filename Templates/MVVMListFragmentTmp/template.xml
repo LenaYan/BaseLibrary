@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<template name="ListFragment"
+    description="ListFragment"
+    format="5"
+    minApi="7"
+    minBuildApi="14"
+    requireAppTheme="true"
+    revision="3">
+
+    <category value="MVVM" />
+
+    <dependency name="android-support-v4"
+        revision="8" />
+
+    <parameter name="Page Name"
+        constraints="class|nonempty|unique"
+        default="Main"
+        help="The name of the created page"
+        id="pageName"
+        type="string" />
+
+    <parameter name="Fragment Name"
+        constraints="class|nonempty|unique"
+        default="MainFragment"
+        help="The name of the fragment class to create"
+        id="fragmentName"
+        suggest="${pageName}Fragment"
+        type="string" />
+
+    <parameter name="Fragment Layout Name"
+        constraints="layout|nonempty|unique"
+        default="fragment_main"
+        help="The name of the layout to create"
+        id="layoutName"
+        suggest="fragment_${classToResource(fragmentName)}"
+        type="string" />
+
+    <parameter name="With list page state"
+        help="If true, the list will show page state like loading,error,empty"
+        id="isShowPageState"
+        type="boolean" />
+
+    <parameter name="With load more"
+        default="false"
+        help="If true, the list will be endless"
+        id="isWithLoadMore"
+        type="boolean" />
+
+    <thumbs>
+        <thumb>template_blank_fragment.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
