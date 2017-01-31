@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+
+<template name="PageActivity"
+    description="PageActivity."
+    format="5"
+    minApi="7"
+    minBuildApi="14"
+    requireAppTheme="true"
+    revision="6">
+
+    <category value="MVVM" />
+
+    <formfactor value="Mobile" />
+
+    <parameter name="Page Name"
+        constraints="class|nonempty|unique"
+        default="Main"
+        help="The name of the created page"
+        id="pageName"
+        type="string" />
+
+    <parameter name="DI Activity Name"
+        constraints="class|unique|nonempty"
+        default="MainActivity"
+        help="The name of the activity class to create"
+        id="activityClass"
+        suggest="${pageName}Activity"
+        type="string" />
+
+    <parameter name="Layout Name"
+        constraints="layout|unique|nonempty"
+        default="activity_main"
+        help="The name of the layout to create for the activity"
+        id="layoutName"
+        suggest="${activityToLayout(activityClass)}"
+        type="string" />
+
+    <parameter name="DIActivityTitle"
+        constraints="nonempty"
+        default="MainActivity"
+        help="The name of the activity. For launcher activities, the application title."
+        id="activityTitle"
+        suggest="${activityClass}"
+        type="string" />
+
+    <parameter name="Menu Resource Name"
+        constraints="layout|unique|nonempty"
+        default="menu_main"
+        help="The name of the resource file to create for the menu items"
+        id="menuName"
+        suggest="menu_${classToResource(activityClass)}"
+        type="string"
+        visibility="isNewProject!false" />
+
+    <parameter name="Launcher Activity"
+        default="false"
+        help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher"
+        id="isLauncher"
+        type="boolean" />
+
+    <parameter name="Toolbar in layout"
+        default="true"
+        help="If true, the layout file will contains a toolbar and appbar layout"
+        id="hasToolbar"
+        type="boolean" />
+
+    <parameter name="Home as up"
+        default="true"
+        help="If true, the page will have a back button"
+        id="isHomeAsUp"
+        type="boolean" />
+
+    <parameter name="Contain PageState"
+        default="false"
+        help="If true, the layout will include state layouts"
+        id="isWithPageState"
+        type="boolean" />
+
+    <parameter name="Contain SwipRefreshLayout"
+        default="false"
+        help="If true, the layout will include a SwipeRefreshLayout layout"
+        id="isWithSwipRefresh"
+        type="boolean" />
+
+    <parameter name="Content Layout Name"
+        constraints="layout|unique"
+        default="content_main"
+        help="The name of the App Bar layout to create for the activity"
+        id="contentLayoutName"
+        suggest="${activityToLayout(activityClass, 'content')}"
+        type="string"
+        visibility="false" />
+
+    <parameter name="Hierarchical Parent"
+        constraints="activity|exists|empty"
+        default=""
+        help="The hierarchical parent activity, used to provide a default implementation for the 'Up' button"
+        id="parentActivityClass"
+        type="string" />
+
+    <parameter name="Package name"
+        constraints="package"
+        default="com.mycompany.myapp"
+        id="packageName"
+        type="string" />
+
+    <!-- 128x128 thumbnails relative to template.xml -->
+    <thumbs>
+        <!-- default thumbnail is required -->
+        <thumb>template_basic_activity.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
