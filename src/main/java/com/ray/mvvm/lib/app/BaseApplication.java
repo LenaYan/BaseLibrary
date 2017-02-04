@@ -66,6 +66,7 @@ public class BaseApplication extends Application implements IBuildComp {
     public void onCreate() {
         super.onCreate();
         buildComp();
+        DeviceUtil.init(this);
         subscribeEvent();
         if (!LeakCanary.isInAnalyzerProcess(this)) {
             refWatcher = LeakCanary.install(this);
@@ -89,10 +90,6 @@ public class BaseApplication extends Application implements IBuildComp {
                 .builder()
                 .appModule(new AppModule(this))
                 .build();
-    }
-
-    protected void init(String channel) {
-        DeviceUtil.init(this);
     }
 
     private void subscribeEvent() {

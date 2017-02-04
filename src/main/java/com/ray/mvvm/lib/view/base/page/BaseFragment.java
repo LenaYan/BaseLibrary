@@ -52,7 +52,7 @@ public class BaseFragment extends Fragment implements IView {
     @Override
     public ProgressDialog getProgressDialog(boolean cancelable) {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(activity);
+            progressDialog = new ProgressDialog(getActivity());
             progressDialog.setCancelable(cancelable);
             progressDialog.setView(getActivity().getLayoutInflater().inflate(com.ray.mvvm.lib.R.layout.layout_progress, null));
         }
