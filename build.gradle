@@ -129,9 +129,9 @@ dependencies {
     compile depMap.Timber
     compile depMap.RxPermissions
     compile depMap.Moshi
-    compile depMap.StethoRealm
 
     debugCompile depMap.Stetho
+    debugCompile depMap.StethoRealm
     debugCompile depMap.StethoOkhttp3
 
     provided depMap.JavaxAnnotations
