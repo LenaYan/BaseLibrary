@@ -70,9 +70,15 @@
         id="isHomeAsUp"
         type="boolean" />
 
+    <parameter name="Contain SwipRefreshLayout"
+        default="false"
+        help="If true, the layout will include a SwipeRefreshLayout layout"
+        id="isWithSwipRefresh"
+        type="boolean" />
+
     <parameter name="With list page state"
         default="false"
-        help="If true, the list will show page state like loading,error,empty"
+        help="If true, the list will show page state like loading, error, empty"
         id="isShowPageState"
         type="boolean" />
 

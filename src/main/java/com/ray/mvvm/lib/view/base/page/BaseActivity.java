@@ -65,8 +65,6 @@ public class BaseActivity extends AppCompatActivity implements IView {
         super.setTitle(titleId);
     }
 
-
-
     @Override
     public AppCompatActivity activity() {
         return this;

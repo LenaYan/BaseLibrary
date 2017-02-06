@@ -1,0 +1,16 @@
+def buildCacheDirPath = "${System.getProperty("user.home")}/.android/build-cache/"
+
+clean.doFirst {
+    delete buildCacheDirPath
+    println "Delete build cache dir : ${buildCacheDirPath}"
+}
+
+clean.doLast {
+    mkdir buildCacheDirPath
+    println "Create build cache dir : ${buildCacheDirPath}"
+}
+
+task deleteBuildCache(type: Delete) {
+    delete buildCacheDirPath
+    println "Delete build cache dir :  ${buildCacheDirPath}"
+}
