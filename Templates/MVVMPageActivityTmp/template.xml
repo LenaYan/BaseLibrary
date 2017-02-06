@@ -108,13 +108,6 @@
         type="string"
         visibility="false" />
 
-    <parameter name="Hierarchical Parent"
-        constraints="activity|exists|empty"
-        default=""
-        help="The hierarchical parent activity, used to provide a default implementation for the 'Up' button"
-        id="parentActivityClass"
-        type="string" />
-
     <parameter name="Package name"
         constraints="package"
         default="com.mycompany.myapp"
