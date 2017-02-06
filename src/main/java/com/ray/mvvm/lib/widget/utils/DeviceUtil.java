@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Window;
@@ -37,10 +36,6 @@ public final class DeviceUtil {
     public static float sScreenPPI;
     public static float sScreenInch;
     public static int sActionBarSize;
-    public static String sAppVersion;
-    public static String sSystemInfo;
-    public static String sDeviceModel;
-    public static String sSystemType;
 
     public static void init(Context context) {
         WindowManager windowManger = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -123,8 +118,7 @@ public final class DeviceUtil {
     public float getStatusBarHight(Window window) {
         Rect rectgle = new Rect();
         window.getDecorView().getWindowVisibleDisplayFrame(rectgle);
-        int statusBarHeight = rectgle.top;
-        return statusBarHeight;
+        return rectgle.top;
     }
 
     public void setScreenMode(Activity activity, boolean fullscreen) {
@@ -134,14 +128,6 @@ public final class DeviceUtil {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-    }
-
-    private static String getDevice() {
-        String devicesString = Build.MODEL;
-        if (devicesString.equals("sdk")) {
-            devicesString = "Android Simulator";
-        }
-        return devicesString;
     }
 
 }

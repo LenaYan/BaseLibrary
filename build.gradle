@@ -89,20 +89,16 @@ dependencies {
     compile depMap.RecyclerView
     compile depMap.CardView
     compile depMap.Multidex
-    compile depMap.Palette
     compile depMap.Design
     compile depMap.AppCompat
-    compile depMap.Percent
     compile depMap.ConstraintLayout
     compile depMap.Glide
     compile depMap.GlideOkhttpIntegration
     compile depMap.OkHttp
-    compile depMap.OkHttpWS
     compile depMap.LoggingInterceptor
     compile depMap.Retrofit
     compile depMap.RxJavaAdapter
     compile depMap.MoshiConverter
-//    compile depMap.ProtobufConverter
     compile depMap.RxAndroid
 
     compile depMap.RxBinding
@@ -110,7 +106,6 @@ dependencies {
     compile depMap.RxBindingAppcompat
     compile depMap.RxBindingDesign
     compile depMap.RxBindingRecyclerView
-//  compile depMap.RxLeanBack
     compile depMap.RxJavaProguard
     compile depMap.RxLifecycle
     compile depMap.RxLifecycleAndroid
@@ -118,8 +113,6 @@ dependencies {
     compile depMap.Dagger
     annotationProcessor depMap.DaggerCompile
 
-    compile depMap.MaterialMenuToolbar
-    compile depMap.RoundedImageview
     compile depMap.Timber
     compile depMap.RxPermissions
     compile depMap.Moshi
