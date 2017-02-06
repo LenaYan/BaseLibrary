@@ -15,27 +15,29 @@
  *
  */
 
-package com.ray.mvvm.lib.interfaces;
+package com.ray.mvvm.lib.model.model;
 
-/**
- * Created by Android Studio.
- * ProjectName: V2EXAndroidClient
- * Author:  Lena
- * Date: 23/01/2017
- * Time: 12:18 AM
- * \ --------------------------------------------
- * \| The only thing that is constant is change!  |
- * \ --------------------------------------------
- * \  \
- * \   \   \_\_    _/_/
- * \    \      \__/
- * \           (oo)\_______
- * \           (__)\       )\/\
- * \               ||----w |
- * \               ||     ||
- */
-public interface OnStartAction {
+public class GenericRespEntity<T> extends RespEntity {
 
-    void onStart();
+    private T data;
 
+    public GenericRespEntity() {
+    }
+
+    public GenericRespEntity(int code) {
+        super(code);
+    }
+
+    public GenericRespEntity(int code, T data) {
+        super(code);
+        this.data = data;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }

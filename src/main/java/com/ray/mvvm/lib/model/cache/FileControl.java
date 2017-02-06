@@ -1,17 +1,11 @@
 /*
- *
- *  Copyright (c) 2016 Lena.t.Yan
- *  Unauthorized copying of this file, via any medium is strictly prohibited proprietary and confidential.
- *  Created on Sat, 8 Oct 2016 23:37:22 +0800.
- *  ProjectName: V2EXAndroidClient ; ModuleName: app ; ClassName: TopicListCellVM.
- *  Author: Lena; Last Modified: Sat, 8 Oct 2016 23:37:22 +0800.
- *  This file is originally created by Lena.
+ *  Copyright (C) 2015 Rayman Yan
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +23,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
-import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.ray.mvvm.lib.widget.utils.DateUtil;
@@ -96,17 +89,17 @@ final class FileControl implements IFileControl {
     }
 
     private void install(Context context) {
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            sRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
-            sCacheRoot = sRoot + context.getPackageName() + "/cache";
-            File file = new File(sCacheRoot);
-            if (!file.exists()) {
-                if (!file.mkdirs())
-                    sCacheRoot = context.getCacheDir().getAbsolutePath();
-            }
-        } else {
-            sCacheRoot = context.getCacheDir().getAbsolutePath();
-        }
+//        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+//            sRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
+//            sCacheRoot = sRoot + context.getPackageName() + "/cache";
+//            File file = new File(sCacheRoot);
+//            if (!file.exists()) {
+//                if (!file.mkdirs())
+//                    sCacheRoot = context.getCacheDir().getAbsolutePath();
+//            }
+//        } else {
+        sCacheRoot = context.getCacheDir().getAbsolutePath();
+//        }
         initImageCacheFile();
         initApkCacheFile();
         initFileCacheFile();
