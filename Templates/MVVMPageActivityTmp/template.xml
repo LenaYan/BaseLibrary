@@ -76,7 +76,7 @@
         type="boolean" />
 
     <parameter name="Toolbar in layout"
-        default="true"
+        default="false"
         help="If true, the layout file will contains a toolbar and appbar layout"
         id="hasToolbar"
         type="boolean" />
