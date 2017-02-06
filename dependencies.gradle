@@ -16,7 +16,7 @@
  */
 
 ext {
-    minSdkVersion = 15
+    minSdkVersion = 21
     libDefaultPublish = 'debug'//debug or release
     compileSdkVersion = 25
     targetSdkVersion = 25
