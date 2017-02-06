@@ -1,4 +1,4 @@
-<recipe folder="root://activities/RayBasicActivityTmp">
+<recipe folder="root://activities/MVVMListActivity">
 
     <merge from="root/AndroidManifest.xml.ftl"
              to="${escapeXmlAttribute(manifestOut)}/AndroidManifest.xml" />
