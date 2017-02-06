@@ -62,19 +62,19 @@ import static com.bumptech.glide.Glide.with;
 public final class BindingAdapter {
 
     @android.databinding.BindingAdapter(value = {"normalTitleColor", "selectedTitleColor"}, requireAll = true)
-    public static void setTabLayoutTextColor(TabLayout tabLayout, int normalTitleColor, int selectedTitleColor) {
+    public static void bindTabLayoutTextColor(TabLayout tabLayout, int normalTitleColor, int selectedTitleColor) {
         tabLayout.setTabTextColors(normalTitleColor, selectedTitleColor);
     }
 
     @android.databinding.BindingAdapter(value = {"android:checked", "onCheckedChangeListener"})
-    public static void setCheckedState(CompoundButton compoundButton, boolean checked, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
+    public static void bindCheckedState(CompoundButton compoundButton, boolean checked, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
         compoundButton.setOnCheckedChangeListener(null);
         compoundButton.setChecked(checked);
         compoundButton.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 
     @android.databinding.BindingAdapter(value = {"viewPager", "adapter"})
-    public static void setTabLayoutIcons(TabLayout tabLayout, int viewPagerId, PagerAdapter pagerAdapter) {
+    public static void bindTabLayoutToViewPager(TabLayout tabLayout, int viewPagerId, PagerAdapter pagerAdapter) {
         ViewPager viewPager = (ViewPager) tabLayout.getRootView().findViewById(viewPagerId);
         if (viewPager.getAdapter() == null)
             viewPager.setAdapter(pagerAdapter);
@@ -91,7 +91,7 @@ public final class BindingAdapter {
     }
 
     @android.databinding.BindingAdapter(value = {"weight", "height"})
-    public static void setViewWeightSize(View view, float weight, float height) {
+    public static void bindViewScreenSize(View view, float weight, float height) {
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         int heightSize = (int) (DeviceUtil.sScreenHeight * height);
         int widthSize = (int) (DeviceUtil.sScreenWidth * weight);
@@ -101,7 +101,7 @@ public final class BindingAdapter {
     }
 
     @android.databinding.BindingAdapter(value = {"weightWith", "weightHeight"})
-    public static void setWeightSizeView(View view, float weightWith, float weightHeight) {
+    public static void bindViewScreenWidthSize(View view, float weightWith, float weightHeight) {
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         int heightSize = (int) (DeviceUtil.sScreenWidth * weightHeight);
         int widthSize = (int) (DeviceUtil.sScreenWidth * weightWith);
@@ -285,7 +285,7 @@ public final class BindingAdapter {
     }
 
     @android.databinding.BindingAdapter(value = "android:text")
-    public static void bindText(EditText editText, String text) {
+    public static void bindTextWithSelection(EditText editText, String text) {
         editText.setText(text);
         if (TextUtils.isEmpty(text)) {
             editText.setSelection(0);
