@@ -18,7 +18,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 //Androiddevmetrics based on sdk 21
-//apply plugin: 'com.frogermcs.androiddevmetrics'
+apply plugin: 'com.frogermcs.androiddevmetrics'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 
@@ -142,5 +142,4 @@ dependencies {
     androidTestCompile(depMap.EspressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 }
