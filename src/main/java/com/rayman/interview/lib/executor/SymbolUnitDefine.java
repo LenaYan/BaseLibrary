@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SymbolUnitDefine implements IUnitDefine {
 
-    private EnumMap<RomanNumber, String> romanSymbolMap = new EnumMap<RomanNumber, String>(RomanNumber.class);
+    private EnumMap<RomanNumber, String> romanSymbolMap = new EnumMap<>(RomanNumber.class);
 
     @Override
     public ResultState define(List<String> stringList) {

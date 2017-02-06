@@ -14,15 +14,15 @@ import java.util.Map;
 public class SymbolPriceDefine implements IPriceDefine {
 
     private HashMap<String, Double> priceMap = new HashMap<String, Double>();
-    private final IUnitDefine iUnitDefine;
+    private final IUnitDefine unitDefine;
 
-    public SymbolPriceDefine(IUnitDefine iUnitDefine) {
-        this.iUnitDefine = iUnitDefine;
+    public SymbolPriceDefine(IUnitDefine unitDefine) {
+        this.unitDefine = unitDefine;
     }
 
     @Override
     public ResultState define(List<String> stringList) {
-        if (iUnitDefine == null)
+        if (unitDefine == null)
             return ResultState.error("Pls define unit map.");
         if (stringList == null || stringList.size() != 2)
             return ResultState.error("Invalide input ,pls check your input.");
@@ -43,7 +43,7 @@ public class SymbolPriceDefine implements IPriceDefine {
         String entryName = null;
         StringBuilder romanString = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
-            RomanNumber romanNumber = iUnitDefine.getRomanBySymbol(array[i]);
+            RomanNumber romanNumber = unitDefine.getRomanBySymbol(array[i]);
             if (romanNumber != null) {
                 romanString.append(romanNumber.name());
             } else if (i == array.length - 1) {

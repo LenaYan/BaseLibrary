@@ -11,15 +11,15 @@ import java.util.List;
 
 public class SymbolConvertor implements IConvertor {
 
-    private final IUnitDefine iUnitDefine;
+    private final IUnitDefine unitDefine;
 
-    public SymbolConvertor(IUnitDefine iUnitDefine) {
-        this.iUnitDefine = iUnitDefine;
+    public SymbolConvertor(IUnitDefine unitDefine) {
+        this.unitDefine = unitDefine;
     }
 
     @Override
     public ResultState convert(List<String> stringList) {
-        if (iUnitDefine == null)
+        if (unitDefine == null)
             return ResultState.error("Pls define unit map.");
         if (stringList == null || stringList.size() != 1)
             return ResultState.error("Have no symbols ,pls check your input.");
@@ -33,7 +33,7 @@ public class SymbolConvertor implements IConvertor {
         }
         StringBuilder romanString = new StringBuilder();
         for (String item : symbolArray) {
-            RomanNumber romanNumber = iUnitDefine.getRomanBySymbol(item);
+            RomanNumber romanNumber = unitDefine.getRomanBySymbol(item);
             if (romanNumber != null) {
                 romanString.append(romanNumber.name());
             }

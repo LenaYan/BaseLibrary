@@ -12,17 +12,17 @@ import java.util.List;
 
 public class SymbolPriceCalculator implements IPriceCalculate {
 
-    private IUnitDefine iUnitDefine;
-    private IPriceDefine iPriceDefine;
+    private IUnitDefine unitDefine;
+    private IPriceDefine priceDefine;
 
-    public SymbolPriceCalculator(IUnitDefine iUnitDefine, IPriceDefine iPriceDefine) {
-        this.iUnitDefine = iUnitDefine;
-        this.iPriceDefine = iPriceDefine;
+    public SymbolPriceCalculator(IUnitDefine unitDefine, IPriceDefine priceDefine) {
+        this.unitDefine = unitDefine;
+        this.priceDefine = priceDefine;
     }
 
     @Override
     public ResultState calculate(List<String> stringList) {
-        if (iUnitDefine == null || iPriceDefine == null)
+        if (unitDefine == null || priceDefine == null)
             return ResultState.error("Pls define units and price map before calculating.");
         if (stringList == null || stringList.size() != 1)
             return ResultState.error("Have no entries ,pls check your input.");
@@ -37,7 +37,7 @@ public class SymbolPriceCalculator implements IPriceCalculate {
         String entryName = null;
         StringBuilder romanString = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
-            RomanNumber romanNumber = iUnitDefine.getRomanBySymbol(array[i]);
+            RomanNumber romanNumber = unitDefine.getRomanBySymbol(array[i]);
             if (romanNumber != null) {
                 romanString.append(romanNumber.name());
             } else if (i == array.length - 1) {
@@ -48,7 +48,7 @@ public class SymbolPriceCalculator implements IPriceCalculate {
         }
         if (romanString.length() > 0 && !StringUtil.isEmpty(entryName)) {
             int entryCount = ConvertUtil.convertRomanToNumber(romanString.toString());
-            int totalPrice = (int) (iPriceDefine.getPricePerEntry(entryName) * entryCount);
+            int totalPrice = (int) (priceDefine.getPricePerEntry(entryName) * entryCount);
             StringUtil.out(entryDes + " is " + totalPrice + " Credits.");
             return ResultState.success();
         } else {
