@@ -17,11 +17,9 @@
 
 package com.ray.mvvm.lib.widget.utils;
 
-import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.jakewharton.rxbinding.view.RxMenuItem;
 import com.jakewharton.rxbinding.view.RxView;
 
@@ -61,16 +59,6 @@ public final class RxViewUtil {
                 .clicks(view)
                 .throttleLast(1, TimeUnit.SECONDS)
                 .onBackpressureLatest();
-    }
-
-    public static Observable<CharSequence> throttleQueryTextChanges(SearchView searchView) {
-        return RxSearchView.queryTextChanges(searchView)
-                .filter(input -> !searchView.isIconified())
-                .throttleLast(200, TimeUnit.MILLISECONDS)
-//                .filter(charSequence -> charSequence != null && charSequence.length() > 0)
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .onBackpressureLatest()
-                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public static Observable<Void> throttleViewClicked(View view) {

@@ -61,23 +61,6 @@ android {
     defaultPublishConfig rootProject.ext.libDefaultPublish
 }
 
-//afterEvaluate {
-//    android.libraryVariants.each { variant ->
-//        if (variant.buildType.name == "release") {
-//            publishing.publications.create variant.flavorName, MavenPublication, {
-//                groupId group
-//                version version
-//                artifactId "$project.name"
-//                artifact(variant.outputs.outputFile.get(0)) {
-//                    classifier "$variant.flavorName"
-//                }
-//            }
-//        }
-//    }
-//    publishToMavenLocal.dependsOn tasks.assemble
-//    publish.dependsOn tasks.assemble
-//}
-
 retrolambda {
     javaVersion rootProject.ext.retrolambdaJavaVersion
     defaultMethods true
@@ -92,20 +75,17 @@ dependencies {
     compile depMap.Design
     compile depMap.AppCompat
     compile depMap.ConstraintLayout
+
     compile depMap.Glide
     compile depMap.GlideOkhttpIntegration
     compile depMap.OkHttp
     compile depMap.LoggingInterceptor
     compile depMap.Retrofit
-    compile depMap.RxJavaAdapter
     compile depMap.MoshiConverter
-    compile depMap.RxAndroid
 
+    compile depMap.RxJavaAdapter
+    compile depMap.RxAndroid
     compile depMap.RxBinding
-    compile depMap.RxBindingSupportV4
-    compile depMap.RxBindingAppcompat
-    compile depMap.RxBindingDesign
-    compile depMap.RxBindingRecyclerView
     compile depMap.RxJavaProguard
     compile depMap.RxLifecycle
     compile depMap.RxLifecycleAndroid
