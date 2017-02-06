@@ -23,11 +23,12 @@ import android.view.MenuItem;
 
 public class ${activityClass} extends BaseDIActivity implements ${pageName}Contract.View{
 
+<#if !isLauncher>
     public static void start(IRedirect redirect) {
         Bundle bundle = new Bundle();
         redirect.intent(${activityClass}.class, bundle);
     }
-
+</#if>
     @Inject ${pageName}VM viewModel;
 
     @Override
