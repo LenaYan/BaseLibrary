@@ -17,25 +17,28 @@
 
 package com.ray.mvvm.lib.model.http.adapter;
 
+import com.ray.mvvm.lib.model.model.GenericRespEntity;
+import com.ray.mvvm.lib.model.model.VoidEntity;
 import com.squareup.moshi.FromJson;
 import com.squareup.moshi.ToJson;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.realm.RealmList;
-import io.realm.RealmModel;
-
-public class RealmListAdapter<T extends RealmModel> {
+public class GenericRespEntityAdapter {
 
     @ToJson
-    public List<T> toJson(RealmList<T> entities) {
-        return new ArrayList<>(entities);
+    public GenericRespEntity<VoidEntity> toJson(GenericRespEntity genericRespEntity) {
+        GenericRespEntity<VoidEntity> entity = new GenericRespEntity<>();
+        entity.setCode(genericRespEntity.getCode());
+        entity.setMessage(genericRespEntity.getMessage());
+        return entity;
     }
 
     @FromJson
-    public RealmList<T> fromJson(T[] entities) {
-        return new RealmList<>(entities);
+    public GenericRespEntity fromJson(GenericRespEntity<VoidEntity> genericRespEntity) {
+        GenericRespEntity entity = new GenericRespEntity();
+        entity.setCode(genericRespEntity.getCode());
+        entity.setMessage(genericRespEntity.getMessage());
+        return entity;
     }
+
 
 }

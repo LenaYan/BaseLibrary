@@ -1,17 +1,11 @@
 /*
- *
- *  Copyright (c) 2016 Lena.t.Yan
- *  Unauthorized copying of this file, via any medium is strictly prohibited proprietary and confidential.
- *  Created on Sat, 8 Oct 2016 23:50:28 +0800.
- *  ProjectName: V2EXAndroidClient ; ModuleName: app ; ClassName: TopicListCellVM.
- *  Author: Lena; Last Modified: Sat, 8 Oct 2016 23:50:28 +0800.
- *  This file is originally created by Lena.
+ *  Copyright (C) 2015 Rayman Yan
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +17,24 @@
 
 package com.ray.mvvm.lib.model.model;
 
-public class RespEntity<T> {
+/**
+ * Created by Android Studio.
+ * ProjectName: V2EXAndroidClient
+ * Author:  Lena
+ * Date: 06/02/2017
+ * Time: 6:35 PM
+ * \ --------------------------------------------
+ * \| The only thing that is constant is change!  |
+ * \ --------------------------------------------
+ * \  \
+ * \   \   \_\_    _/_/
+ * \    \      \__/
+ * \           (oo)\_______
+ * \           (__)\       )\/\
+ * \               ||----w |
+ * \               ||     ||
+ */
+public class RespEntity {
 
     public static final int FAILURE = 0;
     public static final int SUCCESS = 1;
@@ -32,7 +43,6 @@ public class RespEntity<T> {
 
     private int code;
     private String message;
-    private T data;
 
     public RespEntity() {
     }
@@ -41,9 +51,9 @@ public class RespEntity<T> {
         this.code = code;
     }
 
-    public RespEntity(int code, T data) {
+    public RespEntity(int code, String message) {
         this.code = code;
-        this.data = data;
+        this.message = message;
     }
 
     public int getCode() {
@@ -60,22 +70,5 @@ public class RespEntity<T> {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return "RespEntity{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
     }
 }
