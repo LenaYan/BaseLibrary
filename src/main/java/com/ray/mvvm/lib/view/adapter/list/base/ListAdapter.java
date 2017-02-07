@@ -141,6 +141,10 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     public void addItemToHead(T t) {
+        addItemToHead(t, true);
+    }
+
+    public void addItemToHead(T t, boolean notify) {
         if (t == null)
             return;
         if (list == null) {
@@ -151,10 +155,15 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         final long index = getIndex(t);
         if (index != NO_INDEX)
             wrapMap.put(index, t);
-        notifyItemInserted(0);
+        if (notify)
+            notifyItemInserted(0);
     }
 
     public void addItemToFoot(T t) {
+        addItemToFoot(t, true);
+    }
+
+    public void addItemToFoot(T t, boolean notify) {
         if (t == null)
             return;
         if (list == null) {
@@ -166,7 +175,8 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         final long index = getIndex(t);
         if (index != NO_INDEX)
             wrapMap.put(index, t);
-        notifyItemInserted(position);
+        if (notify)
+            notifyItemInserted(position);
     }
 
     public void addItem(int position, T t) {
@@ -192,20 +202,6 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         notifyItemInserted(position);
     }
 
-    public void setItem(int position, T t) {
-        if (t == null)
-            return;
-        if (list == null) {
-            list = new ArrayList<>();
-            wrapMap.clear();
-        }
-        list.set(position, t);
-        final long index = getIndex(t);
-        if (index != NO_INDEX)
-            wrapMap.put(index, t);
-        notifyItemChanged(position);
-    }
-
     public void addItems(List<T> insertList) {
         if (insertList == null || insertList.size() == 0)
             return;
@@ -225,15 +221,18 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         notifyItemRangeInserted(oldEnd, insertCount);
     }
 
-    public void updateItem(int position, T item) {
-        if (position != NO_POSITION && item != null) {
-            T origin = getItem(position);
-            if (origin != null && getIndex(origin) == getIndex(item)) {
-                final int headerCount = getHeaderCount();
-                list.set(position - headerCount, item);
-                notifyItemChanged(position, null);
-            }
+    public void setItem(int position, T t) {
+        if (t == null || position == NO_POSITION)
+            return;
+        if (list == null) {
+            list = new ArrayList<>();
+            wrapMap.clear();
         }
+        list.set(position, t);
+        final long index = getIndex(t);
+        if (index != NO_INDEX)
+            wrapMap.put(index, t);
+        notifyItemChanged(position);
     }
 
     public boolean notifyItem(T t) {
