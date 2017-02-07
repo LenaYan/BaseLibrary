@@ -20,7 +20,6 @@ package com.ray.mvvm.lib.presenter;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-import com.ray.mvvm.lib.model.http.ErrorType;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.widget.eventbus.RxBus;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
@@ -41,9 +40,9 @@ public interface IPresenter {
         if (throwable instanceof ErrorEvent) {
             errorEvent = (ErrorEvent) throwable;
         } else if (throwable instanceof IOException) {
-            errorEvent = new ErrorEvent(ErrorType.NETWORK, "网络异常");
+            errorEvent = new ErrorEvent(ErrorEvent.NETWORK, "网络异常");
         } else {
-            errorEvent = new ErrorEvent(ErrorType.OTHER, throwable.getMessage());
+            errorEvent = new ErrorEvent(ErrorEvent.OTHER, throwable.getMessage());
         }
         RxBus.instance().post(errorEvent);
     }
