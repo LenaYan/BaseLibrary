@@ -18,10 +18,8 @@
 package com.ray.mvvm.lib.presenter;
 
 import com.ray.mvvm.lib.interfaces.OnStartAction;
-import com.ray.mvvm.lib.model.http.ErrorType;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.model.model.GenericRespEntity;
-import com.ray.mvvm.lib.model.model.RespEntity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,10 +34,9 @@ public final class GenericPresenter extends CommonPresenter {
     private <Y extends GenericRespEntity> Observable<Y> respCheck(Y respEntity) {
         return Observable.create((subscriber) -> {
             if (respEntity == null) {
-                subscriber.onError(new ErrorEvent(ErrorType.RESP_BODY_EMPTY, "Response entity is empty."));
-            } else if (respEntity.getCode() == RespEntity.FAILURE || respEntity.getCode() != GenericRespEntity.SUCCESS) {
+                subscriber.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response entity is empty."));
+            } else if (respEntity.getCode() == ErrorEvent.FAILURE || respEntity.getCode() != ErrorEvent.SUCCESS) {
                 ErrorEvent errorEvent = new ErrorEvent(respEntity.getCode(), respEntity.getMessage());
-                postError(errorEvent);
                 subscriber.onError(errorEvent);
             } else {
                 subscriber.onNext(respEntity);
@@ -50,7 +47,7 @@ public final class GenericPresenter extends CommonPresenter {
     protected <T> Observable<GenericRespEntity<T>> mockGenericWith(T t) {
         return Observable
                 .create((Subscriber<? super GenericRespEntity<T>> subscriber) ->
-                        subscriber.onNext(new GenericRespEntity<>(GenericRespEntity.SUCCESS, t))
+                        subscriber.onNext(new GenericRespEntity<>(ErrorEvent.SUCCESS, t))
                 )
                 .delay(3, TimeUnit.SECONDS);
     }

@@ -20,7 +20,6 @@ package com.ray.mvvm.lib.presenter;
 import android.support.annotation.NonNull;
 
 import com.ray.mvvm.lib.interfaces.OnStartAction;
-import com.ray.mvvm.lib.model.http.ErrorType;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -46,7 +45,7 @@ public class CommonPresenter implements IPresenter {
     private <N> Observable<N> respCheck(N dataEntity) {
         return Observable.create((subscriber) -> {
                     if (dataEntity == null) {
-                        subscriber.onError(new ErrorEvent(ErrorType.RESP_BODY_EMPTY, "Response Data is empty."));
+                        subscriber.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response Data is empty."));
                     } else {
                         subscriber.onNext(dataEntity);
                     }

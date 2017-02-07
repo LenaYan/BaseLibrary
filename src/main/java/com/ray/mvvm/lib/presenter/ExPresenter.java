@@ -24,7 +24,6 @@
 package com.ray.mvvm.lib.presenter;
 
 import com.ray.mvvm.lib.interfaces.OnStartAction;
-import com.ray.mvvm.lib.model.http.ErrorType;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.model.model.RespEntity;
 
@@ -41,10 +40,9 @@ public final class ExPresenter extends CommonPresenter {
     private <Y extends RespEntity> Observable<Y> respCheck(Y respEntity) {
         return Observable.create((subscriber) -> {
             if (respEntity == null) {
-                subscriber.onError(new ErrorEvent(ErrorType.RESP_BODY_EMPTY, "Response entity is empty."));
-            } else if (respEntity.getCode() == RespEntity.FAILURE || respEntity.getCode() != RespEntity.SUCCESS) {
+                subscriber.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response entity is empty."));
+            } else if (respEntity.getCode() == ErrorEvent.FAILURE || respEntity.getCode() != ErrorEvent.SUCCESS) {
                 ErrorEvent errorEvent = new ErrorEvent(respEntity.getCode(), respEntity.getMessage());
-                postError(errorEvent);
                 subscriber.onError(errorEvent);
             } else {
                 subscriber.onNext(respEntity);
@@ -56,7 +54,7 @@ public final class ExPresenter extends CommonPresenter {
     protected Observable<RespEntity> mockResp() {
         return Observable
                 .create((Subscriber<? super RespEntity> subscriber) -> {
-                    subscriber.onNext(new RespEntity(RespEntity.SUCCESS));
+                    subscriber.onNext(new RespEntity(ErrorEvent.SUCCESS));
                     subscriber.onCompleted();
                 })
                 .delay(3, TimeUnit.SECONDS);
