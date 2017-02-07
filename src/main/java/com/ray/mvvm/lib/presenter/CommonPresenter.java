@@ -98,9 +98,9 @@ public class CommonPresenter implements IPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
@@ -108,10 +108,10 @@ public class CommonPresenter implements IPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .concatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
@@ -119,9 +119,9 @@ public class CommonPresenter implements IPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle())
                 .doOnSubscribe(startListener::onStart);
     }
@@ -134,10 +134,10 @@ public class CommonPresenter implements IPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .concatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .doOnSubscribe(startListener::onStart)
                 .compose(bindLifecycle());
     }
