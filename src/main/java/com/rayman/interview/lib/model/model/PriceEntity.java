@@ -1,22 +1,5 @@
 package com.rayman.interview.lib.model.model;
 
-/**
- * Created by Android Studio.
- * ProjectName: MerchantGuideToGalaxy
- * Author:  Lena
- * Date: 07/02/2017
- * Time: 9:00 PM
- * \ --------------------------------------------
- * \| The only thing that is constant is change!  |
- * \ --------------------------------------------
- * \  \
- * \   \   \_\_    _/_/
- * \    \      \__/
- * \           (oo)\_______
- * \           (__)\       )\/\
- * \               ||----w |
- * \               ||     ||
- */
 public class PriceEntity {
 
     private String name;

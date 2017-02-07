@@ -2,23 +2,6 @@ package com.rayman.interview.lib.model.model;
 
 import android.support.annotation.NonNull;
 
-/**
- * Created by Android Studio.
- * ProjectName: MerchantGuideToGalaxy
- * Author:  Lena
- * Date: 07/02/2017
- * Time: 10:03 AM
- * \ --------------------------------------------
- * \| The only thing that is constant is change!  |
- * \ --------------------------------------------
- * \  \
- * \   \   \_\_    _/_/
- * \    \      \__/
- * \           (oo)\_______
- * \           (__)\       )\/\
- * \               ||----w |
- * \               ||     ||
- */
 public class UnitEntity {
 
     private RomanNumber romanNumber;

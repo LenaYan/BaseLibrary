@@ -25,10 +25,8 @@ import com.ray.mvvm.lib.di.modules.AppModule;
 import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.cache.IFileControl;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
-import com.rayman.interview.lib.executor.interfaces.IConvertor;
-import com.rayman.interview.lib.executor.interfaces.IPriceCalculate;
-import com.rayman.interview.lib.executor.interfaces.IPriceDefine;
-import com.rayman.interview.lib.executor.interfaces.IUnitDefine;
+import com.rayman.interview.lib.executor.IPriceDefine;
+import com.rayman.interview.lib.executor.IUnitDefine;
 import com.squareup.moshi.Moshi;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
@@ -70,9 +68,5 @@ public interface AppComp {
     IUnitDefine unitDefine();
 
     IPriceDefine priceDefine();
-
-    IConvertor convertor();
-
-    IPriceCalculate priceCalculate();
 
 }

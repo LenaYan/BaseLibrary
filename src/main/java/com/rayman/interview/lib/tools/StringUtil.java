@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import timber.log.Timber;
-
 public class StringUtil {
 
     public static final String REGEX_UNIT_DEFINE = "([a-zA-Z]+)\\s+is\\s+([IVXLCDM])";
@@ -31,10 +29,6 @@ public class StringUtil {
     public static boolean isInteger(String input) {
         Matcher mer = Pattern.compile("^[0-9]+$").matcher(input);
         return mer.find();
-    }
-
-    public static void out(String msg) {
-        Timber.i(msg);
     }
 
     public static MatchResult matchString(String input, String regex, int groupCount) {

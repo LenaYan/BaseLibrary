@@ -1,7 +1,6 @@
 package com.rayman.interview.lib.executor;
 
 import com.ray.mvvm.lib.widget.anotations.ActionType;
-import com.rayman.interview.lib.executor.interfaces.IUnitDefine;
 import com.rayman.interview.lib.model.model.RomanNumber;
 
 import java.util.EnumMap;

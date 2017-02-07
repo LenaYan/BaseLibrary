@@ -23,14 +23,10 @@ import com.ray.mvvm.lib.BuildConfig;
 import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.http.adapter.GenericRespEntityAdapter;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
-import com.rayman.interview.lib.executor.SymbolConvertor;
-import com.rayman.interview.lib.executor.SymbolPriceCalculator;
 import com.rayman.interview.lib.executor.SymbolPriceDefine;
 import com.rayman.interview.lib.executor.SymbolUnitDefine;
-import com.rayman.interview.lib.executor.interfaces.IConvertor;
-import com.rayman.interview.lib.executor.interfaces.IPriceCalculate;
-import com.rayman.interview.lib.executor.interfaces.IPriceDefine;
-import com.rayman.interview.lib.executor.interfaces.IUnitDefine;
+import com.rayman.interview.lib.executor.IPriceDefine;
+import com.rayman.interview.lib.executor.IUnitDefine;
 import com.squareup.moshi.Moshi;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
@@ -84,18 +80,6 @@ public final class ComponentModule {
     @PerApplication
     static IPriceDefine providePriceDefine() {
         return new SymbolPriceDefine();
-    }
-
-    @Provides
-    @PerApplication
-    static IConvertor provideConvertor(IUnitDefine unitDefine) {
-        return new SymbolConvertor(unitDefine);
-    }
-
-    @Provides
-    @PerApplication
-    static IPriceCalculate providePriceCalculate(IUnitDefine unitDefine, IPriceDefine priceDefine) {
-        return new SymbolPriceCalculator(unitDefine, priceDefine);
     }
 
 }

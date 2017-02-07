@@ -1,4 +1,4 @@
-package com.rayman.interview.lib.executor.interfaces;
+package com.rayman.interview.lib.executor;
 
 import com.rayman.interview.lib.model.model.RomanNumber;
 
