@@ -36,11 +36,6 @@ package com.ray.mvvm.lib.model.model;
  */
 public class RespEntity {
 
-    public static final int FAILURE = 0;
-    public static final int SUCCESS = 1;
-    public static final int AUTH_ERROR = 401;
-    public static final int RESP_BODY_EMPTY = 0xFFF;
-
     private int code;
     private String message;
 
