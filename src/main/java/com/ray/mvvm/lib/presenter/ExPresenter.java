@@ -73,9 +73,9 @@ public final class ExPresenter extends CommonPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
@@ -83,9 +83,9 @@ public final class ExPresenter extends CommonPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle())
                 .doOnSubscribe(startListener::onStart);
     }
@@ -94,10 +94,10 @@ public final class ExPresenter extends CommonPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .concatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 

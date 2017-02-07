@@ -56,10 +56,10 @@ public final class GenericPresenter extends CommonPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .map(T::getData)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
@@ -67,9 +67,9 @@ public final class GenericPresenter extends CommonPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
@@ -77,10 +77,10 @@ public final class GenericPresenter extends CommonPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .map(T::getData)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle())
                 .doOnSubscribe(startListener::onStart);
     }
@@ -89,11 +89,11 @@ public final class GenericPresenter extends CommonPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .map(T::getData)
                 .concatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
@@ -101,11 +101,11 @@ public final class GenericPresenter extends CommonPresenter {
         return observable -> observable
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
-                .doOnError(this::postError)
                 .flatMap(this::respCheck)
                 .concatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(startListener::onStart)
+                .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
