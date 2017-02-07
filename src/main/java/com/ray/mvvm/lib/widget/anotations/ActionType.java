@@ -25,8 +25,8 @@ import java.lang.annotation.RetentionPolicy;
 
 @Documented
 @Retention(RetentionPolicy.SOURCE)
-@IntDef({IntentAction.ACTION_ADD, IntentAction.ACTION_DELETE, IntentAction.ACTION_UPDATE, IntentAction.ACTION_UNFAVORITE})
-public @interface IntentAction {
+@IntDef({ActionType.ACTION_ADD, ActionType.ACTION_DELETE, ActionType.ACTION_UPDATE, ActionType.ACTION_UNFAVORITE})
+public @interface ActionType {
 
     String PARA_ACTION_KEY = "PARA_ACTION_KEY";
     int ACTION_ADD = 1;
