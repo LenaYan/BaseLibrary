@@ -48,7 +48,7 @@ public class SymbolPriceCalculator implements IPriceCalculate {
         }
         if (romanString.length() > 0 && !StringUtil.isEmpty(entryName)) {
             int entryCount = ConvertUtil.convertRomanToNumber(romanString.toString());
-            int totalPrice = (int) (priceDefine.getPricePerEntry(entryName) * entryCount);
+            int totalPrice = (int) (priceDefine.getPriceByEntry(entryName) * entryCount);
             StringUtil.out(entryDes + " is " + totalPrice + " Credits.");
             return ResultState.success();
         } else {

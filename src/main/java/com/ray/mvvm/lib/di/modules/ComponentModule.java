@@ -82,8 +82,8 @@ public final class ComponentModule {
 
     @Provides
     @PerApplication
-    static IPriceDefine providePriceDefine(IUnitDefine unitDefine) {
-        return new SymbolPriceDefine(unitDefine);
+    static IPriceDefine providePriceDefine() {
+        return new SymbolPriceDefine();
     }
 
     @Provides

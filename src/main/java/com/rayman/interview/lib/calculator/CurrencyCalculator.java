@@ -38,13 +38,13 @@ public class CurrencyCalculator {
             return ResultState.error("Input line is Empty...");
         MatchResult matchResult;
         matchResult = StringUtil.matchString(input, StringUtil.REGEX_UNIT_DEFINE, 2);
-        if (matchResult.isMatch()) {
-            return unitDefine.define(matchResult.getGroupList());
-        }
-        matchResult = StringUtil.matchString(input, StringUtil.REGEX_PRICE_DEFINE, 2);
-        if (matchResult.isMatch()) {
-            return priceDefine.define(matchResult.getGroupList());
-        }
+//        if (matchResult.isMatch()) {
+//            return unitDefine.define(matchResult.getGroupList());
+//        }
+//        matchResult = StringUtil.matchString(input, StringUtil.REGEX_PRICE_DEFINE, 2);
+//        if (matchResult.isMatch()) {
+//            return priceDefine.define(matchResult.getGroupList());
+//        }
         matchResult = StringUtil.matchString(input, StringUtil.REGEX_ROMAN_CONVERT, 1);
         if (matchResult.isMatch()) {
             return convertor.convert(matchResult.getGroupList());

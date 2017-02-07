@@ -82,6 +82,11 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
+    default String findString(int resId, Object... formatArgs) {
+        return activity().getString(resId, formatArgs);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
     default Drawable findDrawable(int resId) {
         return ContextCompat.getDrawable(activity(), resId);
     }

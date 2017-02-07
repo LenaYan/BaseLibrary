@@ -1,92 +1,49 @@
 package com.rayman.interview.lib.executor;
 
-import android.support.v4.util.Pair;
-import android.util.SparseArray;
-
 import com.ray.mvvm.lib.widget.anotations.ActionType;
 import com.rayman.interview.lib.executor.interfaces.IUnitDefine;
 import com.rayman.interview.lib.model.model.RomanNumber;
-import com.rayman.interview.lib.model.model.UnitEntity;
-import com.rayman.interview.lib.state.ResultState;
-import com.rayman.interview.lib.tools.ConvertUtil;
-import com.rayman.interview.lib.tools.StringUtil;
 
-import java.util.List;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class SymbolUnitDefine implements IUnitDefine {
 
-    private SparseArray<UnitEntity> sparseArray = new SparseArray<>();
+    private EnumMap<RomanNumber, String> unitMap = new EnumMap<>(RomanNumber.class);
 
     public SymbolUnitDefine() {
     }
 
     @Override
-    public ResultState define(List<String> stringList) {
-        if (stringList == null || stringList.size() != 2)
-            return ResultState.error("Have no symbols ,pls check your input.");
-        String roman = stringList.get(1);
-        if (StringUtil.isEmpty(roman))
-            return ResultState.error("Have no romans ,pls check your input.");
-        RomanNumber romanNumber = ConvertUtil.getRomanFromValue(roman.charAt(0));
-        String symbol = stringList.get(0);
-        if (romanNumber == null) {
-            return ResultState.error(roman + "is not defined in our number list.");
-        }
-        if (StringUtil.isEmpty(symbol)) {
-            return ResultState.error("Invalide symbol,pls check your input");
-        }
-        if (sparseArray.get(symbol.hashCode()) != null) {
-            UnitEntity unitEntity = sparseArray.get(symbol.hashCode());
-            String oldValue = unitEntity.getSmybol();
-            unitEntity.setRomanNumber(romanNumber);
-            StringUtil.out("Unite Replaced from (" + romanNumber.name() + ":" + symbol + "[" + oldValue + "]" + ")," + sparseArray.size() + " is defined.");
-        } else {
-            sparseArray.put(symbol.hashCode(), new UnitEntity(romanNumber, symbol));
-            StringUtil.out("New Unite Defined (" + romanNumber.name() + ":" + symbol + ")," + sparseArray.size() + " is defined.");
-        }
-        return ResultState.success();
-    }
-
-    @Override
-    public Pair<Integer, UnitEntity> saveUnit(RomanNumber romanNumber, String symbol) {
-        UnitEntity unitEntity;
-        int action;
-        if (sparseArray.get(symbol.hashCode()) != null) {
-            unitEntity = sparseArray.get(symbol.hashCode());
-            unitEntity.setRomanNumber(romanNumber);
-            action = ActionType.ACTION_UPDATE;
-        } else {
-            unitEntity = new UnitEntity(romanNumber, symbol);
-            sparseArray.put(symbol.hashCode(), unitEntity);
-            action = ActionType.ACTION_ADD;
-        }
-        return new Pair<>(action, unitEntity);
+    public int saveUnit(RomanNumber romanNumber, String symbol) {
+        int action = unitMap.containsKey(romanNumber) ? ActionType.ACTION_UPDATE : ActionType.ACTION_ADD;
+        unitMap.put(romanNumber, symbol);
+        return action;
     }
 
     @Override
     public RomanNumber getRomanBySymbol(String symbol) {
-        UnitEntity unitEntity = sparseArray.get(symbol.hashCode());
-        return unitEntity == null ? null : unitEntity.getRomanNumber();
+        Map<RomanNumber, String> map = unitMap;
+        for (Map.Entry<RomanNumber, String> entry : map.entrySet()) {
+            if (symbol.equals(entry.getValue()))
+                return entry.getKey();
+        }
+        return null;
     }
 
     @Override
     public int getUnitcount() {
-        return sparseArray.size();
-    }
-
-    @Override
-    public boolean isContainsSymbol(String symbol) {
-        return false;
+        return unitMap.size();
     }
 
     @Override
     public void clear() {
-        sparseArray.clear();
+        unitMap.clear();
     }
 
     @Override
-    public void remove(int key) {
-        if (sparseArray.get(key) != null)
-            sparseArray.remove(key);
+    public void remove(RomanNumber romanNumber) {
+        if (unitMap.containsKey(romanNumber))
+            unitMap.remove(romanNumber);
     }
 }
