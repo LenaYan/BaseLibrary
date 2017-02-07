@@ -1,5 +1,7 @@
 package com.rayman.interview.lib.model.model;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by Android Studio.
  * ProjectName: MerchantGuideToGalaxy
@@ -22,7 +24,7 @@ public class UnitEntity {
     private RomanNumber romanNumber;
     private String smybol;
 
-    public UnitEntity(RomanNumber romanNumber, String smybol) {
+    public UnitEntity(@NonNull RomanNumber romanNumber, @NonNull String smybol) {
         this.romanNumber = romanNumber;
         this.smybol = smybol;
     }
@@ -31,7 +33,7 @@ public class UnitEntity {
         return romanNumber;
     }
 
-    public void setRomanNumber(RomanNumber romanNumber) {
+    public void setRomanNumber(@NonNull RomanNumber romanNumber) {
         this.romanNumber = romanNumber;
     }
 
@@ -39,7 +41,7 @@ public class UnitEntity {
         return smybol;
     }
 
-    public void setSmybol(String smybol) {
+    public void setSmybol(@NonNull String smybol) {
         this.smybol = smybol;
     }
 }

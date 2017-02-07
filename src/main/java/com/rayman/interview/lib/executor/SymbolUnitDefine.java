@@ -1,7 +1,9 @@
 package com.rayman.interview.lib.executor;
 
+import android.support.v4.util.Pair;
 import android.util.SparseArray;
 
+import com.ray.mvvm.lib.widget.anotations.ActionType;
 import com.rayman.interview.lib.executor.interfaces.IUnitDefine;
 import com.rayman.interview.lib.model.model.RomanNumber;
 import com.rayman.interview.lib.model.model.UnitEntity;
@@ -46,8 +48,19 @@ public class SymbolUnitDefine implements IUnitDefine {
     }
 
     @Override
-    public void saveUnit(RomanNumber romanNumber, String symbol) {
-
+    public Pair<Integer, UnitEntity> saveUnit(RomanNumber romanNumber, String symbol) {
+        UnitEntity unitEntity;
+        int action;
+        if (sparseArray.get(symbol.hashCode()) != null) {
+            unitEntity = sparseArray.get(symbol.hashCode());
+            unitEntity.setRomanNumber(romanNumber);
+            action = ActionType.ACTION_UPDATE;
+        } else {
+            unitEntity = new UnitEntity(romanNumber, symbol);
+            sparseArray.put(symbol.hashCode(), unitEntity);
+            action = ActionType.ACTION_ADD;
+        }
+        return new Pair<>(action, unitEntity);
     }
 
     @Override
@@ -66,4 +79,14 @@ public class SymbolUnitDefine implements IUnitDefine {
         return false;
     }
 
+    @Override
+    public void clear() {
+        sparseArray.clear();
+    }
+
+    @Override
+    public void remove(int key) {
+        if (sparseArray.get(key) != null)
+            sparseArray.remove(key);
+    }
 }
