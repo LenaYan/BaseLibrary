@@ -1,9 +1,5 @@
 package com.rayman.interview.lib.calculator;
 
-import com.rayman.interview.lib.executor.SymbolConvertor;
-import com.rayman.interview.lib.executor.SymbolPriceCalculator;
-import com.rayman.interview.lib.executor.SymbolPriceDefine;
-import com.rayman.interview.lib.executor.SymbolUnitDefine;
 import com.rayman.interview.lib.executor.interfaces.IConvertor;
 import com.rayman.interview.lib.executor.interfaces.IPriceCalculate;
 import com.rayman.interview.lib.executor.interfaces.IPriceDefine;
@@ -12,6 +8,8 @@ import com.rayman.interview.lib.model.model.MatchResult;
 import com.rayman.interview.lib.state.ResultState;
 import com.rayman.interview.lib.tools.StringUtil;
 
+import javax.inject.Inject;
+
 public class CurrencyCalculator {
 
     private IUnitDefine unitDefine;
@@ -19,11 +17,12 @@ public class CurrencyCalculator {
     private IConvertor convertor;
     private IPriceCalculate priceCalculate;
 
-    public CurrencyCalculator() {
-        unitDefine = new SymbolUnitDefine();
-        priceDefine = new SymbolPriceDefine(unitDefine);
-        convertor = new SymbolConvertor(unitDefine);
-        priceCalculate = new SymbolPriceCalculator(unitDefine, priceDefine);
+    @Inject
+    public CurrencyCalculator(IUnitDefine unitDefine, IPriceDefine priceDefine, IConvertor convertor, IPriceCalculate priceCalculate) {
+        this.unitDefine = unitDefine;
+        this.priceDefine = priceDefine;
+        this.convertor = convertor;
+        this.priceCalculate = priceCalculate;
     }
 
     public IUnitDefine getUnitDefine() {

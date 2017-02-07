@@ -11,5 +11,9 @@ public interface IUnitDefine {
 
     RomanNumber getRomanBySymbol(String symbol);
 
+    void saveUnit(RomanNumber romanNumber, String symbol);
+
     int getUnitcount();
+
+    boolean isContainsSymbol(String symbol);
 }
