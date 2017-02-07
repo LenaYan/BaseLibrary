@@ -21,23 +21,6 @@ import com.ray.mvvm.lib.model.model.topic.TopicEntity;
 
 import io.realm.Realm;
 
-/**
- * Created by Android Studio.
- * ProjectName: V2EXAndroidClient
- * Author:  Lena
- * Date: 15/11/2016
- * Time: 5:40 PM
- * \ ----------------------------------------
- * \| A small leak will sink a great ship.!  |
- * \ ----------------------------------------
- * \  \
- * \   \   \_\_    _/_/
- * \    \      \__/
- * \           (oo)\_______
- * \           (__)\       )\/\
- * \               ||----w |
- * \               ||     ||
- */
 public final class TopicDBManager extends DBManager<TopicEntity> implements ITopicDBManager {
 
     public TopicDBManager(Realm realm) {

@@ -19,23 +19,6 @@ package com.ray.mvvm.lib.db;
 
 import com.ray.mvvm.lib.model.model.topic.TopicEntity;
 
-/**
- * Created by Android Studio.
- * ProjectName: V2EXAndroidClient
- * Author:  Lena
- * Date: 15/11/2016
- * Time: 5:39 PM
- * \ ----------------------------------------
- * \| A small leak will sink a great ship.!  |
- * \ ----------------------------------------
- * \  \
- * \   \   \_\_    _/_/
- * \    \      \__/
- * \           (oo)\_______
- * \           (__)\       )\/\
- * \               ||----w |
- * \               ||     ||
- */
 public interface ITopicDBManager extends IDBManager<TopicEntity> {
 
 }
