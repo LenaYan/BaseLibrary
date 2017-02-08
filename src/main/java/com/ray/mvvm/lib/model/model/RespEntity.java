@@ -17,23 +17,6 @@
 
 package com.ray.mvvm.lib.model.model;
 
-/**
- * Created by Android Studio.
- * ProjectName: V2EXAndroidClient
- * Author:  Lena
- * Date: 06/02/2017
- * Time: 6:35 PM
- * \ --------------------------------------------
- * \| The only thing that is constant is change!  |
- * \ --------------------------------------------
- * \  \
- * \   \   \_\_    _/_/
- * \    \      \__/
- * \           (oo)\_______
- * \           (__)\       )\/\
- * \               ||----w |
- * \               ||     ||
- */
 public class RespEntity {
 
     private int code;
