@@ -60,19 +60,19 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         return activityComp;
     }
 
-    protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel) {
-        bindViewModel(layoutRes, viewModel, true);
+    protected <B extends ViewDataBinding, P extends IPresenter, V extends IView> B bindLayout(int layoutRes, BaseVM<P, V> viewModel) {
+        return bindViewModel(layoutRes, viewModel, true);
     }
 
-    protected <P extends IPresenter, V extends IView> void bindLayout(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
-        bindViewModel(layoutRes, viewModel, homeAsUp);
+    protected <B extends ViewDataBinding, P extends IPresenter, V extends IView> B bindLayout(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
+        return bindViewModel(layoutRes, viewModel, homeAsUp);
     }
 
-    private <P extends IPresenter, V extends IView> void bindViewModel(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
-        bindViewModel(DataBindingUtil.setContentView(this, layoutRes), viewModel, homeAsUp);
+    private <B extends ViewDataBinding, P extends IPresenter, V extends IView> B bindViewModel(int layoutRes, BaseVM<P, V> viewModel, boolean homeAsUp) {
+        return bindViewModel(DataBindingUtil.setContentView(this, layoutRes), viewModel, homeAsUp);
     }
 
-    protected <P extends IPresenter, V extends IView, B extends ViewDataBinding> void bindViewModel(B binding, BaseVM<P, V> viewModel, boolean homeAsUp) {
+    protected <B extends ViewDataBinding, P extends IPresenter, V extends IView> B bindViewModel(B binding, BaseVM<P, V> viewModel, boolean homeAsUp) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setSubtitle("");
@@ -97,6 +97,7 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         if (ViewDataBinding.getBuildSdkInt() < Build.VERSION_CODES.KITKAT) {
             binding.executePendingBindings();
         }
+        return binding;
     }
 
 }
