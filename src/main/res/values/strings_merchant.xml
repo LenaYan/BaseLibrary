@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="added_successfully">Added successfully</string>
+    <string name="updated_successfully">Updated successfully</string>
+
+    <!--Unit Define-->
+    <string name="unit_define_count_format">UnitDefine(%1$s)</string>
+    <string name="no_symbols_message">"Have no symbols, pls check your input."</string>
+    <string name="no_romans_message">Have no romans, pls check your input.</string>
+    <string name="number_not_defined_format">%1$s is not defined in our number list</string>
+    <string name="invalide_symbol_message">Invalide symbol,pls check your input</string>
+    <string name="symbol_already_defined_format">%1$s is already defined in our symbol list</string>
+
+</resources>

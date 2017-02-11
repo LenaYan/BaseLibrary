@@ -1,14 +1,16 @@
 package com.rayman.interview.lib.executor;
 
+import com.rayman.interview.lib.model.model.ResultEntity;
 import com.rayman.interview.lib.model.model.RomanNumber;
+import com.rayman.interview.lib.model.model.UnitEntity;
 
 public interface IUnitDefine {
 
     RomanNumber getRomanBySymbol(String symbol);
 
-    int getUnitcount();
+    ResultEntity<UnitEntity> handleInput(String input);
 
-    int saveUnit(RomanNumber romanNumber, String symbol);
+    int getUnitcount();
 
     void clear();
 

@@ -25,14 +25,14 @@ import java.lang.annotation.RetentionPolicy;
 
 @Documented
 @Retention(RetentionPolicy.SOURCE)
-@IntDef({ActionType.ACTION_ADD, ActionType.ACTION_DELETE, ActionType.ACTION_UPDATE, ActionType.ACTION_UNFAVORITE})
+@IntDef({ActionType.ACTION_ADD, ActionType.ACTION_DELETE, ActionType.ACTION_UPDATE, ActionType.ACTION_NONE})
 public @interface ActionType {
 
     String PARA_ACTION_KEY = "PARA_ACTION_KEY";
+    int ACTION_NONE = 0;
     int ACTION_ADD = 1;
     int ACTION_DELETE = 2;
     int ACTION_UPDATE = 3;
-    int ACTION_UNFAVORITE = 4;
 
 }
 

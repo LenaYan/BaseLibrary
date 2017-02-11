@@ -23,6 +23,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.view.View;
@@ -77,13 +78,12 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    default String findString(int resId) {
-        return activity().getString(resId);
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
     default String findString(int resId, Object... formatArgs) {
-        return activity().getString(resId, formatArgs);
+        if (formatArgs != null) {
+            return activity().getString(resId, formatArgs);
+        } else {
+            return activity().getString(resId);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -175,9 +175,9 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    default void showToast(int stringRes) {
+    default void showToast(int stringRes, @Nullable Object... para) {
         Activity activity = activity();
-        ToastUtil.show(activity.getApplicationContext(), activity.getString(stringRes));
+        ToastUtil.show(activity.getApplicationContext(), para == null ? activity.getString(stringRes) : activity.getString(stringRes, para));
     }
 
     @TargetApi(Build.VERSION_CODES.N)
