@@ -163,5 +163,7 @@ ext.depMap = [
 
         //Lint dependencies
         Lintapi               : "com.android.tools.lint:lint-api:${lintVersion}",
-        Lintchecks            : "com.android.tools.lint:lint-checks:${lintVersion}"
+        Lintchecks            : "com.android.tools.lint:lint-checks:${lintVersion}",
+
+        MuiltyDexTest         : 'com.android.support:multidex-instrumentation:1.0.1'
 ]
