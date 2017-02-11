@@ -17,6 +17,7 @@
 
 package com.ray.mvvm.lib.widget.utils;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,7 @@ import android.widget.EditText;
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.jakewharton.rxbinding.view.RxMenuItem;
 import com.jakewharton.rxbinding.view.RxView;
-import com.ray.mvvm.lib.rx.onsubscribe.EditTextTextChangesOnSubscribe;
+import com.ray.mvvm.lib.rx.view.RxEditText;
 
 import java.util.concurrent.TimeUnit;
 
@@ -75,8 +76,8 @@ public final class RxViewUtil {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Observable<CharSequence> throttleEditTextChanges(EditText editText) {
-        return Observable.create(new EditTextTextChangesOnSubscribe(editText))
+    public static Observable<CharSequence> throttleEditTextChanges(@NonNull EditText editText) {
+        return RxEditText.textChanges(editText)
                 .throttleLast(200, TimeUnit.MILLISECONDS)
 //                .debounce(1, TimeUnit.SECONDS)
                 .onBackpressureLatest()
