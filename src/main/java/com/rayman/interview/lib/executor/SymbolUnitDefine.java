@@ -25,36 +25,36 @@ public class SymbolUnitDefine implements IUnitDefine {
         MatchResult matchResult;
         matchResult = StringUtil.matchString(input, StringUtil.REGEX_UNIT_DEFINE, 2);
         if (!matchResult.isMatch()) {
-            return new ResultEntity<>(R.string.no_symbols_message);
+            return ResultEntity.ERROR(R.string.no_symbols_message);
         }
         List<String> stringList = matchResult.getGroupList();
         if (stringList == null || stringList.size() != 2) {
-            return new ResultEntity<>(R.string.no_symbols_message);
+            return ResultEntity.ERROR(R.string.no_symbols_message);
         }
         String roman = stringList.get(1);
         if (StringUtil.isEmpty(roman)) {
-            return new ResultEntity<>(R.string.no_romans_message);
+            return ResultEntity.ERROR(R.string.no_romans_message);
         }
         RomanNumber romanNumber = ConvertUtil.getRomanFromValue(roman.charAt(0));
         if (romanNumber == null) {
-            return new ResultEntity<>(R.string.number_not_defined_format, roman);
+            return ResultEntity.ERROR(R.string.number_not_defined_format, roman);
         }
         String symbol = stringList.get(0);
         if (StringUtil.isEmpty(symbol)) {
-            return new ResultEntity<>(R.string.invalide_symbol_message);
+            return ResultEntity.ERROR(R.string.invalide_symbol_message);
         }
         if (unitMap.containsValue(symbol)) {
-            return new ResultEntity<>(R.string.symbol_already_defined_format, symbol);
+            return ResultEntity.ERROR(R.string.symbol_already_defined_format, symbol);
         }
         int actionType = saveUnit(romanNumber, symbol);
         ResultEntity<UnitEntity> resultEntity;
         switch (actionType) {
             default:
             case ActionType.ACTION_ADD:
-                resultEntity = new ResultEntity<>(ActionType.ACTION_ADD, R.string.no_symbols_message);
+                resultEntity = ResultEntity.ADD(R.string.no_symbols_message);
                 break;
             case ActionType.ACTION_UPDATE:
-                resultEntity = new ResultEntity<>(ActionType.ACTION_UPDATE, R.string.updated_successfully);
+                resultEntity = ResultEntity.UPDATE(R.string.updated_successfully);
                 break;
         }
         resultEntity.setData(new UnitEntity(romanNumber, symbol));

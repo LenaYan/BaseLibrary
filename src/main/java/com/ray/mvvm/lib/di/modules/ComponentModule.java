@@ -23,10 +23,10 @@ import com.ray.mvvm.lib.BuildConfig;
 import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.http.adapter.GenericRespEntityAdapter;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
-import com.rayman.interview.lib.executor.SymbolPriceDefine;
-import com.rayman.interview.lib.executor.SymbolUnitDefine;
 import com.rayman.interview.lib.executor.IPriceDefine;
 import com.rayman.interview.lib.executor.IUnitDefine;
+import com.rayman.interview.lib.executor.SymbolPriceDefine;
+import com.rayman.interview.lib.executor.SymbolUnitDefine;
 import com.squareup.moshi.Moshi;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
@@ -78,8 +78,8 @@ public final class ComponentModule {
 
     @Provides
     @PerApplication
-    static IPriceDefine providePriceDefine() {
-        return new SymbolPriceDefine();
+    static IPriceDefine providePriceDefine(IUnitDefine unitDefine) {
+        return new SymbolPriceDefine(unitDefine);
     }
 
 }

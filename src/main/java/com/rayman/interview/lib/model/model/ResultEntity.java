@@ -26,12 +26,31 @@ public class ResultEntity<T> {
     private Object[] msgPara;
     private T data;
 
-    public ResultEntity(int msgRes, String... msgPara) {
-        this.msgRes = msgRes;
-        this.msgPara = msgPara;
+    public static <T> ResultEntity<T> ERROR(int msgRes, String... msgPara) {
+        return new ResultEntity<>(ActionType.ACTION_NONE, msgRes, msgPara);
     }
 
-    public ResultEntity(@ActionType int result, int msgRes, String... msgPara) {
+    public static <T> ResultEntity<T> ADD(int msgRes, String... msgPara) {
+        return new ResultEntity<>(ActionType.ACTION_ADD, msgRes, msgPara);
+    }
+
+    public static <T> ResultEntity<T> ADD() {
+        return new ResultEntity<>(ActionType.ACTION_ADD);
+    }
+
+    public static <T> ResultEntity<T> UPDATE(int msgRes, String... msgPara) {
+        return new ResultEntity<>(ActionType.ACTION_UPDATE, msgRes, msgPara);
+    }
+
+    public static <T> ResultEntity<T> UPDATE() {
+        return new ResultEntity<>(ActionType.ACTION_UPDATE);
+    }
+
+    private ResultEntity(int result) {
+        this.result = result;
+    }
+
+    private ResultEntity(@ActionType int result, int msgRes, String... msgPara) {
         this.result = result;
         this.msgRes = msgRes;
         this.msgPara = msgPara;
@@ -55,5 +74,9 @@ public class ResultEntity<T> {
 
     public Object[] getMsgPara() {
         return msgPara;
+    }
+
+    public void setMsgRes(int msgRes) {
+        this.msgRes = msgRes;
     }
 }
