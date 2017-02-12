@@ -249,6 +249,10 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     public boolean updateItem(T t) {
+        return updateItem(t, true);
+    }
+
+    public boolean updateItem(T t, boolean notify) {
         if (t == null) return false;
         final long key = getIndex(t);
         if (key == NO_INDEX) return false;
@@ -259,7 +263,8 @@ public abstract class ListAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         final int headerCount = getHeaderCount();
         wrapMap.put(key, t);
         list.set(position, t);
-        notifyItemChanged(position + headerCount);
+        if (notify)
+            notifyItemChanged(position + headerCount);
         return true;
     }
 

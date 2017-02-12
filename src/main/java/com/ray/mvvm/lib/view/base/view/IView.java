@@ -41,6 +41,7 @@ import com.trello.rxlifecycle.LifecycleTransformer;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 public interface IView extends IRedirect, IPageControl, LifecycleProvider<LifecycleEvent> {
@@ -50,6 +51,15 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     ProgressDialog getProgressDialog(boolean cancel);
 
     boolean isPageAlive();
+
+    @TargetApi(Build.VERSION_CODES.N)
+    default void delayToResume(Action0 action) {
+        lifecycle()
+                .compose(bindUntilEvent(LifecycleEvent.DESTROY))
+                .takeFirst(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
+                .single()
+                .subscribe(lifecycleEvent -> postRunnable(action::call));
+    }
 
     @TargetApi(Build.VERSION_CODES.N)
     default ProgressDialog getProgressDialog() {

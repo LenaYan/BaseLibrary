@@ -19,9 +19,11 @@ package com.ray.mvvm.lib.widget.utils;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.jakewharton.rxbinding.view.RxMenuItem;
 import com.jakewharton.rxbinding.view.RxView;
+import com.ray.mvvm.lib.rx.onsubscribe.EditTextTextChangesOnSubscribe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,6 +61,14 @@ public final class RxViewUtil {
                 .clicks(view)
                 .throttleLast(1, TimeUnit.SECONDS)
                 .onBackpressureLatest();
+    }
+
+    public static Observable<CharSequence> throttleEditTextChanges(EditText editText) {
+        return Observable.create(new EditTextTextChangesOnSubscribe(editText))
+                .throttleLast(200, TimeUnit.MILLISECONDS)
+//                .debounce(1, TimeUnit.SECONDS)
+                .onBackpressureLatest()
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public static Observable<Void> throttleViewClicked(View view) {
