@@ -163,5 +163,7 @@ ext.depMap = [
 
         //Lint dependencies
         Lintapi               : "com.android.tools.lint:lint-api:${lintVersion}",
-        Lintchecks            : "com.android.tools.lint:lint-checks:${lintVersion}"
+        Lintchecks            : "com.android.tools.lint:lint-checks:${lintVersion}",
+
+        FindBugs              : 'com.google.code.findbugs:jsr305:3.0.1'
 ]
