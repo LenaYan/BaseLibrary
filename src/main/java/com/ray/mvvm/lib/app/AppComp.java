@@ -31,7 +31,6 @@ import com.ray.mvvm.lib.model.service.ReplyService;
 import com.ray.mvvm.lib.model.service.TopicService;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
 import com.squareup.moshi.Moshi;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Named;
 
@@ -65,8 +64,6 @@ public interface AppComp {
     OkHttpClient okHttpClient();
 
     Realm realm();
-
-    RxPermissions rxPermission();
 
     MemberService memberService();
 
