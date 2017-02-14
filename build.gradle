@@ -117,13 +117,14 @@ dependencies {
     compile depMap.RxLifecycle
     compile depMap.RxLifecycleAndroid
 
+    compile depMap.RxPermissions
+
     compile depMap.Dagger
     annotationProcessor depMap.DaggerCompile
 
     compile depMap.MaterialMenuToolbar
     compile depMap.RoundedImageview
     compile depMap.Timber
-    compile depMap.RxPermissions
 
     debugCompile depMap.Stetho
     debugCompile depMap.StethoRealm
