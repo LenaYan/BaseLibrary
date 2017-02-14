@@ -103,9 +103,9 @@ ext.depMap = [
         ScalarsConverter      : "com.squareup.retrofit2:converter-scalars:${retrofitVersion}",
 
         RxJava                : 'io.reactivex:rxjava:1.2.1',
-        RxJava2               : 'io.reactivex:rxjava:2.0.1',
         RxAndroid             : 'io.reactivex:rxandroid:1.2.1',
-        RxAndroid2            : 'io.reactivex:rxandroid:2.0.1',
+        RxJava2               : 'io.reactivex.rxjava2:rxjava:2.0.1',
+        RxAndroid2            : 'io.reactivex.rxjava2:rxandroid:2.0.1',
         RxJavaProguard        : 'com.artemzin.rxjava:proguard-rules:1.2.1.0',
 
         RxLifecycle           : "com.trello:rxlifecycle:${rxlifecycleVersion}",
@@ -113,10 +113,10 @@ ext.depMap = [
         RxLifecycleComponents : "com.trello:rxlifecycle-components:${rxlifecycleVersion}",
         RxLifecycleKotlin     : "com.trello:rxlifecycle-kotlin:${rxlifecycleVersion}",
 
-        RxLifecycle2          : "com.trello:rxlifecycle:${rxlifecycleVersion2}",
-        RxLifecycleAndroid2   : "com.trello:rxlifecycle-android:${rxlifecycleVersion2}",
-        RxLifecycleComponents2: "com.trello:rxlifecycle-components:${rxlifecycleVersion2}",
-        RxLifecycleKotlin2    : "com.trello:rxlifecycle-kotlin:${rxlifecycleVersion2}",
+        RxLifecycle2          : "com.trello.rxlifecycle2:rxlifecycle:${rxlifecycleVersion2}",
+        RxLifecycleAndroid2   : "com.trello.rxlifecycle2:rxlifecycle-android:${rxlifecycleVersion2}",
+        RxLifecycleComponents2: "com.trello.rxlifecycle2:rxlifecycle-components:${rxlifecycleVersion2}",
+        RxLifecycleKotlin2    : "com.trello.rxlifecycle2:rxlifecycle-kotlin:${rxlifecycleVersion2}",
 
         RxBinding             : "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}",
         RxBindingSupportV4    : "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}",
