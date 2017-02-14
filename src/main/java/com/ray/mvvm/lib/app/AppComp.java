@@ -26,7 +26,6 @@ import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.cache.IFileControl;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
 import com.squareup.moshi.Moshi;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Named;
 
@@ -60,7 +59,5 @@ public interface AppComp {
     OkHttpClient okHttpClient();
 
     Realm realm();
-
-    RxPermissions rxPermission();
 
 }

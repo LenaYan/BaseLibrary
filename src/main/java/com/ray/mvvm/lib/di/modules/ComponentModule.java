@@ -24,7 +24,6 @@ import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.http.adapter.GenericRespEntityAdapter;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
 import com.squareup.moshi.Moshi;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Named;
 
@@ -58,11 +57,5 @@ public final class ComponentModule {
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
         return Realm.getDefaultInstance();
-    }
-
-    @Provides
-    @PerApplication
-    static RxPermissions provideRxPermission(@Named(ContextType.APPLICATION) Context context) {
-        return RxPermissions.getInstance(context);
     }
 }
