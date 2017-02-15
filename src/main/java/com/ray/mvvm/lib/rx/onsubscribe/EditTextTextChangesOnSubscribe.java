@@ -27,20 +27,18 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.MainThreadSubscription;
 
-import static com.jakewharton.rxbinding.internal.Preconditions.checkUiThread;
-
 public final class EditTextTextChangesOnSubscribe implements Observable.OnSubscribe<CharSequence> {
 
     private EditText editText;
 
     public EditTextTextChangesOnSubscribe(EditText editText) {
-        Preconditions.checkNotNull(editText);
+        editText = Preconditions.checkNotNull(editText);
         this.editText = editText;
     }
 
     @Override
     public void call(Subscriber<? super CharSequence> subscriber) {
-        checkUiThread();
+        MainThreadSubscription.verifyMainThread();
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
