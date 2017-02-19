@@ -14,6 +14,7 @@
  *  limitations under the License.
  *
  */
+
 package com.ray.mvvm.lib.view.base.view;
 
 public interface ILifeCycle {
