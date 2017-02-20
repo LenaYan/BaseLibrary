@@ -22,13 +22,12 @@ import android.support.annotation.NonNull;
 import com.ray.mvvm.lib.interfaces.OnStartAction;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
-import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Subscriber;
+import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -42,14 +41,13 @@ public class CommonPresenter implements IPresenter {
     public CommonPresenter() {
     }
 
-    private <N> Observable<N> respCheck(N dataEntity) {
-        return Observable.create((subscriber) -> {
+    private <N> Single<N> respCheck(N dataEntity) {
+        return Single.create((subscriber) -> {
                     if (dataEntity == null) {
                         subscriber.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response Data is empty."));
                     } else {
-                        subscriber.onNext(dataEntity);
+                        subscriber.onSuccess(dataEntity);
                     }
-                    subscriber.onCompleted();
                 }
         );
     }
@@ -60,42 +58,38 @@ public class CommonPresenter implements IPresenter {
         this.lifecycleEvent = lifecycleEvent;
     }
 
-    protected <T> Observable<T> mockResp(T t) {
-        return Observable
-                .create((Subscriber<? super T> subscriber) -> {
-                    subscriber.onNext(t);
-                    subscriber.onCompleted();
-                })
+    protected <T> Single<T> mockResp(T t) {
+        return Single
+                .<T>create(singleSubscriber ->
+                        singleSubscriber.onSuccess(t))
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T> Observable<T> mockResp(Func0<T> func) {
-        return Observable
-                .create((Subscriber<? super T> subscriber) -> {
-                    subscriber.onNext(func.call());
-                    subscriber.onCompleted();
-                })
+    protected <T> Single<T> mockResp(Func0<T> func) {
+        return Single
+                .<T>create((subscriber) ->
+                        subscriber.onSuccess(func.call()))
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected Observable mockError() {
-        return Observable
+    protected Single mockError() {
+        return Single
                 .error(new IllegalArgumentException("Error response"))
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T> LifecycleTransformer<T> bindLifecycle() {
-        return RxLifecycle.bindUntilEvent(lifecycleEventObs, lifecycleEvent);
+    protected <T> Single.Transformer<T, T> bindLifecycle() {
+        return RxLifecycle.bindUntilEvent(lifecycleEventObs, lifecycleEvent).forSingle();
     }
 
-    protected <T> Observable.Transformer<T, T> bindLifecycleOnMainThread() {
-        return (observable) ->
-                observable.observeOn(AndroidSchedulers.mainThread())
+    protected <T> Single.Transformer<T, T> bindLifecycleOnMainThread() {
+        return (single) ->
+                single.observeOn(AndroidSchedulers.mainThread())
                         .compose(bindLifecycle());
     }
 
-    protected <T> Observable.Transformer<T, T> applyAsync() {
-        return observable -> observable
+    protected <T> Single.Transformer<T, T> applyAsync() {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
@@ -104,19 +98,19 @@ public class CommonPresenter implements IPresenter {
                 .compose(bindLifecycle());
     }
 
-    protected <T, R> Observable.Transformer<T, R> applyAsync(Func1<? super T, ? extends Observable<? extends R>> func) {
-        return observable -> observable
+    protected <T, R> Single.Transformer<T, R> applyAsync(Func1<? super T, ? extends Single<? extends R>> func) {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
-                .concatMap(func)
+                .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
-    protected <T> Observable.Transformer<T, T> applyAsync(OnStartAction startListener) {
-        return observable -> observable
+    protected <T> Single.Transformer<T, T> applyAsync(OnStartAction startListener) {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
@@ -126,16 +120,16 @@ public class CommonPresenter implements IPresenter {
                 .doOnSubscribe(startListener::onStart);
     }
 
-    protected <T> Observable.Transformer<T, T> applyAsync(Func1<? super T, ? extends Observable<? extends T>> func, OnStartAction startListener) {
+    protected <T> Single.Transformer<T, T> applyAsync(Func1<? super T, ? extends Single<? extends T>> func, OnStartAction startListener) {
         return applyAsyncWithMap(func, startListener);
     }
 
-    protected <T, R> Observable.Transformer<T, R> applyAsyncWithMap(Func1<? super T, ? extends Observable<? extends R>> func, OnStartAction startListener) {
-        return observable -> observable
+    protected <T, R> Single.Transformer<T, R> applyAsyncWithMap(Func1<? super T, ? extends Single<? extends R>> func, OnStartAction startListener) {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
-                .concatMap(func)
+                .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
                 .doOnSubscribe(startListener::onStart)
