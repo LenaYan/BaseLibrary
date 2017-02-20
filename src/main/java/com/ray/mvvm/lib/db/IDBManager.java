@@ -21,18 +21,19 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmModel;
-import rx.Observable;
+import rx.Completable;
+import rx.Single;
 import rx.functions.Action0;
 
 public interface IDBManager<T extends RealmModel> {
 
     T findItemById(long id);
 
-    Observable<T> findItemByPoisitionObs(int position);
+    Single<T> findItemByPoisitionObs(int position);
 
-    Observable<T> findFirstObs();
+    Single<T> findFirstObs();
 
-    Observable<T> findLastObs();
+    Single<T> findLastObs();
 
     T findFirst();
 
@@ -40,28 +41,28 @@ public interface IDBManager<T extends RealmModel> {
 
     T findLast();
 
-    Observable<List<T>> findAllObs();
+    Single<List<T>> findAllObs();
 
-    Observable<List<T>> insertListObs(List<T> list);
+    Single<List<T>> insertListObs(List<T> list);
 
-    Observable<Boolean> insertListAsyncWithoutReturn(List<T> list);
+    Completable insertListAsyncWithoutReturn(List<T> list);
 
-    Observable<List<T>> insertListAsyncWithReturn(List<T> list);
+    Single<List<T>> insertListAsyncWithReturn(List<T> list);
 
-    Observable<T> insertItemObs(T t);
+    Single<T> insertItemObs(T t);
 
-    Observable<T> updateItemObs(T t);
+    Single<T> updateItemObs(T t);
 
-    Observable<Boolean> updateItemAsync(T t);
+    Completable updateItemAsync(T t);
 
-    Observable<Boolean> removeItemAsync(long id);
+    Completable removeItemAsync(long id);
 
-    Observable<Boolean> removeAllAsync();
+    Single<Boolean> removeAllAsync();
 
-    Observable<Boolean> runActionAsync(Action0 action0);
+    Completable executeTransactionAsync(Action0 action0);
 
-    Observable<Boolean> volumeCheckAsync();
+    Completable volumeCheckAsync();
 
-    boolean runAction(Action0 action0);
+    boolean executeTransaction(Action0 action0);
 
 }

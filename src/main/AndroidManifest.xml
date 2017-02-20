@@ -14,6 +14,7 @@
   ~  limitations under the License.
   ~
   -->
+
 <manifest package="com.ray.mvvm.lib"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

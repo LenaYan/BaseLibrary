@@ -23,37 +23,36 @@ import com.ray.mvvm.lib.model.model.GenericRespEntity;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscriber;
+import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class GenericPresenter extends CommonPresenter {
 
-    private <Y extends GenericRespEntity> Observable<Y> respCheck(Y respEntity) {
-        return Observable.create((subscriber) -> {
+    private <Y extends GenericRespEntity> Single<Y> respCheck(Y respEntity) {
+        return Single.create((subscriber) -> {
             if (respEntity == null) {
                 subscriber.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response entity is empty."));
             } else if (respEntity.getCode() == ErrorEvent.FAILURE || respEntity.getCode() != ErrorEvent.SUCCESS) {
                 ErrorEvent errorEvent = new ErrorEvent(respEntity.getCode(), respEntity.getMessage());
                 subscriber.onError(errorEvent);
             } else {
-                subscriber.onNext(respEntity);
+                subscriber.onSuccess(respEntity);
             }
         });
     }
 
-    protected <T> Observable<GenericRespEntity<T>> mockGenericWith(T t) {
-        return Observable
-                .create((Subscriber<? super GenericRespEntity<T>> subscriber) ->
-                        subscriber.onNext(new GenericRespEntity<>(ErrorEvent.SUCCESS, t))
+    protected <T> Single<GenericRespEntity<T>> mockGenericWith(T t) {
+        return Single
+                .<GenericRespEntity<T>>create(subscriber ->
+                        subscriber.onSuccess(new GenericRespEntity<>(ErrorEvent.SUCCESS, t))
                 )
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <R, T extends GenericRespEntity<R>> Observable.Transformer<T, R> applyAsyncGeneric() {
-        return observable -> observable
+    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncGeneric() {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
@@ -63,8 +62,8 @@ public class GenericPresenter extends CommonPresenter {
                 .compose(bindLifecycle());
     }
 
-    protected <T extends GenericRespEntity> Observable.Transformer<T, T> applyAsyncGenericVoid() {
-        return observable -> observable
+    protected <T extends GenericRespEntity> Single.Transformer<T, T> applyAsyncGenericVoid() {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
@@ -73,8 +72,8 @@ public class GenericPresenter extends CommonPresenter {
                 .compose(bindLifecycle());
     }
 
-    protected <R, T extends GenericRespEntity<R>> Observable.Transformer<T, R> applyAsyncGeneric(OnStartAction startListener) {
-        return observable -> observable
+    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncGeneric(OnStartAction startListener) {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
@@ -85,24 +84,24 @@ public class GenericPresenter extends CommonPresenter {
                 .doOnSubscribe(startListener::onStart);
     }
 
-    protected <R, T extends GenericRespEntity<R>> Observable.Transformer<T, R> applyAsyncGeneric(Func1<? super R, ? extends Observable<? extends R>> func) {
-        return observable -> observable
+    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncGeneric(Func1<? super R, ? extends Single<? extends R>> func) {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .map(T::getData)
-                .concatMap(func)
+                .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
-    protected <R, T extends GenericRespEntity<R>> Observable.Transformer<T, R> applyAsyncGeneric(Func1<? super T, ? extends Observable<? extends R>> func, OnStartAction startListener) {
-        return observable -> observable
+    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncGeneric(Func1<? super T, ? extends Single<? extends R>> func, OnStartAction startListener) {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
-                .concatMap(func)
+                .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(startListener::onStart)
                 .doOnError(this::postError)
