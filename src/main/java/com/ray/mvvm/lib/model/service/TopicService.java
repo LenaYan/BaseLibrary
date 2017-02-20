@@ -23,7 +23,7 @@ import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Android Studio.
@@ -45,20 +45,20 @@ import rx.Observable;
 public interface TopicService {
 
     @GET("topics/hot.json")
-    Observable<List<TopicEntity>> hot();
+    Single<List<TopicEntity>> hot();
 
     @GET("topics/latest.json")
-    Observable<List<TopicEntity>> latest();
+    Single<List<TopicEntity>> latest();
 
     @GET("topics/show.json")
-    Observable<List<TopicEntity>> topicsByUserName(@Query(value = "username") String userName);
+    Single<List<TopicEntity>> topicsByUserName(@Query(value = "username") String userName);
 
     @GET("topics/show.json")
-    Observable<List<TopicEntity>> topicsByNodeId(@Query(value = "node_id") long nodeId);
+    Single<List<TopicEntity>> topicsByNodeId(@Query(value = "node_id") long nodeId);
 
     @GET("topics/show.json")
-    Observable<List<TopicEntity>> topicsByNodeName(@Query(value = "node_name") String nodeName);
+    Single<List<TopicEntity>> topicsByNodeName(@Query(value = "node_name") String nodeName);
 
     @GET("topics/show.json")
-    Observable<List<TopicEntity>> topicById(@Query(value = "id") long id);
+    Single<List<TopicEntity>> topicById(@Query(value = "id") long id);
 }

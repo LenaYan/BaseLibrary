@@ -21,10 +21,10 @@ import com.ray.mvvm.lib.model.model.member.MemberEntity;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
+import rx.Single;
 
 public interface MemberService {
 
     @GET("members/show.json")
-    Observable<MemberEntity> member(@Query(value = "username") String userName);
+    Single<MemberEntity> member(@Query(value = "username") String userName);
 }

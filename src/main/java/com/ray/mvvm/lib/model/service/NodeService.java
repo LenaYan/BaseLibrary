@@ -23,7 +23,7 @@ import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Android Studio.
@@ -45,9 +45,9 @@ import rx.Observable;
 public interface NodeService {
 
     @GET("nodes/show.json")
-    Observable<NodeEntity> nodeByName(@Query(value = "name") String name);
+    Single<NodeEntity> nodeByName(@Query(value = "name") String name);
 
     @GET("nodes/all.json")
-    Observable<List<NodeEntity>> nodes();
+    Single<List<NodeEntity>> nodes();
 
 }

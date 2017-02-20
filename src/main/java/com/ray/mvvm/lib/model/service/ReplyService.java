@@ -23,7 +23,7 @@ import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Android Studio.
@@ -45,6 +45,6 @@ import rx.Observable;
 public interface ReplyService {
 
     @GET("replies/show.json")
-    Observable<List<ReplyEntity>> replies(@Query(value = "topic_id") long id);
+    Single<List<ReplyEntity>> replies(@Query(value = "topic_id") long id);
 
 }
