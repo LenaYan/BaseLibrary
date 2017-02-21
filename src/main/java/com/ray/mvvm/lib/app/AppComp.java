@@ -28,7 +28,6 @@ import com.ray.mvvm.lib.widget.anotations.ContextType;
 import com.rayman.interview.lib.executor.IPriceDefine;
 import com.rayman.interview.lib.executor.IUnitDefine;
 import com.squareup.moshi.Moshi;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Named;
 
@@ -62,8 +61,6 @@ public interface AppComp {
     OkHttpClient okHttpClient();
 
     Realm realm();
-
-    RxPermissions rxPermission();
 
     IUnitDefine unitDefine();
 

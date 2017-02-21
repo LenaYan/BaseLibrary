@@ -21,7 +21,7 @@ import android.os.Looper;
 
 public final class ConstantsClass {
 
-    public static void argumentCheck(boolean wrongArg) {
+    public static void argumentCheck(final boolean wrongArg) {
         if (wrongArg)
             throw new IllegalArgumentException("默认参数异常，请检查传递数据");
     }

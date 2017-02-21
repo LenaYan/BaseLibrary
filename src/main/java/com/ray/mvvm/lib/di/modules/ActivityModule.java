@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ray.mvvm.lib.di.scope.PerBaseActivity;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Named;
 
@@ -55,6 +56,12 @@ public final class ActivityModule {
     @PerBaseActivity
     FragmentManager provideFragmentManager() {
         return activity.getSupportFragmentManager();
+    }
+
+    @Provides
+    @PerBaseActivity
+    RxPermissions provideRxPermission() {
+        return new RxPermissions(activity);
     }
 
 }

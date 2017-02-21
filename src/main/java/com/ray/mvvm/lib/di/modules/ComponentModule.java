@@ -28,7 +28,6 @@ import com.rayman.interview.lib.executor.IUnitDefine;
 import com.rayman.interview.lib.executor.SymbolPriceDefine;
 import com.rayman.interview.lib.executor.SymbolUnitDefine;
 import com.squareup.moshi.Moshi;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Named;
 
@@ -66,12 +65,6 @@ public final class ComponentModule {
 
     @Provides
     @PerApplication
-    static RxPermissions provideRxPermission(@Named(ContextType.APPLICATION) Context context) {
-        return RxPermissions.getInstance(context);
-    }
-
-    @Provides
-    @PerApplication
     static IUnitDefine provideUnitDefine() {
         return new SymbolUnitDefine();
     }
@@ -81,5 +74,4 @@ public final class ComponentModule {
     static IPriceDefine providePriceDefine(IUnitDefine unitDefine) {
         return new SymbolPriceDefine(unitDefine);
     }
-
 }

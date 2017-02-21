@@ -1,17 +1,11 @@
 /*
- *
- *  Copyright (c) 2016 Lena.t.Yan
- *  Unauthorized copying of this file, via any medium is strictly prohibited proprietary and confidential.
- *  Created on Fri, 11 Nov 2016 22:14:52 +0800.
- *  ProjectName: V2EXAndroidClient ; ModuleName: app ; ClassName: TopicListCellVM.
- *  Author: Lena; Last Modified: Fri, 11 Nov 2016 22:14:52 +0800.
- *  This file is originally created by Lena.
+ *  Copyright (C) 2015 Rayman Yan
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,48 +23,45 @@ import com.ray.mvvm.lib.model.model.RespEntity;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscriber;
+import rx.Single;
+import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public final class ExPresenter extends CommonPresenter {
 
-    private <Y extends RespEntity> Observable<Y> respCheck(Y respEntity) {
-        return Observable.create((subscriber) -> {
+    private <Y extends RespEntity> Single<Y> respCheck(Y respEntity) {
+        return Single.create((subscriber) -> {
             if (respEntity == null) {
                 subscriber.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response entity is empty."));
             } else if (respEntity.getCode() == ErrorEvent.FAILURE || respEntity.getCode() != ErrorEvent.SUCCESS) {
                 ErrorEvent errorEvent = new ErrorEvent(respEntity.getCode(), respEntity.getMessage());
                 subscriber.onError(errorEvent);
             } else {
-                subscriber.onNext(respEntity);
+                subscriber.onSuccess(respEntity);
             }
-            subscriber.onCompleted();
         });
     }
 
-    protected Observable<RespEntity> mockResp() {
-        return Observable
-                .create((Subscriber<? super RespEntity> subscriber) -> {
-                    subscriber.onNext(new RespEntity(ErrorEvent.SUCCESS));
-                    subscriber.onCompleted();
+    protected Single<RespEntity> mockResp() {
+        return Single
+                .create((SingleSubscriber<? super RespEntity> subscriber) -> {
+                    subscriber.onSuccess(new RespEntity(ErrorEvent.SUCCESS));
                 })
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T extends RespEntity> Observable<T> mockResp(T t) {
-        return Observable
-                .create((Subscriber<? super T> subscriber) -> {
-                    subscriber.onNext(t);
-                    subscriber.onCompleted();
+    protected <T extends RespEntity> Single<T> mockResp(T t) {
+        return Single
+                .create((SingleSubscriber<? super T> subscriber) -> {
+                    subscriber.onSuccess(t);
                 })
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T extends RespEntity> Observable.Transformer<T, T> applyAsyncEx() {
-        return observable -> observable
+    protected <T extends RespEntity> Single.Transformer<T, T> applyAsyncEx() {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
@@ -79,8 +70,8 @@ public final class ExPresenter extends CommonPresenter {
                 .compose(bindLifecycle());
     }
 
-    protected <T extends RespEntity> Observable.Transformer<T, T> applyAsyncEx(OnStartAction startListener) {
-        return observable -> observable
+    protected <T extends RespEntity> Single.Transformer<T, T> applyAsyncEx(OnStartAction startListener) {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
@@ -90,12 +81,12 @@ public final class ExPresenter extends CommonPresenter {
                 .doOnSubscribe(startListener::onStart);
     }
 
-    protected <T extends RespEntity, R> Observable.Transformer<T, R> applyAsyncEx(Func1<? super T, ? extends Observable<? extends R>> func) {
-        return observable -> observable
+    protected <T extends RespEntity, R> Single.Transformer<T, R> applyAsyncEx(Func1<? super T, ? extends Single<? extends R>> func) {
+        return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
-                .concatMap(func)
+                .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
                 .compose(bindLifecycle());

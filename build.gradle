@@ -35,7 +35,6 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         buildConfigField "String", "AppVersion", "\"" + rootProject.ext.versionName + "\""
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     dataBinding {
         enabled = true
@@ -78,24 +77,37 @@ dependencies {
 
     compile depMap.Glide
     compile depMap.GlideOkhttpIntegration
+
     compile depMap.OkHttp
     compile depMap.LoggingInterceptor
-    compile depMap.Retrofit
+
+    compile depMap.Moshi
     compile depMap.MoshiConverter
+
+    compile depMap.Retrofit
+    compile depMap.RxJavaAdapter
+
+    compile depMap.RxJava
+    compile depMap.RxAndroid
+    compile depMap.RxJavaProguard
 
     compile depMap.RxJavaAdapter
     compile depMap.RxAndroid
     compile depMap.RxBinding
-    compile depMap.RxJavaProguard
+    compile depMap.RxBindingSupportV4
+    compile depMap.RxBindingAppcompat
+    compile depMap.RxBindingDesign
+    compile depMap.RxBindingRecyclerView
+
     compile depMap.RxLifecycle
     compile depMap.RxLifecycleAndroid
+
+    compile depMap.RxPermissions
 
     compile depMap.Dagger
     annotationProcessor depMap.DaggerCompile
 
     compile depMap.Timber
-    compile depMap.RxPermissions
-    compile depMap.Moshi
 
     debugCompile depMap.Stetho
     debugCompile depMap.StethoRealm
@@ -108,12 +120,4 @@ dependencies {
     retrolambdaConfig depMap.RetroLambdaConfig
 
     provided depMap.LeakCanary
-
-    testCompile depMap.Annotations
-    testCompile depMap.JUnit
-    androidTestCompile depMap.JUnit
-    androidTestCompile(depMap.EspressoCore, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.google.code.findbugs', module: 'jsr305'
-    })
 }

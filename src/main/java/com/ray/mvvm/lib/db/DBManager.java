@@ -25,8 +25,10 @@ import io.realm.Realm;
 import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import rx.Observable;
-import rx.Subscriber;
+import rx.Completable;
+import rx.CompletableSubscriber;
+import rx.Single;
+import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import timber.log.Timber;
@@ -47,15 +49,14 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
     protected abstract String getPrimaryKey();
 
     @Override
-    public Observable<T> findItemByPoisitionObs(int position) {
-        return Observable.create((subscribe) -> {
+    public Single<T> findItemByPoisitionObs(int position) {
+        return Single.create((subscribe) -> {
                     RealmResults<T> results = realm.where(clazz).findAll();
                     if (results.size() == 0) {
-                        subscribe.onNext(null);
+                        subscribe.onSuccess(null);
                     } else {
-                        subscribe.onNext(results.get(position));
+                        subscribe.onSuccess(results.get(position));
                     }
-                    subscribe.onCompleted();
                 }
         );
     }
@@ -66,13 +67,12 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
     }
 
     @Override
-    public Observable<T> findFirstObs() {
-        return Observable.create((onSubscribe) -> {
+    public Single<T> findFirstObs() {
+        return Single.create((onSubscribe) -> {
                     T t = realm.where(clazz).findFirst();
                     RealmResults<T> results = realm.where(clazz).findAll();
-                    Timber.i("Count + " + results.size());
-                    onSubscribe.onNext(t);
-                    onSubscribe.onCompleted();
+                    Timber.i("Count " + results.size());
+                    onSubscribe.onSuccess(t);
                 }
         );
     }
@@ -108,152 +108,129 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
     }
 
     @Override
-    public Observable<T> findLastObs() {
-        return Observable.create((onSubscribe) -> {
+    public Single<T> findLastObs() {
+        return Single.create(onSubscribe -> {
                     RealmResults<T> results = realm.where(clazz).findAll();
                     if (results.size() == 0) {
-                        onSubscribe.onNext(null);
+                        onSubscribe.onSuccess(null);
                     } else {
-                        onSubscribe.onNext(results.last());
+                        onSubscribe.onSuccess(results.last());
                     }
-                    onSubscribe.onCompleted();
                 }
         );
     }
 
     @Override
-    public Observable<List<T>> findAllObs() {
-        return Observable.create(subscriber -> {
+    public Single<List<T>> findAllObs() {
+        return Single.create(subscriber -> {
                     RealmResults<T> realmResults = realm.where(clazz).findAll();
                     if (realmResults.size() == 0) {
-                        subscriber.onNext(null);
+                        subscriber.onSuccess(null);
                     } else {
-                        subscriber.onNext(realmResults);
+                        subscriber.onSuccess(realmResults);
                     }
-                    subscriber.onCompleted();
                 }
         );
     }
 
     @Override
-    public Observable<T> insertItemObs(T t) {
-        return Observable
+    public Single<T> insertItemObs(T t) {
+        return Single
                 .create(subscriber ->
-                        realm.executeTransaction(realm -> {
-                                    subscriber.onNext(realm.copyToRealmOrUpdate(t));
-                                    subscriber.onCompleted();
-                                }
-                        ));
+                        realm.executeTransaction(
+                                realm -> subscriber.onSuccess(realm.copyToRealmOrUpdate(t))));
     }
 
     @Override
-    public Observable<T> updateItemObs(T t) {
-        return Observable
+    public Single<T> updateItemObs(T t) {
+        return Single
                 .create(subscriber ->
-                        realm.executeTransaction(realm -> {
-                                    subscriber.onNext(realm.copyToRealmOrUpdate(t));
-                                    subscriber.onCompleted();
-                                }
-                        ));
+                        realm.executeTransaction(
+                                realm -> subscriber.onSuccess(realm.copyToRealmOrUpdate(t))));
     }
 
     @Override
-    public Observable<Boolean> updateItemAsync(T t) {
-        return Observable
+    public Completable updateItemAsync(T t) {
+        return Completable
                 .create(subscriber ->
-                        realm.executeTransactionAsync(realm ->
-                                        realm.copyToRealmOrUpdate(t)
-                                , () -> {
-                                    subscriber.onNext(true);
-                                    subscriber.onCompleted();
-                                },
-                                subscriber::onError
-                        ));
-    }
-
-    @Override
-    public Observable<List<T>> insertListObs(List<T> list) {
-        return Observable
-                .create(subscriber ->
-                        realm.executeTransaction(realm -> {
-                            subscriber.onNext(realm.copyToRealmOrUpdate(list));
-                            subscriber.onCompleted();
-                        }));
-    }
-
-    @Override
-    public Observable<Boolean> insertListAsyncWithoutReturn(List<T> list) {
-        return Observable
-                .create(subscriber ->
-                        realm.executeTransactionAsync(realm -> realm.copyToRealmOrUpdate(list),
-                                () -> {
-                                    subscriber.onNext(true);
-                                    subscriber.onCompleted();
-                                },
-                                subscriber::onError));
-    }
-
-    @Override
-    public Observable<List<T>> insertListAsyncWithReturn(List<T> list) {
-        return Observable
-                .create(subscriber ->
-                        realm.executeTransactionAsync(realm -> {
-                                    realm.copyToRealmOrUpdate(list);
-                                }, () -> {
-                                    subscriber.onNext(list);
-                                    subscriber.onCompleted();
-                                },
-                                subscriber::onError));
-    }
-
-    @Override
-    public Observable<Boolean> removeItemAsync(long id) {
-        return Observable
-                .create(subscriber ->
-                        realm.executeTransactionAsync(realm ->
-                                        Observable
-                                                .create((Subscriber<? super Boolean> subscriber1) -> {
-                                                    try {
-                                                        RealmObject.deleteFromRealm(realm.where(clazz).equalTo(getPrimaryKey(), id).findFirst());
-                                                        subscriber1.onNext(true);
-                                                        subscriber1.onCompleted();
-                                                    } catch (Exception e) {
-                                                        subscriber1.onError(e);
-                                                    }
-                                                })
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .doOnNext(subscriber::onNext)
-                                                .subscribe(),
+                        realm.executeTransactionAsync(
+                                realm -> realm.copyToRealmOrUpdate(t),
                                 subscriber::onCompleted,
+                                subscriber::onError));
+    }
+
+    @Override
+    public Single<List<T>> insertListObs(List<T> list) {
+        return Single
+                .create(subscriber ->
+                        realm.executeTransaction(
+                                realm -> subscriber.onSuccess(realm.copyToRealmOrUpdate(list))));
+    }
+
+    @Override
+    public Completable insertListAsyncWithoutReturn(List<T> list) {
+        return Completable
+                .create(subscriber ->
+                        realm.executeTransactionAsync(
+                                realm -> realm.copyToRealmOrUpdate(list),
+                                subscriber::onCompleted,
+                                subscriber::onError));
+    }
+
+    @Override
+    public Single<List<T>> insertListAsyncWithReturn(List<T> list) {
+        return Single
+                .create(subscriber ->
+                        realm.executeTransactionAsync(realm ->
+                                        Single.create(singleSubscriber ->
+                                                singleSubscriber.onSuccess(realm.copyToRealmOrUpdate(list)))
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(),
+                                subscriber::onError));
+    }
+
+    @Override
+    public Completable removeItemAsync(long id) {
+        return Completable
+                .create(subscriber ->
+                        realm.executeTransactionAsync(realm ->
+                                        Completable.create((CompletableSubscriber subscriber1) -> {
+                                            try {
+                                                RealmObject.deleteFromRealm(realm.where(clazz).equalTo(getPrimaryKey(), id).findFirst());
+                                                subscriber1.onCompleted();
+                                            } catch (Exception e) {
+                                                subscriber1.onError(e);
+                                            }
+                                        })
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .doOnCompleted(subscriber::onCompleted)
+                                                .subscribe(),
                                 subscriber::onError)
                 );
     }
 
     @Override
-    public Observable<Boolean> removeAllAsync() {
-        return Observable
-                .create((subscriber) ->
+    public Single<Boolean> removeAllAsync() {
+        return Single
+                .create(subscriber ->
                         realm.executeTransactionAsync(realm ->
-                                        Observable
-                                                .create((Subscriber<? super Boolean> subscriber1) -> {
-                                                    subscriber1.onNext(realm.where(clazz).findAll().deleteAllFromRealm());
-                                                    subscriber1.onCompleted();
-                                                })
+                                        Single
+                                                .create((SingleSubscriber<? super Boolean> subscriber1) ->
+                                                        subscriber1.onSuccess(realm.where(clazz).findAll().deleteAllFromRealm()))
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .doOnNext(subscriber::onNext)
+                                                .doOnSuccess(subscriber::onSuccess)
                                                 .subscribe(),
-                                subscriber::onCompleted,
                                 subscriber::onError)
                 );
     }
 
     @Override
-    public Observable<Boolean> volumeCheckAsync() {
-        return Observable
-                .create((subscriber) ->
+    public Completable volumeCheckAsync() {
+        return Completable
+                .create(subscriber ->
                         realm.executeTransactionAsync(realm ->
-                                        Observable
-                                                .create((Subscriber<? super Boolean> subscriber1) -> {
+                                        Completable
+                                                .create((CompletableSubscriber subscriber1) -> {
                                                     long current = System.currentTimeMillis() / 1000;
                                                     String updateTimeField = getUpdateTimeField();
                                                     if (!StringUtil.isEmpty(updateTimeField))
@@ -268,13 +245,11 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
                                                         }
                                                     }
                                                     Timber.i("Result" + realmResults.size());
-                                                    subscriber1.onNext(true);
                                                     subscriber1.onCompleted();
                                                 })
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .doOnNext(subscriber::onNext)
+                                                .doOnCompleted(subscriber::onCompleted)
                                                 .subscribe(),
-                                subscriber::onCompleted,
                                 subscriber::onError)
                 );
     }
@@ -284,25 +259,20 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
     }
 
     @Override
-    public Observable<Boolean> runActionAsync(Action0 action0) {
-        return Observable
+    public Completable executeTransactionAsync(Action0 action0) {
+        return Completable
                 .create((subscriber) ->
                         realm.executeTransactionAsync(
-                                realm ->
-                                        action0.call(),
-                                () -> {
-                                    subscriber.onNext(true);
-                                    subscriber.onCompleted();
-                                },
+                                realm -> action0.call(),
+                                subscriber::onCompleted,
                                 subscriber::onError)
                 );
     }
 
     @Override
-    public boolean runAction(Action0 action0) {
+    public boolean executeTransaction(Action0 action0) {
         try {
-            realm.executeTransaction(realm ->
-                    action0.call());
+            realm.executeTransaction(realm -> action0.call());
             return true;
         } catch (Exception e) {
             return false;

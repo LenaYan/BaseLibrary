@@ -14,8 +14,8 @@ import java.util.List;
 
 public class SymbolPriceDefine implements IPriceDefine {
 
-    private HashMap<String, Double> priceMap = new HashMap<>();
     private final IUnitDefine unitDefine;
+    private HashMap<String, Double> priceMap = new HashMap<>();
 
     public SymbolPriceDefine(IUnitDefine unitDefine) {
         this.unitDefine = unitDefine;
