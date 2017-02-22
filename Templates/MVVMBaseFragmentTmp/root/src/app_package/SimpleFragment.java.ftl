@@ -24,7 +24,8 @@ public class ${fragmentName} extends BaseDIFragment implements ${pageName}Contra
         return fragment;
     }
 
-    @Inject ${pageName}VM viewModel;
+    @Inject
+    ${pageName}VM viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

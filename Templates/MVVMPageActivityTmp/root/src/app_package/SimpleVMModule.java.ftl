@@ -1,9 +1,9 @@
 package ${packageName}.vm.module;
 
-import ${libPackage}.di.scope.PerActivity;
 import ${packageName}.contract.${pageName}Contract;
 import ${packageName}.presenter.${pageName}P;
 import ${packageName}.vm.${pageName}VM;
+import ${libPackage}.di.scope.PerActivity;
 
 import dagger.Module;
 import dagger.Provides;

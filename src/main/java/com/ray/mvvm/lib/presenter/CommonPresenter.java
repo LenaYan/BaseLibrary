@@ -82,6 +82,10 @@ public class CommonPresenter implements IPresenter {
         return RxLifecycle.bindUntilEvent(lifecycleEventObs, lifecycleEvent).forSingle();
     }
 
+    protected <T> Observable.Transformer<T, T> bindLifecycleObs() {
+        return RxLifecycle.bindUntilEvent(lifecycleEventObs, lifecycleEvent);
+    }
+
     protected <T> Single.Transformer<T, T> bindLifecycleOnMainThread() {
         return (single) ->
                 single.observeOn(AndroidSchedulers.mainThread())
@@ -92,13 +96,31 @@ public class CommonPresenter implements IPresenter {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
+                .compose(bindLifecycle());
+    }
+
+    protected <T> Observable.Transformer<T, T> applyAsyncObs() {
+        return single -> single
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
+                .compose(bindLifecycleObs());
+    }
+
+    protected <T> Single.Transformer<T, T> applyAsyncRequest() {
+        return single -> single
+                .subscribeOn(Schedulers.io())
+                .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
-    protected <T, R> Single.Transformer<T, R> applyAsync(Func1<? super T, ? extends Single<? extends R>> func) {
+    protected <T, R> Single.Transformer<T, R> applyAsyncRequest(Func1<? super T, ? extends Single<? extends R>> func) {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -109,7 +131,7 @@ public class CommonPresenter implements IPresenter {
                 .compose(bindLifecycle());
     }
 
-    protected <T> Single.Transformer<T, T> applyAsync(OnStartAction startListener) {
+    protected <T> Single.Transformer<T, T> applyAsyncRequest(OnStartAction startListener) {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -120,11 +142,11 @@ public class CommonPresenter implements IPresenter {
                 .doOnSubscribe(startListener::onStart);
     }
 
-    protected <T> Single.Transformer<T, T> applyAsync(Func1<? super T, ? extends Single<? extends T>> func, OnStartAction startListener) {
-        return applyAsyncWithMap(func, startListener);
+    protected <T> Single.Transformer<T, T> applyAsyncRequest(Func1<? super T, ? extends Single<? extends T>> func, OnStartAction startListener) {
+        return applyAsyncReqWithMap(func, startListener);
     }
 
-    protected <T, R> Single.Transformer<T, R> applyAsyncWithMap(Func1<? super T, ? extends Single<? extends R>> func, OnStartAction startListener) {
+    protected <T, R> Single.Transformer<T, R> applyAsyncReqWithMap(Func1<? super T, ? extends Single<? extends R>> func, OnStartAction startListener) {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
