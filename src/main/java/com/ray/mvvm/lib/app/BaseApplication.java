@@ -19,6 +19,7 @@ package com.ray.mvvm.lib.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 import android.support.multidex.MultiDex;
 
 import com.ray.mvvm.lib.di.IBuildComp;
@@ -65,6 +66,11 @@ public class BaseApplication extends Application implements IBuildComp {
         if (!LeakCanary.isInAnalyzerProcess(this)) {
             refWatcher = LeakCanary.install(this);
         }
+    }
+
+    @VisibleForTesting
+    public void setAppComp(AppComp appComp) {
+        this.appComp = appComp;
     }
 
     @Override

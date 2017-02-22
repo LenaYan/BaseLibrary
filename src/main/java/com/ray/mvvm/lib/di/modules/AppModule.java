@@ -42,7 +42,7 @@ import dagger.Provides;
         APIServiceModule.class,
         DBModule.class
 })
-public final class AppModule {
+public class AppModule {
 
     private Application application;
 
@@ -52,13 +52,13 @@ public final class AppModule {
 
     @Provides
     @Named(ContextType.APPLICATION)
-    Context provideAppContext() {
+    protected Context provideAppContext() {
         return application;
     }
 
     @Provides
     @PerApplication
-    Application provideApp() {
+    protected Application provideApp() {
         return application;
     }
 
