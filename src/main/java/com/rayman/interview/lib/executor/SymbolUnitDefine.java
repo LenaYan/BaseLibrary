@@ -78,7 +78,7 @@ public class SymbolUnitDefine implements IUnitDefine {
     }
 
     @Override
-    public int getUnitcount() {
+    public int getUnitCount() {
         return unitMap.size();
     }
 

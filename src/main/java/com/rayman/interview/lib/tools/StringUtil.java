@@ -14,7 +14,7 @@ public class StringUtil {
     public static final String REGEX_ROMAN_CONVERT = "how\\s+much\\s+is\\s+(([A-Za-z\\s])+)\\s+\\?";
     public static final String REGEX_PRICE_CALCULATE = "how\\s+many\\s+[c|C]redits\\s+is\\s([A-Za-z\\s]+)\\s+\\?";
 
-    public final static String REGEX_VALIDATOR = "^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$";
+    private final static String REGEX_VALIDATOR = "^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$";
 
     public static boolean isEmpty(String s) {
         if (s == null || s.length() == 0 || s.trim().length() == 0)
@@ -22,7 +22,7 @@ public class StringUtil {
         return false;
     }
 
-    public static boolean isValideRoman(String s) {
+    static boolean isValideRoman(String s) {
         return s.matches(REGEX_VALIDATOR);
     }
 

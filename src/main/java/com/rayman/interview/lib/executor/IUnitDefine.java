@@ -10,7 +10,7 @@ public interface IUnitDefine {
 
     ResultEntity<UnitEntity> handleInput(String input);
 
-    int getUnitcount();
+    int getUnitCount();
 
     void clear();
 
