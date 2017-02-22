@@ -29,7 +29,8 @@ public class ${activityClass} extends BaseDIActivity implements ${pageName}Contr
         redirect.intent(${activityClass}.class, bundle);
     }
 </#if>
-    @Inject ${pageName}VM viewModel;
+    @Inject
+    ${pageName}VM viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

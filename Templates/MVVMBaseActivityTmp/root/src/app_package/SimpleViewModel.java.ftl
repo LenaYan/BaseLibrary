@@ -1,7 +1,7 @@
 package ${packageName}.vm;
 
-import ${libPackage}.viewmodel.BaseVM;
 import ${packageName}.contract.${pageName}Contract;
+import ${libPackage}.viewmodel.BaseVM;
 
 public class ${pageName}VM extends BaseVM<${pageName}Contract.Presenter, ${pageName}Contract.View>{
 
