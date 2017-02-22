@@ -27,6 +27,7 @@ import com.trello.rxlifecycle.RxLifecycle;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func0;
@@ -93,8 +94,12 @@ public class CommonPresenter implements IPresenter {
     }
 
     protected <T> Single.Transformer<T, T> applyAsync() {
+        return applyAsync(Schedulers.io());
+    }
+
+    protected <T> Single.Transformer<T, T> applyAsync(Scheduler scheduler) {
         return single -> single
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
@@ -102,8 +107,12 @@ public class CommonPresenter implements IPresenter {
     }
 
     protected <T> Observable.Transformer<T, T> applyAsyncObs() {
+        return applyAsyncObs(Schedulers.io());
+    }
+
+    protected <T> Observable.Transformer<T, T> applyAsyncObs(Scheduler scheduler) {
         return single -> single
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
