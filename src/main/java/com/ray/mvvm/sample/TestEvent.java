@@ -1,7 +1,7 @@
 package com.ray.mvvm.sample;
 
 import com.ray.mvvm.lib.widget.eventbus.event.BaseEvent;
-import com.ray.mvvm.sample.model.model.TestEntity;
+import com.ray.mvvm.sample.model.model.sample.TestEntity;
 
 /**
  * Created by Android Studio.

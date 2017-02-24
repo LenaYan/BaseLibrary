@@ -23,6 +23,7 @@ import com.ray.mvvm.lib.BuildConfig;
 import com.ray.mvvm.lib.di.scope.PerApplication;
 import com.ray.mvvm.lib.model.http.adapter.GenericRespEntityAdapter;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
+import com.ray.mvvm.sample.model.adapter.TopicEntityAdapter;
 import com.squareup.moshi.Moshi;
 
 import javax.inject.Named;
@@ -41,6 +42,7 @@ public final class ComponentModule {
     static Moshi provideMoshi() {
         return new Moshi.Builder()
                 .add(new GenericRespEntityAdapter())
+                .add(new TopicEntityAdapter())
                 .build();
     }
 

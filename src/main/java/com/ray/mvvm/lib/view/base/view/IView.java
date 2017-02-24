@@ -186,6 +186,12 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
+    default void showToast(int stringRes, Object... para) {
+        Activity activity = activity();
+        ToastUtil.show(activity.getApplicationContext(), activity.getString(stringRes, para));
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
     default void showToast(String string) {
         Activity activity = activity();
         ToastUtil.show(activity.getApplicationContext(), string);
