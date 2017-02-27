@@ -35,3 +35,5 @@ local.properties
 .DS_Store
 .navigation
 /Bash/
+fir_publish.gradle
+artifactory.gradle
