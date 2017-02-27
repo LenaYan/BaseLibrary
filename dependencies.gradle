@@ -26,7 +26,7 @@ ext {
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
     retrolambdaJavaVersion = JavaVersion.VERSION_1_7
 
-    androidSupportVersion = '25.1.1'
+    androidSupportVersion = '25.2.0'
     okHttpVersion = '3.6.0'
     retrofitVersion = '2.1.0'
     rxlifecycleVersion = '1.0'
