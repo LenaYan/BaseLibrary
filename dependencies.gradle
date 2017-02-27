@@ -55,7 +55,7 @@ ext.depMap = [
         SupportMediaCompat    : "com.android.support:support-media-compat:${androidSupportVersion}",
         SupportFragment       : "com.android.support:support-fragment:${androidSupportVersion}",
         Multidex              : "com.android.support:multidex:1.0.1",
-        ConstraintLayout      : "com.android.support.constraint:constraint-layout:1.0.0-beta5",
+        ConstraintLayout      : "com.android.support.constraint:constraint-layout:1.0.0",
         FlexBox               : 'com.google.android:flexbox:0.3.0-alpha2',
 
         Stetho                : 'com.facebook.stetho:stetho:1.4.2',
