@@ -22,8 +22,8 @@ apply plugin: 'com.frogermcs.androiddevmetrics'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 
-if (file('artifactory.gradle').exists())
-    apply from: 'artifactory.gradle'
+//if (file('artifactory.gradle').exists())
+//    apply from: 'artifactory.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
