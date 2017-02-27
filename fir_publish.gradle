@@ -18,6 +18,6 @@
 apply plugin: 'im.fir.plugin.gradle'
 
 fir {
-    apiToken 'ccae4aeb7c3a4185abcd100bc6a0ee60'
+    apiToken fir_token
     changeLog 'No release log'
 }
