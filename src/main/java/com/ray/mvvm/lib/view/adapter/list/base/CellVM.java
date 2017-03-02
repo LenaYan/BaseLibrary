@@ -45,12 +45,14 @@ public class CellVM<T> extends BaseObservable {
     public CellVM(T data, RecyclerView.ViewHolder viewHolder) {
         this.data = data;
         this.viewHolder = viewHolder;
+        this.position = viewHolder.getAdapterPosition();
     }
 
     public CellVM(T data, RecyclerView.ViewHolder viewHolder, OnItemClick<T> itemClick) {
         this.data = data;
         this.viewHolder = viewHolder;
         this.itemClick = itemClick;
+        this.position = viewHolder.getAdapterPosition();
     }
 
     public CellVM(T data, int position) {
@@ -64,16 +66,16 @@ public class CellVM<T> extends BaseObservable {
         this.position = position;
     }
 
-    public void setItemClick(OnItemClick<T> itemClick) {
-        this.itemClick = itemClick;
-    }
-
     public T getData() {
         return data;
     }
 
     public OnItemClick<T> getItemClick() {
         return itemClick;
+    }
+
+    public void setItemClick(OnItemClick<T> itemClick) {
+        this.itemClick = itemClick;
     }
 
     public void onContentClicked(View view) {

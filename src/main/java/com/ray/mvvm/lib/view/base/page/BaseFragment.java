@@ -17,6 +17,7 @@
 
 package com.ray.mvvm.lib.view.base.page;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -101,6 +102,16 @@ public class BaseFragment extends Fragment implements IView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lifecycleSubject.onNext(LifecycleEvent.CREATE_VIEW);
+    }
+
+    @Override
+    public <T extends Activity> void intentForResult(Class<T> aClass, int requestCode) {
+        intentForResult(this, aClass, requestCode, null);
+    }
+
+    @Override
+    public <T extends Activity> void intentForResult(Class<T> aClass, int requestCode, Bundle bundle) {
+        intentForResult(this, aClass, requestCode, bundle);
     }
 
     @Override

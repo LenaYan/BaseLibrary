@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ray.mvvm.lib.widget.anotations.ActivityAction;
@@ -67,6 +68,15 @@ public interface IRedirect {
         if (bundle != null)
             intent.putExtras(bundle);
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    default <T extends Activity> void intentForResult(Fragment fragment, Class<T> aClass, int requestCode, Bundle bundle) {
+        AppCompatActivity activity = activity();
+        Intent intent = new Intent(activity, aClass);
+        if (bundle != null)
+            intent.putExtras(bundle);
+        activity.startActivityFromFragment(fragment, intent, requestCode);
     }
 
     @TargetApi(Build.VERSION_CODES.N)
