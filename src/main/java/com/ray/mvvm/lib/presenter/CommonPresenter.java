@@ -22,10 +22,12 @@ import android.support.annotation.NonNull;
 import com.ray.mvvm.lib.interfaces.OnStartAction;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
+import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 
 import java.util.concurrent.TimeUnit;
 
+import rx.Completable;
 import rx.Observable;
 import rx.Scheduler;
 import rx.Single;
@@ -79,31 +81,52 @@ public class CommonPresenter implements IPresenter {
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T> Single.Transformer<T, T> bindLifecycle() {
-        return RxLifecycle.bindUntilEvent(lifecycleEventObs, lifecycleEvent).forSingle();
-    }
-
-    protected <T> Observable.Transformer<T, T> bindLifecycleObs() {
+    protected <T> LifecycleTransformer<T> bindLifecycle() {
         return RxLifecycle.bindUntilEvent(lifecycleEventObs, lifecycleEvent);
     }
 
-    protected <T> Single.Transformer<T, T> bindLifecycleOnMainThread() {
-        return (single) ->
+    protected <T> Observable.Transformer<T, T> bindObsToLifecycleOnMain() {
+        return single ->
                 single.observeOn(AndroidSchedulers.mainThread())
                         .compose(bindLifecycle());
     }
 
-    protected <T> Single.Transformer<T, T> applyAsync() {
-        return applyAsync(Schedulers.io());
+    protected <T> Single.Transformer<T, T> bindSingleToLifecycleOnMain() {
+        return single ->
+                single.observeOn(AndroidSchedulers.mainThread())
+                        .compose(bindLifecycle().forSingle());
     }
 
-    protected <T> Single.Transformer<T, T> applyAsync(Scheduler scheduler) {
+    protected Completable.Transformer bindCompletableToLifecycleOnMain() {
+        return single ->
+                single.observeOn(AndroidSchedulers.mainThread())
+                        .compose(bindLifecycle().forCompletable());
+    }
+
+    protected <T> Single.Transformer<T, T> applyAsyncSingle() {
+        return applyAsyncSingle(Schedulers.io());
+    }
+
+    protected <T> Single.Transformer<T, T> applyAsyncSingle(Scheduler scheduler) {
         return single -> single
                 .subscribeOn(scheduler)
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
+    }
+
+    protected Completable.Transformer applyAsyncCompletable() {
+        return applyAsyncCompletable(Schedulers.io());
+    }
+
+    protected <T> Completable.Transformer applyAsyncCompletable(Scheduler scheduler) {
+        return single -> single
+                .subscribeOn(scheduler)
+                .doOnUnsubscribe(this::onUnsubscribe)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
+                .compose(bindLifecycle().forCompletable());
     }
 
     protected <T> Observable.Transformer<T, T> applyAsyncObs() {
@@ -111,12 +134,12 @@ public class CommonPresenter implements IPresenter {
     }
 
     protected <T> Observable.Transformer<T, T> applyAsyncObs(Scheduler scheduler) {
-        return single -> single
+        return observable -> observable
                 .subscribeOn(scheduler)
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycleObs());
+                .compose(bindLifecycle());
     }
 
     protected <T> Single.Transformer<T, T> applyAsyncRequest() {
@@ -126,7 +149,7 @@ public class CommonPresenter implements IPresenter {
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 
     protected <T, R> Single.Transformer<T, R> applyAsyncRequest(Func1<? super T, ? extends Single<? extends R>> func) {
@@ -137,7 +160,7 @@ public class CommonPresenter implements IPresenter {
                 .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 
     protected <T> Single.Transformer<T, T> applyAsyncRequest(OnStartAction startListener) {
@@ -147,7 +170,7 @@ public class CommonPresenter implements IPresenter {
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle())
+                .compose(bindLifecycle().forSingle())
                 .doOnSubscribe(startListener::onStart);
     }
 
@@ -164,6 +187,6 @@ public class CommonPresenter implements IPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
                 .doOnSubscribe(startListener::onStart)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 }

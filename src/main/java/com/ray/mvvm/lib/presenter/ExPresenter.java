@@ -60,28 +60,28 @@ public final class ExPresenter extends CommonPresenter {
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T extends RespEntity> Single.Transformer<T, T> applyAsyncEx() {
+    protected <T extends RespEntity> Single.Transformer<T, T> applyAsyncExReq() {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 
-    protected <T extends RespEntity> Single.Transformer<T, T> applyAsyncEx(OnStartAction startListener) {
+    protected <T extends RespEntity> Single.Transformer<T, T> applyAsyncExReq(OnStartAction startListener) {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle())
+                .compose(bindLifecycle().forSingle())
                 .doOnSubscribe(startListener::onStart);
     }
 
-    protected <T extends RespEntity, R> Single.Transformer<T, R> applyAsyncEx(Func1<? super T, ? extends Single<? extends R>> func) {
+    protected <T extends RespEntity, R> Single.Transformer<T, R> applyAsyncExReq(Func1<? super T, ? extends Single<? extends R>> func) {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -89,7 +89,7 @@ public final class ExPresenter extends CommonPresenter {
                 .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 
 }
