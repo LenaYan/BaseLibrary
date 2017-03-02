@@ -51,7 +51,7 @@ public final class GenericPresenter extends CommonPresenter {
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncGeneric() {
+    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncReq() {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -59,20 +59,20 @@ public final class GenericPresenter extends CommonPresenter {
                 .map(T::getData)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 
-    protected <T extends GenericRespEntity> Single.Transformer<T, T> applyAsyncGenericVoid() {
+    protected <T extends GenericRespEntity> Single.Transformer<T, T> applyAsyncReqNoneResp() {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 
-    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncGeneric(OnStartAction startListener) {
+    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncReq(OnStartAction startListener) {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -80,11 +80,11 @@ public final class GenericPresenter extends CommonPresenter {
                 .map(T::getData)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle())
+                .compose(bindLifecycle().forSingle())
                 .doOnSubscribe(startListener::onStart);
     }
 
-    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncGeneric(Func1<? super R, ? extends Single<? extends R>> func) {
+    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncReq(Func1<? super R, ? extends Single<? extends R>> func) {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -93,10 +93,10 @@ public final class GenericPresenter extends CommonPresenter {
                 .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 
-    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncGeneric(Func1<? super T, ? extends Single<? extends R>> func, OnStartAction startListener) {
+    protected <R, T extends GenericRespEntity<R>> Single.Transformer<T, R> applyAsyncReq(Func1<? super T, ? extends Single<? extends R>> func, OnStartAction startListener) {
         return single -> single
                 .subscribeOn(Schedulers.io())
                 .doOnUnsubscribe(this::onUnsubscribe)
@@ -105,7 +105,7 @@ public final class GenericPresenter extends CommonPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(startListener::onStart)
                 .doOnError(this::postError)
-                .compose(bindLifecycle());
+                .compose(bindLifecycle().forSingle());
     }
 
 }
