@@ -32,13 +32,13 @@ import android.view.Window;
 import com.ray.mvvm.lib.view.base.view.IView;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.ray.mvvm.lib.widget.lifecycle.RxPageLifecycle;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
 
 import javax.annotation.Nonnull;
 
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 public class BaseDialogFragment extends DialogFragment implements IView {
 
@@ -66,7 +66,7 @@ public class BaseDialogFragment extends DialogFragment implements IView {
     @Nonnull
     @Override
     public Observable<LifecycleEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
+        return lifecycleSubject;
     }
 
     @Nonnull

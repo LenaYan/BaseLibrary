@@ -17,79 +17,79 @@
 
 package com.ray.mvvm.lib.presenter;
 
-import com.ray.mvvm.lib.interfaces.OnStartAction;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.model.model.RespEntity;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Single;
-import rx.SingleSubscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public final class ExPresenter extends CommonPresenter {
 
     private <Y extends RespEntity> Single<Y> respCheck(Y respEntity) {
-        return Single.create((subscriber) -> {
+        return Single.create((emitter) -> {
             if (respEntity == null) {
-                subscriber.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response entity is empty."));
+                emitter.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response entity is empty."));
             } else if (respEntity.getCode() == ErrorEvent.FAILURE || respEntity.getCode() != ErrorEvent.SUCCESS) {
                 ErrorEvent errorEvent = new ErrorEvent(respEntity.getCode(), respEntity.getMessage());
-                subscriber.onError(errorEvent);
+                emitter.onError(errorEvent);
             } else {
-                subscriber.onSuccess(respEntity);
+                emitter.onSuccess(respEntity);
             }
         });
     }
 
     protected Single<RespEntity> mockResp() {
         return Single
-                .create((SingleSubscriber<? super RespEntity> subscriber) -> {
-                    subscriber.onSuccess(new RespEntity(ErrorEvent.SUCCESS));
-                })
+                .create((SingleEmitter<RespEntity> emitter) ->
+                        emitter.onSuccess(new RespEntity(ErrorEvent.SUCCESS)))
                 .delay(3, TimeUnit.SECONDS);
     }
 
     protected <T extends RespEntity> Single<T> mockResp(T t) {
         return Single
-                .create((SingleSubscriber<? super T> subscriber) -> {
-                    subscriber.onSuccess(t);
-                })
+                .<T>create(emitter ->
+                        emitter.onSuccess(t))
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T extends RespEntity> Single.Transformer<T, T> applyAsyncExReq() {
+    protected <T extends RespEntity> SingleTransformer<T, T> applyAsyncExReq() {
         return single -> single
                 .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnDispose(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle().forSingle());
+                .compose(bindLifecycle());
     }
 
-    protected <T extends RespEntity> Single.Transformer<T, T> applyAsyncExReq(OnStartAction startListener) {
+    protected <T extends RespEntity> SingleTransformer<T, T> applyAsyncExReq(Consumer<Disposable> doOnSubscribe) {
         return single -> single
                 .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnDispose(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle().forSingle())
-                .doOnSubscribe(startListener::onStart);
+                .compose(bindLifecycle())
+                .doOnSubscribe(doOnSubscribe);
     }
 
-    protected <T extends RespEntity, R> Single.Transformer<T, R> applyAsyncExReq(Func1<? super T, ? extends Single<? extends R>> func) {
+    protected <T extends RespEntity, R> SingleTransformer<T, R> applyAsyncExReq(Function<? super T, ? extends Single<? extends R>> func) {
         return single -> single
                 .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnDispose(this::onUnsubscribe)
                 .flatMap(this::respCheck)
-                .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle().forSingle());
+                .compose(bindLifecycle())
+                .flatMap(func);
     }
 
 }

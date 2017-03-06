@@ -15,14 +15,29 @@
  *
  */
 
-package com.ray.mvvm.lib.model.http;
+package com.ray.mvvm.lib.exception;
 
-import rx.Subscriber;
+/**
+ * Created by Android Studio.
+ * ProjectName: V2EXAndroidClient
+ * Author:  Rayman
+ * Date: 06/03/2017
+ * Time: 1:34 PM
+ * \ --------------------------------------------
+ * \| The only thing that is constant is change!  |
+ * \ --------------------------------------------
+ * \  \
+ * \   \   \_\_    _/_/
+ * \    \      \__/
+ * \           (oo)\_______
+ * \           (__)\       )\/\
+ * \               ||----w |
+ * \               ||     ||
+ */
+public class NoResultException extends Throwable {
 
-public abstract class ExSubscriber<T> extends Subscriber<T> {
-
-    @Override
-    public void onCompleted() {
+    public NoResultException() {
+        super("No result");
     }
 
 }

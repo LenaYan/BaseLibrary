@@ -17,13 +17,14 @@
 
 package com.ray.mvvm.lib.db;
 
+import com.ray.mvvm.lib.interfaces.Action;
+
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Single;
 import io.realm.Realm;
 import io.realm.RealmModel;
-import rx.Completable;
-import rx.Single;
-import rx.functions.Action0;
 
 public interface IDBManager<T extends RealmModel> {
 
@@ -59,10 +60,10 @@ public interface IDBManager<T extends RealmModel> {
 
     Single<Boolean> removeAllAsync();
 
-    Completable executeTransactionAsync(Action0 action0);
+    Completable executeTransactionAsync(Action action0);
 
     Completable volumeCheckAsync();
 
-    boolean executeTransaction(Action0 action0);
+    boolean executeTransaction(Action action0);
 
 }

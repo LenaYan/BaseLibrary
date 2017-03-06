@@ -37,12 +37,12 @@ import com.ray.mvvm.lib.viewmodel.BaseVM;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.squareup.leakcanary.RefWatcher;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 public abstract class BaseDIActivity extends BaseActivity implements IBuildComp {
 
     private ActivityComp activityComp;
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,8 +80,8 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
         }
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
-        viewModel.presenter().setLifecycleObs(lifecycleSubject.asObservable(), LifecycleEvent.DESTROY);
-        subscription = lifecycleSubject
+        viewModel.presenter().setLifecycleObs(lifecycleSubject, LifecycleEvent.DESTROY);
+        disposable = lifecycleSubject
                 .subscribe(activityEvent -> {
                     if (activityEvent == LifecycleEvent.DESTROY) {
                         final RefWatcher refWatcher = BaseApplication.getRefWatcher(BaseDIActivity.this);
@@ -90,7 +90,7 @@ public abstract class BaseDIActivity extends BaseActivity implements IBuildComp 
                             refWatcher.watch(viewModel.presenter());
                             refWatcher.watch(this);
                         }
-                        subscription.unsubscribe();
+                        disposable.dispose();
                     }
                 });
         binding.setVariable(BR.viewModel, viewModel);

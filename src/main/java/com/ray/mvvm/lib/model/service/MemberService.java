@@ -19,9 +19,9 @@ package com.ray.mvvm.lib.model.service;
 
 import com.ray.mvvm.lib.model.model.member.MemberEntity;
 
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Single;
 
 public interface MemberService {
 

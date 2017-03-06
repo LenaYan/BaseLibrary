@@ -24,7 +24,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Documented
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @StringDef({ContextType.APPLICATION, ContextType.ACTIVITY, ContextType.SERVICE})
 public @interface ContextType {
 

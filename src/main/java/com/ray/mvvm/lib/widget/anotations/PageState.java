@@ -24,7 +24,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Documented
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @IntDef({PageState.LOADING, PageState.ERROR, PageState.CONTENT, PageState.EMPTY, PageState.LOAD_MORE})
 public @interface PageState {
     int LOADING = -377;

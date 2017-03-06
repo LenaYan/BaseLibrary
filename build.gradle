@@ -102,27 +102,35 @@ dependencies {
     compile depMap.MoshiConverter
 
     compile depMap.Retrofit
-    compile depMap.RxJavaAdapter
+    compile(depMap.RxJavaAdapter2, {
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    })
 
-    compile depMap.RxJava
-    compile depMap.RxAndroid
-    compile depMap.RxJavaProguard
+    compile depMap.RxJava2
+    compile(depMap.RxAndroid2, {
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    })
 
-    compile depMap.RxBinding
-    compile depMap.RxBindingSupportV4
-    compile depMap.RxBindingAppcompat
-    compile depMap.RxBindingDesign
-    compile depMap.RxBindingRecyclerView
+//    compile depMap.RxBinding
+//    compile depMap.RxBindingSupportV4
+//    compile depMap.RxBindingAppcompat
+//    compile depMap.RxBindingDesign
+//    compile depMap.RxBindingRecyclerView
 
-    compile depMap.RxLifecycle
-    compile depMap.RxLifecycleAndroid
+    compile(depMap.RxLifecycle2, {
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    })
+    compile(depMap.RxLifecycleAndroid2, {
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    })
 
-    compile depMap.RxPermissions
+    compile(depMap.RxPermissions2, {
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    })
 
     compile depMap.Dagger
     annotationProcessor depMap.DaggerCompile
 
-    compile depMap.MaterialMenuToolbar
     compile depMap.RoundedImageview
     compile depMap.Timber
 

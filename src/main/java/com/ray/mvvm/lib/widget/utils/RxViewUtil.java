@@ -18,20 +18,14 @@
 package com.ray.mvvm.lib.widget.utils;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.SearchView;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
-import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
-import com.jakewharton.rxbinding.view.RxMenuItem;
-import com.jakewharton.rxbinding.view.RxView;
 import com.ray.mvvm.lib.rx.view.RxEditText;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Android Studio.
@@ -52,31 +46,31 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public final class RxViewUtil {
 
-    public static Observable<Void> throttleClick(MenuItem menuItem) {
-        return RxMenuItem
-                .clicks(menuItem)
-                .throttleLast(1, TimeUnit.SECONDS)
-                .onBackpressureLatest();
-    }
+//    public static Observable<Void> throttleClick(MenuItem menuItem) {
+//        return RxMenuItem
+//                .clicks(menuItem)
+//                .throttleLast(1, TimeUnit.SECONDS)
+//                .onBackpressureLatest();
+//    }
+//
+//    public static Observable<Void> throttleClick(View view) {
+//        return RxView
+//                .clicks(view)
+//                .throttleLast(1, TimeUnit.SECONDS)
+//                .onBackpressureLatest();
+//    }
+//
+//    public static Observable<CharSequence> throttleQueryTextChanges(SearchView searchView) {
+//        return RxSearchView.queryTextChanges(searchView)
+//                .filter(input -> !searchView.isIconified())
+//                .throttleLast(200, TimeUnit.MILLISECONDS)
+////                .filter(charSequence -> charSequence != null && charSequence.length() > 0)
+//                .debounce(500, TimeUnit.MILLISECONDS)
+//                .onBackpressureLatest()
+//                .observeOn(AndroidSchedulers.mainThread());
+//    }
 
-    public static Observable<Void> throttleClick(View view) {
-        return RxView
-                .clicks(view)
-                .throttleLast(1, TimeUnit.SECONDS)
-                .onBackpressureLatest();
-    }
-
-    public static Observable<CharSequence> throttleQueryTextChanges(SearchView searchView) {
-        return RxSearchView.queryTextChanges(searchView)
-                .filter(input -> !searchView.isIconified())
-                .throttleLast(200, TimeUnit.MILLISECONDS)
-//                .filter(charSequence -> charSequence != null && charSequence.length() > 0)
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .onBackpressureLatest()
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public static Observable<CharSequence> throttleEditTextChanges(@NonNull EditText editText) {
+    public static Flowable<CharSequence> throttleEditTextChanges(@NonNull EditText editText) {
         return RxEditText.textChanges(editText)
                 .throttleLast(200, TimeUnit.MILLISECONDS)
 //                .debounce(1, TimeUnit.SECONDS)
@@ -84,20 +78,20 @@ public final class RxViewUtil {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Observable<Void> throttleViewClicked(View view) {
-        return RxView.clicks(view)
-                .throttleFirst(1, TimeUnit.SECONDS)
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .onBackpressureLatest()
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public static Observable<Void> throttleViewClicked(MenuItem menuItem) {
-        return RxMenuItem.clicks(menuItem)
-                .throttleFirst(1, TimeUnit.SECONDS)
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .onBackpressureLatest()
-                .observeOn(AndroidSchedulers.mainThread());
-    }
+//    public static Observable<Void> throttleViewClicked(View view) {
+//        return RxView.clicks(view)
+//                .throttleFirst(1, TimeUnit.SECONDS)
+//                .debounce(500, TimeUnit.MILLISECONDS)
+//                .onBackpressureLatest()
+//                .observeOn(AndroidSchedulers.mainThread());
+//    }
+//
+//    public static Observable<Void> throttleViewClicked(MenuItem menuItem) {
+//        return RxMenuItem.clicks(menuItem)
+//                .throttleFirst(1, TimeUnit.SECONDS)
+//                .debounce(500, TimeUnit.MILLISECONDS)
+//                .onBackpressureLatest()
+//                .observeOn(AndroidSchedulers.mainThread());
+//    }
 
 }

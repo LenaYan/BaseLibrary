@@ -20,12 +20,12 @@ package com.ray.mvvm.lib.widget.lifecycle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.OutsideLifecycleException;
-import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.OutsideLifecycleException;
+import com.trello.rxlifecycle2.RxLifecycle;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 
 /**
  * Created by Android Studio.
@@ -46,13 +46,7 @@ import rx.functions.Func1;
  */
 public final class RxPageLifecycle {
 
-    @NonNull
-    @CheckResult
-    public static <T> LifecycleTransformer<T> bind(@NonNull final Observable<LifecycleEvent> lifecycle) {
-        return RxLifecycle.bind(lifecycle, PAGE_LIFECYCLE);
-    }
-
-    private static final Func1<LifecycleEvent, LifecycleEvent> PAGE_LIFECYCLE = (lastEvent) -> {
+    private static final Function<LifecycleEvent, LifecycleEvent> PAGE_LIFECYCLE = (lastEvent) -> {
         switch (lastEvent) {
             case CREATE:
                 return LifecycleEvent.DESTROY;
@@ -70,4 +64,10 @@ public final class RxPageLifecycle {
                 throw new UnsupportedOperationException("Binding to " + lastEvent + " not yet implemented");
         }
     };
+
+    @NonNull
+    @CheckResult
+    public static <T> LifecycleTransformer<T> bind(@NonNull final Observable<LifecycleEvent> lifecycle) {
+        return RxLifecycle.bind(lifecycle, PAGE_LIFECYCLE);
+    }
 }

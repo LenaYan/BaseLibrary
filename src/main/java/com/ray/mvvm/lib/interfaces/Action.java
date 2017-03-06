@@ -17,8 +17,25 @@
 
 package com.ray.mvvm.lib.interfaces;
 
-public interface OnStartAction {
+/**
+ * Created by Android Studio.
+ * ProjectName: V2EXAndroidClient
+ * Author:  Rayman
+ * Date: 06/03/2017
+ * Time: 10:48 AM
+ * \ --------------------------------------------
+ * \| The only thing that is constant is change!  |
+ * \ --------------------------------------------
+ * \  \
+ * \   \   \_\_    _/_/
+ * \    \      \__/
+ * \           (oo)\_______
+ * \           (__)\       )\/\
+ * \               ||----w |
+ * \               ||     ||
+ */
+public interface Action {
 
-    void onStart();
+    void run();
 
 }

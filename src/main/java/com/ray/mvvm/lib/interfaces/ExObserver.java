@@ -15,11 +15,26 @@
  *
  */
 
-package com.ray.mvvm.lib.model.http;
+package com.ray.mvvm.lib.interfaces;
 
-import com.ray.mvvm.lib.interfaces.OnStartAction;
+import io.reactivex.SingleObserver;
 
-import rx.Observer;
-
-public interface ExObserver<T> extends Observer<T>, OnStartAction {
+/**
+ * Created by Android Studio.
+ * ProjectName: V2EXAndroidClient
+ * Author:  Rayman
+ * Date: 06/03/2017
+ * Time: 11:25 AM
+ * \ --------------------------------------------
+ * \| The only thing that is constant is change!  |
+ * \ --------------------------------------------
+ * \  \
+ * \   \   \_\_    _/_/
+ * \    \      \__/
+ * \           (oo)\_______
+ * \           (__)\       )\/\
+ * \               ||----w |
+ * \               ||     ||
+ */
+public interface ExObserver<T> extends SingleObserver<T> {
 }

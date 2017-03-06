@@ -28,10 +28,10 @@ ext {
 
     androidSupportVersion = '25.2.0'
     okHttpVersion = '3.6.0'
-    retrofitVersion = '2.1.0'
+    retrofitVersion = '2.2.0'
     rxlifecycleVersion = '1.0'
     rxlifecycleVersion2 = '2.0.1'
-    rxBindingVersion = '1.0.0'
+    rxBindingVersion = '1.0.1'
     testSupportVersion = '0.5'
     dexMakerVersion = '1.2'
     espressoVersion = '2.2.2'
@@ -55,7 +55,7 @@ ext.depMap = [
         SupportMediaCompat    : "com.android.support:support-media-compat:${androidSupportVersion}",
         SupportFragment       : "com.android.support:support-fragment:${androidSupportVersion}",
         Multidex              : "com.android.support:multidex:1.0.1",
-        ConstraintLayout      : "com.android.support.constraint:constraint-layout:1.0.0-beta5",
+        ConstraintLayout      : "com.android.support.constraint:constraint-layout:1.0.0",
         FlexBox               : 'com.google.android:flexbox:0.3.0-alpha2',
 
         Stetho                : 'com.facebook.stetho:stetho:1.4.2',
@@ -90,7 +90,7 @@ ext.depMap = [
 
         Retrofit              : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
         RxJavaAdapter         : "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}",
-        RxJavaAdapter2        : "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}",
+        RxJavaAdapter2        : "com.squareup.retrofit2:adapter-rxjava2:2.2.0",
         RxJavaAdapterJake2    : 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0',
         Java8Adapter          : "com.squareup.retrofit2:adapter-java8:${retrofitVersion}",
         GuavaAdapter          : "com.squareup.retrofit2:adapter-guava:${retrofitVersion}",
@@ -126,6 +126,7 @@ ext.depMap = [
         RxLeanBack            : "com.jakewharton.rxbinding:rxbinding-leanback-v17:${rxBindingVersion}",
 
         RxPermissions         : 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1',
+        RxPermissions2        : 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.2',
 
         Moshi                 : 'com.squareup.moshi:moshi:1.4.0',
         Timber                : 'com.jakewharton.timber:timber:4.1.1',

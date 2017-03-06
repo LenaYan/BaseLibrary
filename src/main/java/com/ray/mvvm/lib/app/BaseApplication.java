@@ -31,14 +31,14 @@ import com.ray.mvvm.lib.widget.utils.ToastUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 public class BaseApplication extends Application implements IBuildComp {
 
     AppComp appComp;
     RefWatcher refWatcher;
-    private Subscription subscription;
+    private Disposable disposable;
 
     public static RefWatcher getRefWatcher(Context context) {
         BaseApplication application = (BaseApplication) context.getApplicationContext();
@@ -87,10 +87,10 @@ public class BaseApplication extends Application implements IBuildComp {
     }
 
     private void subscribeEvent() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
-        subscription = RxBus.instance()
+        disposable = RxBus.instance()
                 .asObservable(ErrorEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleEvent);

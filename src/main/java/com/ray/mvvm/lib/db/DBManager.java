@@ -17,20 +17,21 @@
 
 package com.ray.mvvm.lib.db;
 
+import com.ray.mvvm.lib.exception.NoResultException;
+import com.ray.mvvm.lib.interfaces.Action;
 import com.ray.mvvm.lib.widget.utils.StringUtil;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import rx.Completable;
-import rx.CompletableSubscriber;
-import rx.Single;
-import rx.SingleSubscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import timber.log.Timber;
 
 public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
@@ -50,12 +51,12 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
 
     @Override
     public Single<T> findItemByPoisitionObs(int position) {
-        return Single.create((subscribe) -> {
+        return Single.create((emitter) -> {
                     RealmResults<T> results = realm.where(clazz).findAll();
                     if (results.size() == 0) {
-                        subscribe.onSuccess(null);
+                        emitter.onError(new NoResultException());
                     } else {
-                        subscribe.onSuccess(results.get(position));
+                        emitter.onSuccess(results.get(position));
                     }
                 }
         );
@@ -68,11 +69,11 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
 
     @Override
     public Single<T> findFirstObs() {
-        return Single.create((onSubscribe) -> {
+        return Single.create((emitter) -> {
                     T t = realm.where(clazz).findFirst();
                     RealmResults<T> results = realm.where(clazz).findAll();
                     Timber.i("Count " + results.size());
-                    onSubscribe.onSuccess(t);
+                    emitter.onSuccess(t);
                 }
         );
     }
@@ -109,12 +110,12 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
 
     @Override
     public Single<T> findLastObs() {
-        return Single.create(onSubscribe -> {
+        return Single.create(emitter -> {
                     RealmResults<T> results = realm.where(clazz).findAll();
                     if (results.size() == 0) {
-                        onSubscribe.onSuccess(null);
+                        emitter.onError(new NoResultException());
                     } else {
-                        onSubscribe.onSuccess(results.last());
+                        emitter.onSuccess(results.last());
                     }
                 }
         );
@@ -122,12 +123,12 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
 
     @Override
     public Single<List<T>> findAllObs() {
-        return Single.create(subscriber -> {
+        return Single.create(emitter -> {
                     RealmResults<T> realmResults = realm.where(clazz).findAll();
                     if (realmResults.size() == 0) {
-                        subscriber.onSuccess(null);
+                        emitter.onError(new NoResultException());
                     } else {
-                        subscriber.onSuccess(realmResults);
+                        emitter.onSuccess(realmResults);
                     }
                 }
         );
@@ -136,101 +137,101 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
     @Override
     public Single<T> insertItemObs(T t) {
         return Single
-                .create(subscriber ->
+                .create(emitter ->
                         realm.executeTransaction(
-                                realm -> subscriber.onSuccess(realm.copyToRealmOrUpdate(t))));
+                                realm -> emitter.onSuccess(realm.copyToRealmOrUpdate(t))));
     }
 
     @Override
     public Single<T> updateItemObs(T t) {
         return Single
-                .create(subscriber ->
+                .create(emitter ->
                         realm.executeTransaction(
-                                realm -> subscriber.onSuccess(realm.copyToRealmOrUpdate(t))));
+                                realm -> emitter.onSuccess(realm.copyToRealmOrUpdate(t))));
     }
 
     @Override
     public Completable updateItemAsync(T t) {
         return Completable
-                .create(subscriber ->
+                .create(emitter ->
                         realm.executeTransactionAsync(
                                 realm -> realm.copyToRealmOrUpdate(t),
-                                subscriber::onCompleted,
-                                subscriber::onError));
+                                emitter::onComplete,
+                                emitter::onError));
     }
 
     @Override
     public Single<List<T>> insertListObs(List<T> list) {
         return Single
-                .create(subscriber ->
+                .create(emitter ->
                         realm.executeTransaction(
-                                realm -> subscriber.onSuccess(realm.copyToRealmOrUpdate(list))));
+                                realm -> emitter.onSuccess(realm.copyToRealmOrUpdate(list))));
     }
 
     @Override
     public Completable insertListAsyncWithoutReturn(List<T> list) {
         return Completable
-                .create(subscriber ->
+                .create(emitter ->
                         realm.executeTransactionAsync(
                                 realm -> realm.copyToRealmOrUpdate(list),
-                                subscriber::onCompleted,
-                                subscriber::onError));
+                                emitter::onComplete,
+                                emitter::onError));
     }
 
     @Override
     public Single<List<T>> insertListAsyncWithReturn(List<T> list) {
         return Single
-                .create(subscriber ->
+                .create(emitter ->
                         realm.executeTransactionAsync(realm ->
                                         Single.create(singleSubscriber ->
                                                 singleSubscriber.onSuccess(realm.copyToRealmOrUpdate(list)))
                                                 .observeOn(AndroidSchedulers.mainThread())
                                                 .subscribe(),
-                                subscriber::onError));
+                                emitter::onError));
     }
 
     @Override
     public Completable removeItemAsync(long id) {
         return Completable
-                .create(subscriber ->
+                .create(emitter1 ->
                         realm.executeTransactionAsync(realm ->
-                                        Completable.create((CompletableSubscriber subscriber1) -> {
+                                        Completable.create((CompletableEmitter emitter) -> {
                                             try {
                                                 RealmObject.deleteFromRealm(realm.where(clazz).equalTo(getPrimaryKey(), id).findFirst());
-                                                subscriber1.onCompleted();
+                                                emitter.onComplete();
                                             } catch (Exception e) {
-                                                subscriber1.onError(e);
+                                                emitter.onError(e);
                                             }
                                         })
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .doOnCompleted(subscriber::onCompleted)
+                                                .doOnComplete(emitter1::onComplete)
                                                 .subscribe(),
-                                subscriber::onError)
+                                emitter1::onError)
                 );
     }
 
     @Override
     public Single<Boolean> removeAllAsync() {
         return Single
-                .create(subscriber ->
+                .create(emitter ->
                         realm.executeTransactionAsync(realm ->
                                         Single
-                                                .create((SingleSubscriber<? super Boolean> subscriber1) ->
+                                                .create((SingleEmitter<Boolean> subscriber1) ->
                                                         subscriber1.onSuccess(realm.where(clazz).findAll().deleteAllFromRealm()))
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .doOnSuccess(subscriber::onSuccess)
+                                                .doOnSuccess(emitter::onSuccess)
                                                 .subscribe(),
-                                subscriber::onError)
+                                emitter::onError)
                 );
     }
 
     @Override
     public Completable volumeCheckAsync() {
         return Completable
-                .create(subscriber ->
+                .create(emitter1 ->
                         realm.executeTransactionAsync(realm ->
                                         Completable
-                                                .create((CompletableSubscriber subscriber1) -> {
+                                                .create((CompletableEmitter emitter) -> {
                                                     long current = System.currentTimeMillis() / 1000;
                                                     String updateTimeField = getUpdateTimeField();
                                                     if (!StringUtil.isEmpty(updateTimeField))
@@ -245,12 +246,12 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
                                                         }
                                                     }
                                                     Timber.i("Result" + realmResults.size());
-                                                    subscriber1.onCompleted();
+                                                    emitter.onComplete();
                                                 })
                                                 .observeOn(AndroidSchedulers.mainThread())
-                                                .doOnCompleted(subscriber::onCompleted)
+                                                .doOnComplete(emitter1::onComplete)
                                                 .subscribe(),
-                                subscriber::onError)
+                                emitter1::onError)
                 );
     }
 
@@ -259,22 +260,21 @@ public abstract class DBManager<T extends RealmModel> implements IDBManager<T> {
     }
 
     @Override
-    public Completable executeTransactionAsync(Action0 action0) {
+    public Completable executeTransactionAsync(Action action) {
         return Completable
-                .create((subscriber) ->
-                        realm.executeTransactionAsync(
-                                realm -> action0.call(),
-                                subscriber::onCompleted,
-                                subscriber::onError)
-                );
+                .create(emitter ->
+                        realm.executeTransactionAsync(realm1 -> action.run(),
+                                emitter::onComplete,
+                                emitter::onError));
     }
 
     @Override
-    public boolean executeTransaction(Action0 action0) {
+    public boolean executeTransaction(Action action) {
         try {
-            realm.executeTransaction(realm -> action0.call());
+            realm.executeTransaction(realm -> action.run());
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
