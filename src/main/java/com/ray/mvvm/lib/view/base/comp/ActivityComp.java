@@ -25,7 +25,7 @@ import com.ray.mvvm.lib.app.AppComp;
 import com.ray.mvvm.lib.di.modules.ActivityModule;
 import com.ray.mvvm.lib.di.scope.PerBaseActivity;
 import com.ray.mvvm.lib.widget.anotations.ContextType;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import javax.inject.Named;
 

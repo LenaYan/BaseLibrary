@@ -19,8 +19,8 @@ package com.ray.mvvm.lib.widget.utils;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Android Studio.
@@ -41,11 +41,10 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public final class RxTransforms {
 
-    public static <T> Observable.Transformer<T, T> viewThrottleTransform() {
+    public static <T> ObservableTransformer<T, T> viewThrottleTransform() {
         return observable ->
                 observable.throttleFirst(1, TimeUnit.SECONDS)
                         .debounce(500, TimeUnit.MILLISECONDS)
-                        .onBackpressureLatest()
                         .observeOn(AndroidSchedulers.mainThread());
     }
 

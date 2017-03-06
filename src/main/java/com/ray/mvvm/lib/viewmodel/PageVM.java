@@ -21,7 +21,7 @@ import android.databinding.Bindable;
 import android.view.View;
 
 import com.ray.mvvm.lib.BR;
-import com.ray.mvvm.lib.model.http.ExObserver;
+import com.ray.mvvm.lib.interfaces.ExObserver;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.presenter.IPresenter;
 import com.ray.mvvm.lib.view.base.view.IView;
@@ -30,9 +30,10 @@ import com.ray.mvvm.lib.widget.anotations.PageState;
 
 import java.io.IOException;
 
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-public abstract class PageVM<P extends IPresenter, V extends IView, D> extends StateVM<P, V> implements ExObserver<D> {
+public class PageVM<P extends IPresenter, V extends IView, D> extends StateVM<P, V> implements ExObserver<D> {
 
     protected D data;
 
@@ -46,7 +47,7 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
     }
 
     @Override
-    public void onStart() {
+    public void onSubscribe(Disposable d) {
         Timber.i("-------onStart----------");
     }
 
@@ -65,20 +66,18 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
         setErrorString(errorString);
         throwable.printStackTrace();
         handleOnErrorState();
-        onCompleted();
     }
 
     @Override
-    public void onNext(D data) {
-        Timber.i("-------onNext----------");
+    public void onSuccess(D data) {
+        Timber.i("-------onSuccess----------");
         final int state = getState();
         handleOnNextState(data);
         bindResp(data, state);
-        onCompleted();
+        onComplete();
     }
 
-    @Override
-    public void onCompleted() {
+    protected void onComplete() {
         Timber.i("-------onCompleted----------");
     }
 
@@ -109,14 +108,14 @@ public abstract class PageVM<P extends IPresenter, V extends IView, D> extends S
         }
     }
 
-    public void setData(D data) {
-        this.data = data;
-        notifyPropertyChanged(BR.data);
-    }
-
     @Bindable
     public D getData() {
         return data;
+    }
+
+    public void setData(D data) {
+        this.data = data;
+        notifyPropertyChanged(BR.data);
     }
 
     protected void bindResp(D data, int originState) {

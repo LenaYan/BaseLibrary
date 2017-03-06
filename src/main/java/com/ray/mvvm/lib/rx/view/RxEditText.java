@@ -23,7 +23,9 @@ import android.widget.EditText;
 
 import com.ray.mvvm.lib.rx.onsubscribe.EditTextTextChangesOnSubscribe;
 
-import rx.Observable;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+
 
 /**
  * Created by Android Studio.
@@ -46,8 +48,8 @@ public final class RxEditText {
 
     @CheckResult
     @NonNull
-    public static Observable<CharSequence> textChanges(@NonNull EditText editText) {
-        return Observable.create(new EditTextTextChangesOnSubscribe(editText));
+    public static Flowable<CharSequence> textChanges(@NonNull EditText editText) {
+        return Flowable.create(new EditTextTextChangesOnSubscribe(editText), BackpressureStrategy.BUFFER);
     }
 
 }

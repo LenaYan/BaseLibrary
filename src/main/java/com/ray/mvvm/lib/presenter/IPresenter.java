@@ -26,7 +26,7 @@ import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 
 import java.io.IOException;
 
-import rx.Observable;
+import io.reactivex.Observable;
 import timber.log.Timber;
 
 public interface IPresenter {

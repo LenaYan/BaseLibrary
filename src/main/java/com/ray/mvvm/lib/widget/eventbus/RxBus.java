@@ -19,15 +19,14 @@ package com.ray.mvvm.lib.widget.eventbus;
 
 import com.ray.mvvm.lib.widget.eventbus.event.BaseEvent;
 
-import rx.Observable;
-import rx.subjects.PublishSubject;
-import rx.subjects.SerializedSubject;
-import rx.subjects.Subject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 public final class RxBus {
 
     private static volatile RxBus instance = new RxBus();
-    private Subject<? super BaseEvent, ? extends BaseEvent> bus = new SerializedSubject<>(PublishSubject.create());
+    private Subject<? super BaseEvent> bus = PublishSubject.create().toSerialized();
 
     private RxBus() {
     }
@@ -50,7 +49,7 @@ public final class RxBus {
     }
 
     public <T extends BaseEvent> Observable<T> asObservable(final Class<T> aClass) {
-        return bus.asObservable()
+        return bus
                 .filter(aClass::isInstance)
                 .cast(aClass);
     }

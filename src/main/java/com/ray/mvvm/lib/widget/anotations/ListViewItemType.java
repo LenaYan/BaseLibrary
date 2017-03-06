@@ -45,7 +45,7 @@ import static com.ray.mvvm.lib.widget.anotations.ListViewItemType.NO_MORE;
  * \               ||     ||
  */
 @Documented
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @IntDef({LOAD_MORE, NO_MORE, LOAD_MORE_ERROR})
 public @interface ListViewItemType {
     int LOAD_MORE = -399;

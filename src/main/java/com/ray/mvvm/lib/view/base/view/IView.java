@@ -30,18 +30,19 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.ray.mvvm.lib.interfaces.Action;
 import com.ray.mvvm.lib.widget.eventbus.RxBus;
 import com.ray.mvvm.lib.widget.eventbus.event.BaseEvent;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
 import com.ray.mvvm.lib.widget.utils.RxTransforms;
 import com.ray.mvvm.lib.widget.utils.ToastUtil;
-import com.trello.rxlifecycle.LifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 public interface IView extends IRedirect, IPageControl, LifecycleProvider<LifecycleEvent> {
 
@@ -52,12 +53,12 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     boolean isPageAlive();
 
     @TargetApi(Build.VERSION_CODES.N)
-    default void delayToResume(Action0 action) {
+    default void delayToResume(Action action) {
         lifecycle()
                 .compose(bindUntilEvent(LifecycleEvent.DESTROY))
-                .takeFirst(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
-                .single()
-                .subscribe(lifecycleEvent -> postRunnable(action::call));
+                .takeUntil(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
+                .single(LifecycleEvent.RESUME)
+                .subscribe(lifecycleEvent -> postRunnable(action::run));
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -192,15 +193,15 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    default <V> void subscribeThrottleViewEvent(Observable<V> observable, Action1<? super V> action) {
+    default <V> void subscribeThrottleViewEvent(Observable<V> observable, Consumer<? super V> action) {
         observable
                 .compose(RxTransforms.viewThrottleTransform())
                 .compose(bindUntilEvent(LifecycleEvent.DESTROY))
-                .subscribe(action::call);
+                .subscribe(action::accept);
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    default <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext) {
+    default <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Consumer<T> onNext) {
         RxBus.instance()
                 .asObservable(aClass)
                 .compose(delayToResumeOnMainThread())
@@ -208,7 +209,7 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    default <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Action1<T> onNext, LifecycleEvent event) {
+    default <T extends BaseEvent> void subscribeEvent(Class<T> aClass, Consumer<T> onNext, LifecycleEvent event) {
         RxBus.instance()
                 .asObservable(aClass)
                 .compose(delayToOnMainThread(event))
@@ -216,12 +217,12 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    default <T extends BaseEvent> Observable.Transformer<T, T> delayToResumeOnMainThread() {
+    default <T extends BaseEvent> ObservableTransformer<T, T> delayToResumeOnMainThread() {
         return delayToOnMainThread(LifecycleEvent.RESUME);
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    default <T extends BaseEvent> Observable.Transformer<T, T> delayToOnMainThread(LifecycleEvent lifecycleEvent) {
+    default <T extends BaseEvent> ObservableTransformer<T, T> delayToOnMainThread(LifecycleEvent lifecycleEvent) {
         return (observable) ->
                 observable.observeOn(AndroidSchedulers.mainThread())
                         .delay(t ->

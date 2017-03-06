@@ -19,22 +19,26 @@ package com.ray.mvvm.lib.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.ray.mvvm.lib.interfaces.OnStartAction;
 import com.ray.mvvm.lib.model.http.event.ErrorEvent;
 import com.ray.mvvm.lib.widget.lifecycle.LifecycleEvent;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import rx.Completable;
-import rx.Observable;
-import rx.Scheduler;
-import rx.Single;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func0;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.CompletableTransformer;
+import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class CommonPresenter implements IPresenter {
 
@@ -45,11 +49,11 @@ public class CommonPresenter implements IPresenter {
     }
 
     private <N> Single<N> respCheck(N dataEntity) {
-        return Single.create((subscriber) -> {
+        return Single.create((emitter) -> {
                     if (dataEntity == null) {
-                        subscriber.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response Data is empty."));
+                        emitter.onError(new ErrorEvent(ErrorEvent.RESP_BODY_EMPTY, "Response Data is empty."));
                     } else {
-                        subscriber.onSuccess(dataEntity);
+                        emitter.onSuccess(dataEntity);
                     }
                 }
         );
@@ -63,15 +67,15 @@ public class CommonPresenter implements IPresenter {
 
     protected <T> Single<T> mockResp(T t) {
         return Single
-                .<T>create(singleSubscriber ->
-                        singleSubscriber.onSuccess(t))
+                .<T>create(emitter ->
+                        emitter.onSuccess(t))
                 .delay(3, TimeUnit.SECONDS);
     }
 
-    protected <T> Single<T> mockResp(Func0<T> func) {
+    protected <T> Single<T> mockResp(Callable<T> func) {
         return Single
-                .<T>create((subscriber) ->
-                        subscriber.onSuccess(func.call()))
+                .<T>create((emitter) ->
+                        emitter.onSuccess(func.call()))
                 .delay(3, TimeUnit.SECONDS);
     }
 
@@ -85,108 +89,108 @@ public class CommonPresenter implements IPresenter {
         return RxLifecycle.bindUntilEvent(lifecycleEventObs, lifecycleEvent);
     }
 
-    protected <T> Observable.Transformer<T, T> bindObsToLifecycleOnMain() {
+    protected <T> ObservableTransformer<T, T> bindObsToLifecycleOnMain() {
         return single ->
                 single.observeOn(AndroidSchedulers.mainThread())
                         .compose(bindLifecycle());
     }
 
-    protected <T> Single.Transformer<T, T> bindSingleToLifecycleOnMain() {
+    protected <T> SingleTransformer<T, T> bindSingleToLifecycleOnMain() {
         return single ->
                 single.observeOn(AndroidSchedulers.mainThread())
-                        .compose(bindLifecycle().forSingle());
+                        .compose(bindLifecycle());
     }
 
-    protected Completable.Transformer bindCompletableToLifecycleOnMain() {
+    protected CompletableTransformer bindCompletableToLifecycleOnMain() {
         return single ->
                 single.observeOn(AndroidSchedulers.mainThread())
-                        .compose(bindLifecycle().forCompletable());
+                        .compose(bindLifecycle());
     }
 
-    protected <T> Single.Transformer<T, T> applyAsyncSingle() {
+    protected <T> SingleTransformer<T, T> applyAsyncSingle() {
         return applyAsyncSingle(Schedulers.io());
     }
 
-    protected <T> Single.Transformer<T, T> applyAsyncSingle(Scheduler scheduler) {
+    protected <T> SingleTransformer<T, T> applyAsyncSingle(Scheduler scheduler) {
         return single -> single
                 .subscribeOn(scheduler)
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(this::postError)
-                .compose(bindLifecycle().forSingle());
-    }
-
-    protected Completable.Transformer applyAsyncCompletable() {
-        return applyAsyncCompletable(Schedulers.io());
-    }
-
-    protected <T> Completable.Transformer applyAsyncCompletable(Scheduler scheduler) {
-        return single -> single
-                .subscribeOn(scheduler)
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(this::postError)
-                .compose(bindLifecycle().forCompletable());
-    }
-
-    protected <T> Observable.Transformer<T, T> applyAsyncObs() {
-        return applyAsyncObs(Schedulers.io());
-    }
-
-    protected <T> Observable.Transformer<T, T> applyAsyncObs(Scheduler scheduler) {
-        return observable -> observable
-                .subscribeOn(scheduler)
-                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnDispose(this::onUnsubscribe)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
                 .compose(bindLifecycle());
     }
 
-    protected <T> Single.Transformer<T, T> applyAsyncRequest() {
+    protected CompletableTransformer applyAsyncCompletable() {
+        return applyAsyncCompletable(Schedulers.io());
+    }
+
+    protected <T> CompletableTransformer applyAsyncCompletable(Scheduler scheduler) {
+        return single -> single
+                .subscribeOn(scheduler)
+                .doOnDispose(this::onUnsubscribe)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
+                .compose(bindLifecycle());
+    }
+
+    protected <T> ObservableTransformer<T, T> applyAsyncObs() {
+        return applyAsyncObs(Schedulers.io());
+    }
+
+    protected <T> ObservableTransformer<T, T> applyAsyncObs(Scheduler scheduler) {
+        return observable -> observable
+                .subscribeOn(scheduler)
+                .doOnDispose(this::onUnsubscribe)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
+                .compose(bindLifecycle());
+    }
+
+    protected <T> SingleTransformer<T, T> applyAsyncRequest() {
         return single -> single
                 .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnDispose(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle().forSingle());
+                .compose(bindLifecycle());
     }
 
-    protected <T, R> Single.Transformer<T, R> applyAsyncRequest(Func1<? super T, ? extends Single<? extends R>> func) {
+    protected <T, R> SingleTransformer<T, R> applyAsyncRequest(Function<? super T, ? extends Single<? extends R>> func) {
         return single -> single
                 .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
-                .flatMap(this::respCheck)
-                .flatMap(func)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(this::postError)
-                .compose(bindLifecycle().forSingle());
-    }
-
-    protected <T> Single.Transformer<T, T> applyAsyncRequest(OnStartAction startListener) {
-        return single -> single
-                .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnDispose(this::onUnsubscribe)
                 .flatMap(this::respCheck)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .compose(bindLifecycle().forSingle())
-                .doOnSubscribe(startListener::onStart);
+                .compose(bindLifecycle())
+                .flatMap(func);
     }
 
-    protected <T> Single.Transformer<T, T> applyAsyncRequest(Func1<? super T, ? extends Single<? extends T>> func, OnStartAction startListener) {
-        return applyAsyncReqWithMap(func, startListener);
-    }
-
-    protected <T, R> Single.Transformer<T, R> applyAsyncReqWithMap(Func1<? super T, ? extends Single<? extends R>> func, OnStartAction startListener) {
+    protected <T> SingleTransformer<T, T> applyAsyncRequest(Consumer<Disposable> doOnSubscribe) {
         return single -> single
                 .subscribeOn(Schedulers.io())
-                .doOnUnsubscribe(this::onUnsubscribe)
+                .doOnDispose(this::onUnsubscribe)
                 .flatMap(this::respCheck)
-                .flatMap(func)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(this::postError)
-                .doOnSubscribe(startListener::onStart)
-                .compose(bindLifecycle().forSingle());
+                .compose(bindLifecycle())
+                .doOnSubscribe(doOnSubscribe);
+    }
+
+    protected <T> SingleTransformer<T, T> applyAsyncRequest(Function<? super T, ? extends Single<? extends T>> func, Consumer<Disposable> doOnSubscribe) {
+        return applyAsyncReqWithMap(func, doOnSubscribe);
+    }
+
+    protected <T, R> SingleTransformer<T, R> applyAsyncReqWithMap(Function<? super T, ? extends Single<? extends R>> func, Consumer<Disposable> doOnSubscribe) {
+        return single -> single
+                .subscribeOn(Schedulers.io())
+                .doOnDispose(this::onUnsubscribe)
+                .flatMap(this::respCheck)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(this::postError)
+                .doOnSubscribe(doOnSubscribe)
+                .compose(bindLifecycle())
+                .flatMap(func);
     }
 }

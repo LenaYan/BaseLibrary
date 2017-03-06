@@ -40,7 +40,7 @@ public abstract class BaseDIFragment extends BaseFragment implements IBuildComp 
     }
 
     protected void bindLifecycle(BaseVM viewModel) {
-        viewModel.presenter().setLifecycleObs(lifecycleSubject.asObservable(), LifecycleEvent.DETACH);
+        viewModel.presenter().setLifecycleObs(lifecycleSubject, LifecycleEvent.DETACH);
         lifecycleSubject
                 .subscribe(activityEvent -> {
                     if (activityEvent == LifecycleEvent.DETACH) {

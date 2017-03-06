@@ -23,11 +23,11 @@ import android.widget.EditText;
 
 import com.google.common.base.Preconditions;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.MainThreadSubscription;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.android.MainThreadDisposable;
 
-public final class EditTextTextChangesOnSubscribe implements Observable.OnSubscribe<CharSequence> {
+public final class EditTextTextChangesOnSubscribe implements FlowableOnSubscribe<CharSequence> {
 
     private EditText editText;
 
@@ -37,8 +37,7 @@ public final class EditTextTextChangesOnSubscribe implements Observable.OnSubscr
     }
 
     @Override
-    public void call(Subscriber<? super CharSequence> subscriber) {
-        MainThreadSubscription.verifyMainThread();
+    public void subscribe(FlowableEmitter<CharSequence> e) throws Exception {
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -52,20 +51,19 @@ public final class EditTextTextChangesOnSubscribe implements Observable.OnSubscr
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!subscriber.isUnsubscribed()) {
-                    subscriber.onNext(s);
+                if (!e.isCancelled()) {
+                    e.onNext(s);
                 }
             }
         };
 
         editText.addTextChangedListener(textWatcher);
-
-        subscriber.add(new MainThreadSubscription() {
+        e.setDisposable(new MainThreadDisposable() {
             @Override
-            protected void onUnsubscribe() {
+            protected void onDispose() {
                 editText.removeTextChangedListener(textWatcher);
             }
         });
-        subscriber.onNext(editText.getText());
+        e.onNext(editText.getText());
     }
 }
