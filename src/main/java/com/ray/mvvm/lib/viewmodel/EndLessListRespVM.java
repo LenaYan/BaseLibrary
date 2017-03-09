@@ -102,6 +102,8 @@ public abstract class EndLessListRespVM<P extends IPresenter, V extends IView, D
                 final int newViewCount = getLayoutManager().getChildCount();
                 if (this.hasMore && newViewCount - 1 == newCount) {
                     onLoadMore();
+                } else if (pageNum == PAGE_NUM_START && data.getList().size() == newViewCount - 1) {
+                    setListItemType(ListViewItemType.NO_MORE);
                 }
             });
     }
