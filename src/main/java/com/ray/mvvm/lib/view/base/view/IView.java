@@ -21,6 +21,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -56,8 +57,8 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     default void delayToResume(Action action) {
         lifecycle()
                 .compose(bindUntilEvent(LifecycleEvent.DESTROY))
-                .takeUntil(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
-                .single(LifecycleEvent.RESUME)
+//                .takeUntil(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
+                .filter(event -> event == LifecycleEvent.RESUME)
                 .subscribe(lifecycleEvent -> postRunnable(action::run));
     }
 
@@ -85,6 +86,15 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     default void hideProgressDialog() {
         ProgressDialog dialog = getProgressDialog();
         if (dialog != null && dialog.isShowing()) dialog.dismiss();
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    default void hideProgressDialog(DialogInterface.OnDismissListener onDismissListener) {
+        ProgressDialog dialog = getProgressDialog();
+        if (dialog != null && dialog.isShowing()) {
+            dialog.setOnDismissListener(onDismissListener);
+            dialog.dismiss();
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -158,6 +168,11 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     @TargetApi(Build.VERSION_CODES.N)
     default void postRunnable(Runnable runnable) {
         activity().getWindow().getDecorView().post(runnable);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    default void postRunableToMain(Runnable runnable) {
+        activity().runOnUiThread(runnable);
     }
 
     @TargetApi(Build.VERSION_CODES.N)
