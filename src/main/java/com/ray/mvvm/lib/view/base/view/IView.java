@@ -171,6 +171,11 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     }
 
     @TargetApi(Build.VERSION_CODES.N)
+    default void postRunableToMain(Runnable runnable) {
+        activity().runOnUiThread(runnable);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
     default void setTitle(CharSequence title) {
         ActionBar actionBar = activity().getSupportActionBar();
         actionBar.setTitle(title);
