@@ -16,7 +16,7 @@
  */
 
 ext {
-    minSdkVersion = 21
+    minSdkVersion = 15
     libDefaultPublish = 'debug'//debug or release
     compileSdkVersion = 25
     targetSdkVersion = 25
@@ -64,7 +64,7 @@ ext.depMap = [
 
         Guava                 : 'com.google.guava:guava:20.0',
 
-        AutoValue             : 'com.google.auto.value:auto-value:1.4-rc2',
+        AutoValue             : 'com.google.auto.value:auto-value:1.2',
         AutoFactory           : 'com.google.auto.factory:auto-factory:1.0-beta3',
         AutoService           : 'com.google.auto.service:auto-service:1.0-rc2',
         AutoCommon            : 'com.google.auto:auto-common:1.0-SNAPSHOT',

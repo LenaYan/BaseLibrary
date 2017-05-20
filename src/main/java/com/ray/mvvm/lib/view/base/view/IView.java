@@ -55,8 +55,7 @@ public interface IView extends IRedirect, IPageControl, LifecycleProvider<Lifecy
     default void delayToResume(Action0 action) {
         lifecycle()
                 .compose(bindUntilEvent(LifecycleEvent.DESTROY))
-                .takeFirst(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
-                .single()
+                .takeUntil(lifecycleEvent -> lifecycleEvent == LifecycleEvent.RESUME)
                 .subscribe(lifecycleEvent -> postRunnable(action::call));
     }
 
